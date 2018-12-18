@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Points Of Interest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="assets/images/londonIcon3.png" type="image/x-icon" />
+    <script src="angularScripts/angular.js"></script>
+    <script src="angularScripts/angular-local-storage.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="angularScripts/angular-route.js"></script>
+    <script type="text/javascript" src="components/test/testController.js"></script>
+    <script type="text/javascript" src="components/register/registerController.js"></script>
+    <script type="text/javascript" src="components/home/homeController.js"></script>
+    <script type="text/javascript" src="components/login/loginController.js"></script>
+    <script type="text/javascript" src="components/favorites/favoritesController.js"></script>
+    <script type="text/javascript" src="components/favorites/favoritesService.js"></script>
+    <script type="text/javascript" src="components/points/pointsService.js"></script>
+    <script type="text/javascript" src="shared/UserService.js"></script>
+    <link rel="stylesheet" href="assets/css/ngDialog.min.css">
+    <link rel="stylesheet" href="assets/css/ngDialog-theme-default.min.css">
+    <script src="shared/ngDialog.min.js"></script>
+
+    <!-- <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo="> -->
+    <link rel="stylesheet" type="text/css" href="assets/css/home.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/register.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/login.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/favorites.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/points.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/about.css" />
+
+    <link href="https://fonts.googleapis.com/css?family=Bowlby+One|Courgette|Shrikhand|Acme" rel="stylesheet">
+
+</head>
+
+<body style="display:flex; flex-flow: column;" ng-app="pointsOfInterest">
+        <div style="order:2" ng-controller="mainController as mainCtrl">
+        <div class="menu" name="guestMenu" ng-show="$root.guest">
+            <li class="li"><a class="btn_menu" href="#/">Home</a></li>
+            <!-- <li class="li"><a class="btn_menu" href="#/about">About</a></li> -->
+            <li class="li"><a class="btn_menu" href="#/login">Login</a></li>
+            <li class="li"><a class="btn_menu" href="#/register">Register</a></li>
+            <li class="li"><a class="btn_menu" href="#/test">Start Test</a></li>
+
+        </div>
+        <div class="menu" name="registeredUserMenu" ng-hide="$root.guest">
+            <li class="li"><a class="btn_menu" href="#/">Home</a></li>
+            <li class="li"><a class="btn_menu" href="#/points">Points</a></li>
+            <li class="li">
+                <i class="fa fa-favorites ico" ></i>
+                <a class="btn_menu" href="#/favorites">Favorites</a>
+            </li>
+            <li class="li"><a class="btn_menu" ng-click="mainCtrl.logout()" style=" cursor: pointer;">Logout</a></li>
+            <li class="li"><a class="btn_menu" href="#/about">About</a></li>
+        </div>
+        
+        <div ng-show="$root.guest">
+            <label class="welcomeUser">Hello guest</label>
+        </div>
+        <div ng-hide="$root.guest">
+            <label class="welcomeUser">Hello {{$root.UserName}},</label>
+        </div>
+        <br><br>
+        <br><br>
+        <br><br>
+        <div ng-view style="order:3"> </div>
+    </div>
+    <br>
+    <br>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<div id="main" ng-controller="testController  as pointCtrl">
+    <div class="category">
+        <div style="height: 5em">
+            <img src="assets\images\guard.png" class="logo2" alt="logo">
+        </div>
+        <br>
+        <br>
+        <div ng-repeat="category in pointCtrl.categories">
+            <button ng-click="pointCtrl.selectCategory(category.CategoryID)" class="category_button">{{category.CategoryName}}</button>
+        </div>
+        <button ng-click="pointCtrl.selectAll()" ng-hide="pointCtrl.showAll" class="category_button">All points</button>
+    </div>
+    <div class="POI">
+        <div style="height: 6.8em">
+            <select class="selectSort" ng-model="pointCtrl.orderBy" ng-options="c as c.name for c in pointCtrl.sortedOptions"></select>
+            <label class="sortBy">Sort By:</label>
+            <input class="selectSort" type="text" ng-model="pointCtrl.filterBy">
+            <label class="sortBy">Search</label>
+            <label class="header_content">• • {{pointCtrl.categoryHeader}} • •</label>
+        </div>
+        <br>
+        <br>
+        <div ng-repeat="p in pointCtrl.points | filter : pointCtrl.filterBy|
+                            orderBy:pointCtrl.orderBy.label:pointCtrl.orderBy.reverse" class="point_description">
+            <img ng-src="{{p.Pic}}" class="img_product" ng-click="pointCtrl.open(p)" />
+            <div class="description">
+                <label class="header_description"> {{p.PointName}}</label>
+                <br>
+                <button class="description_button" ng-click="pointCtrl.openRank(p)" ng-hide="$root.guest">Add Rank</button>
+                <img ng-src="assets\images\Fheart.png" class="img_heart" ng-hide="!p.inFav" ng-click="pointCtrl.favorites(p)" />
+                <img ng-src="assets\images\Eheart.png" class="img_heart" ng-hide="p.inFav" ng-click="pointCtrl.favorites(p)" />
+            </div>
+        </div>
+    </div>
+</div>

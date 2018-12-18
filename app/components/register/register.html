@@ -1,0 +1,152 @@
+<div ng-controller="registerController as regCtrl">
+    <div class="regBackground">
+        <h1 class="regHeader">Register</h1>
+            <div class="register-form">
+                <form name="registerForm" ng-submit="regCtrl.register(registerForm.$valid)" class="regTable" novalidate>
+                    <table align="center">
+                        <tr id="row_1">
+                        <!-- User Name -->
+                        <td>
+                            <label class="InputHeader">UserName</label>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   ng-pattern="/^[a-zA-Z]*$/"
+                                   ng-model="regCtrl.user.UserName"
+                                   ng-required="true"
+                                   class="form-control input"
+                                   name="usernameInput"
+                                   placeholder="Enter Username"
+                                   ng-minlength="3"
+                                   ng-maxlength="8">
+                            <span ng-show="(registerForm.usernameInput.$pristine || registerForm.usernameInput.$touched) && registerForm.usernameInput.$error.required && registerForm.$submitted" class="help-block">Username is required</span>
+                            <span ng-show="registerForm.usernameInput.$error.minlength" class="help-block"> Username must contain at least 3 characters</span>
+                            <span ng-show="registerForm.usernameInput.$error.pattern">User name should contain letters only!</span>
+                            <span ng-show="registerForm.usernameInput.$error.maxlength" class="help-block"> Username must contain at maximum of 8 characters</span>
+                        </td>
+                    </tr>
+                    <tr id="row_2">
+                        <!-- Password -->
+                        <td>
+                            <label class="InputHeader">Password</label>
+                        </td>
+                        <td>
+                            <input type="Password"
+                                ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/"
+                                   ng-model="regCtrl.user.Password"
+                                   ng-required="true"
+                                   class="form-control input"
+                                   name="passwordInput"
+                                   placeholder="Enter Password"
+                                   ng-minlength="5"
+                                   ng-maxlength="10">
+                            <span ng-show="(registerForm.passwordInput.$pristine || registerForm.passwordInput.$touched) && registerForm.passwordInput.$error.required && registerForm.$submitted" class="help-block">Password is required</span>
+                            <span ng-show="registerForm.passwordInput.$error.minlength" class="help-block"> Password must contain at least 5 characters</span>
+                            <span ng-show="registerForm.passwordInput.$error.maxlength" class="help-block"> Password must contain at maximum of 10 characters</span>
+                            <span ng-show="registerForm.passwordInput.$error.pattern" class="help-block">Password should contain letters and numbers</span>
+
+                        </td>
+                    </tr>
+                    <tr id="row_3">
+                        <!-- First Name -->
+                        <td>
+                            <label class="InputHeader">First Name</label>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   ng-pattern="/^[a-zA-Z]*$/"
+                                   ng-model="regCtrl.user.FirstName"
+                                   class="form-control input"
+                                   name="FirstNameInput"
+                                   placeholder="Enter Your First Name"
+                                   ng-required="true"
+                                   ng-maxlength="200"/>
+                            <span ng-show="(registerForm.FirstNameInput.$pristine || registerForm.FirstNameInput.$touched) && registerForm.FirstNameInput.$error.required && registerForm.$submitted" class="help-block">First name is required</span>
+                            <span ng-show="registerForm.FirstNameInput.$error.maxlength" class="help-block">First name is too long</span>
+                            <span ng-show="registerForm.FirstNameInput.$error.pattern">First name should contain letters only!</span>
+                        </td>
+                    </tr>
+                    <tr id="row_4">
+                        <!-- Last Name -->
+                        <td>
+                            <label class="InputHeader">Last Name</label>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   ng-model="regCtrl.user.LastName"
+                                   class="form-control input"
+                                   name="lastNameInput"
+                                   placeholder="Enter Your Last Name"
+                                   ng-required="true"
+                                   ng-maxlength="200">
+                            <span ng-show="(registerForm.lastNameInput.$pristine|| registerForm.lastNameInput.$touched) && registerForm.lastNameInput.$error.required && registerForm.$submitted" class="help-block">Last name is required</span>
+                            <span ng-show="registerForm.lastNameInput.$error.maxlength" class="help-block">Last name is too long</span>
+                        </td>
+                    </tr>
+                    <tr id="row_5">
+                    <tr id="row_6">
+                        <!-- Age -->
+                        <td>
+                            <label class="InputHeader">Age</label>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   ng-model="regCtrl.user.Age"
+                                   class="form-control input"
+                                   name="AgeInput"
+                                   ng-required="true"
+                                   placeholder="Enter Age"
+                                   ng-maxlength="200">
+                            <span ng-show="(registerForm.AgeInput.$pristine|| registerForm.AgeInput.$touched) && registerForm.AgeInput.$error.required && registerForm.$submitted" class="help-block">Age is required</span>
+                            <span ng-show="registerForm.AgeInput.$error.maxlength" class="help-block">City description is too long</span>
+                        </td>
+                        
+                    </tr>
+                    <tr id="row_7">
+                        <!-- Gender -->
+                        <td>
+                            <label class="InputHeader">Gender</label>
+                        </td>
+                        <td>
+                            <select type="text"
+                                   ng-model="regCtrl.user.Gender"
+                                   class="form-control input"
+                                   ng-options="gender for gender  in regCtrl.Genders"
+                                   name="CountryInput"
+                                   ng-required="true"
+                                   placeholder="Choose a country from the list"
+                            ></select>
+                            <span ng-show="(!registerForm.CountryInput.$touched || registerForm.CountryInput.$error.required) && registerForm.$submitted" class="help-block">Country is required</span>
+                        </td>
+                    </tr>
+                    <tr id="row_8">
+                          <!-- Email -->
+                          <td>
+                                <label class="InputHeader">E-Mail</label>
+                            </td>
+                            <td>
+                                <input type="Email"
+                                       ng-model="regCtrl.user.Email"
+                                       class="form-control input"
+                                       name="MailInput"
+                                       placeholder="Enter Email address"
+                                       ng-required="true"
+                                       ng-maxlength="200">
+                                <span ng-show="(registerForm.MailInput.$pristine|| registerForm.MailInput.$touched) && registerForm.MailInput.$error.required && registerForm.$submitted" class="help-block">E-mail address is required</span>
+                                <span ng-show="registerForm.MailInput.$error.email" class="help-block">Mail address is not valid</span>
+                                <span ng-show="registerForm.MailInput.$error.maxlength" class="help-block">Mail address is too long</span>
+                            </td>
+                    </tr> 
+                </table>
+                <!-- Submit -->
+                <div style="text-align: center">
+                    <input type="submit"
+                    class="btn btn-success btn-lg submit"
+                    value="Submit">
+                </div>
+                
+            </form>
+        </div>
+
+    </div>
+</div>

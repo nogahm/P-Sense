@@ -1,0 +1,116 @@
+<div id="main" ng-controller="testController  as pointCtrl">
+    <!-- Mood -->
+    <div class="POI">
+        <div style="height: 6.8em">
+            <label class="regHeader">• • My Mood is • •</label>
+            <br>
+            <br>
+            <form>
+                <table class="reportInput">
+                    <tr>
+                        <td>
+                            <img src="assets\images\happy.png" class="moodImage" />
+                        </td>
+                        <td>
+                            <input type="radio" name="sadnessLevel" value="1"> 1
+                            <input type="radio" name="sadnessLevel" value="2"> 2
+                            <input type="radio" name="sadnessLevel" value="3"> 3
+                            <input type="radio" name="sadnessLevel" value="4"> 4
+                            <input type="radio" name="sadnessLevel" value="5"> 5
+                        </td>
+                        <td>&emsp;
+                            <img src="assets\images\sad.png" class="moodImage" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Happy</td>
+                        <td>&emsp;</td>
+                        <td>&emsp;Sad</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="assets\images\calm1.png" class="moodImage" />
+                        </td>
+                        <td>
+                            <input type="radio" name="stressLevel" value="1"> 1
+                            <input type="radio" name="stressLevel" value="2"> 2
+                            <input type="radio" name="stressLevel" value="3"> 3
+                            <input type="radio" name="stressLevel" value="4"> 4
+                            <input type="radio" name="stressLevel" value="5"> 5
+                        </td>
+                        <td>&emsp;
+                            <img src="assets\images\stressed.png" class="moodImage" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Calm</td>
+                        <td>&emsp;</td>
+                        <td>&emsp;Stressed</td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <br>
+    <label class="container">I have a smart Bracelate
+        <input type="checkbox" ng-model="pointCtrl.hasSmartBracelate">
+        <span class="checkmark"></span>
+    </label>
+    <!-- Physical -->
+    <div class="POI" ng-show="pointCtrl.hasSmartBracelate">
+        <div style="height: 6.8em">
+            <label class="regHeader">• • Physiological Indices • •</label>
+        </div>
+        <form>
+            <table class="reportInput">
+                <tr>
+                    <td>
+                        <b>Blood Pressure</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>SYS:</label>
+                    </td>
+                    <td>
+                        <input type="number" name="SYS" min="70" max="200">
+                    </td>
+                </tr>
+                <tr>
+                    <td>&emsp;</td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>DIA:</label>
+                    </td>
+                    <td>
+                        <input type="number" name="DIA" min="50" max="150">
+                    </td>
+                </tr>
+                <tr>
+                    <td>&emsp;</td>
+                </tr>
+                <tr>
+                    <td>&emsp;</td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Pulse:</b>
+                    </td>
+                    <td>
+                        <input type="number" name="Pulse" min="50" max="250">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div>
+        <button class="logSubmit">Report and Start Test</button>
+    </div>
+</div>

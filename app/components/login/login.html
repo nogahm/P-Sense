@@ -1,0 +1,63 @@
+<div class="logBackground">
+    <h2 class="logHeader">Login</h2>
+    <div class="login-container " ng-controller="loginController as loginCtrl">
+        <div ng-hide="loginCtrl.restorePswd" class="login-form">
+            <form name="loginForm" ng-submit="loginCtrl.login(loginForm.$valid)" novalidate>
+                <div class="form-group">
+                    <label class="logInputHeader">Username</label>
+                    <input type="text"
+                           ng-model="loginCtrl.user.UserName"
+                           ng-required="true"
+                           class="form-control logInput"
+                           name="usernameInput"
+                           placeholder="Enter Username">
+                    <span ng-show="(loginForm.usernameInput.$error.required || loginForm.usernameInput.$pristine)&& loginForm.$submitted" class="help-block">username is required</span>
+                </div>
+                <div class="form-group">
+                    <label class="logInputHeader">Password</label>
+                    <input type="password"
+                           ng-model="loginCtrl.user.Password"
+                           ng-required="true"
+                           class="form-control logInput"
+                           name="passwordInput"
+                           placeholder="Enter Password">
+                    <span ng-show="(loginForm.passwordInput.$error.required || loginForm.passwordInput.$pristine)&& loginForm.$submitted" class="help-block">Password is required</span>
+                </div>
+                <br>
+                <input type="submit"
+                       class="btn btn-success btn-lg logSubmit"
+                       value="Login">
+                <br>
+            </form>
+                <button ng-click="loginCtrl.getQuestions()" class="logSubmit">Restore Password</button>
+        </div>
+        <div ng-show="loginCtrl.restorePswd">
+            <form name="restoreForm" ng-submit="loginCtrl.restore()" >
+                <div class="form-group">
+                    <label class="logInputHeader">Question #1: Your mother name is?</label>
+                    <input type="text"
+                           ng-model="loginCtrl.answers.Answer1"
+                           ng-required="true"
+                           class="form-control logInput"
+                           name="answer1Input"
+                           placeholder="Enter Answer 1">
+                </div>
+                <div class="form-group">
+                    <label class="logInputHeader">Question #2: Your father name is?</label>
+                    <input type="text"
+                           ng-model="loginCtrl.answers.Answer2"
+                           ng-required="true"
+                           class="form-control logInput"
+                           name="answer2Input"
+                           placeholder="Enter Answer 2">
+                </div>
+                <br>
+                <input type="submit"
+                       class="btn btn-success btn-lg logSubmit"
+                       value="Restore Password">
+            </form>
+            <button ng-click="loginCtrl.restorePswd=false"  class="btn btn-success btn-lg logSubmit">Back</button>
+        </div>
+    </div>
+
+</div>
