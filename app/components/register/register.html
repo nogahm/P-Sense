@@ -1,6 +1,6 @@
 <div ng-controller="registerController as regCtrl">
-    <div class="regBackground">
-        <h1 class="regHeader">Register</h1>
+    <div class="logBackground">
+        <h1 class="logHeader">Register</h1>
             <div class="register-form">
                 <form name="registerForm" ng-submit="regCtrl.register(registerForm.$valid)" class="regTable" novalidate>
                     <table align="center">
@@ -14,7 +14,7 @@
                                    ng-pattern="/^[a-zA-Z]*$/"
                                    ng-model="regCtrl.user.UserName"
                                    ng-required="true"
-                                   class="form-control input"
+                                   class="form-control logInput"
                                    name="usernameInput"
                                    placeholder="Enter Username"
                                    ng-minlength="3"
@@ -35,7 +35,7 @@
                                 ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/"
                                    ng-model="regCtrl.user.Password"
                                    ng-required="true"
-                                   class="form-control input"
+                                   class="form-control logInput"
                                    name="passwordInput"
                                    placeholder="Enter Password"
                                    ng-minlength="5"
@@ -56,7 +56,7 @@
                             <input type="text"
                                    ng-pattern="/^[a-zA-Z]*$/"
                                    ng-model="regCtrl.user.FirstName"
-                                   class="form-control input"
+                                   class="form-control logInput"
                                    name="FirstNameInput"
                                    placeholder="Enter Your First Name"
                                    ng-required="true"
@@ -74,7 +74,7 @@
                         <td>
                             <input type="text"
                                    ng-model="regCtrl.user.LastName"
-                                   class="form-control input"
+                                   class="form-control logInput"
                                    name="lastNameInput"
                                    placeholder="Enter Your Last Name"
                                    ng-required="true"
@@ -92,7 +92,7 @@
                         <td>
                             <input type="text"
                                    ng-model="regCtrl.user.Age"
-                                   class="form-control input"
+                                   class="form-control logInput"
                                    name="AgeInput"
                                    ng-required="true"
                                    placeholder="Enter Age"
@@ -110,7 +110,7 @@
                         <td>
                             <select type="text"
                                    ng-model="regCtrl.user.Gender"
-                                   class="form-control input"
+                                   class="form-control logInput"
                                    ng-options="gender for gender  in regCtrl.Genders"
                                    name="CountryInput"
                                    ng-required="true"
@@ -127,7 +127,7 @@
                             <td>
                                 <input type="Email"
                                        ng-model="regCtrl.user.Email"
-                                       class="form-control input"
+                                       class="form-control logInput"
                                        name="MailInput"
                                        placeholder="Enter Email address"
                                        ng-required="true"
@@ -139,6 +139,7 @@
                     </tr> 
                 </table>
                 <!-- Submit -->
+                <br>
                 <div style="text-align: center">
                     <input type="submit"
                     class="btn btn-success btn-lg submit"

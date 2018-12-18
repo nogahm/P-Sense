@@ -58,10 +58,12 @@
         </div>
     </div>
     <br>
-    <label class="container">I have a smart Bracelate
-        <input type="checkbox" ng-model="pointCtrl.hasSmartBracelate">
-        <span class="checkmark"></span>
-    </label>
+    <!-- checkbox -->
+        <div class="positionCenter">
+            <input type="checkbox" id="test2" checked="checked" ng-model="pointCtrl.hasSmartBracelate"/>
+        <label for="test2">I have a smart Bracelate</label>
+        </div>
+        
     <!-- Physical -->
     <div class="POI" ng-show="pointCtrl.hasSmartBracelate">
         <div style="height: 6.8em">
@@ -111,6 +113,7 @@
         </form>
     </div>
     <div>
+        <br>
         <button class="logSubmit">Report and Start Test</button>
     </div>
 </div>
