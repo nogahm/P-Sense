@@ -43,12 +43,13 @@
     padding-right: 20px;
     padding-bottom: 2%;
     padding-top: 1%;
-    color: rgb(118, 138, 223);;
+    color: white;
     letter-spacing: 3px;
     display: block;
     font-weight: bold;
     font-family: 'Acme', sans-serif;
 }
+
 
 .logSubmit{
     margin: auto;
@@ -67,6 +68,8 @@
     background-color: #ffffff !important;
     /* margin-right: 10px; */
     font-family: 'Acme', sans-serif;
+    width: 200px;
+
 }
 .logSubmit:hover{
     background-color: #e6e1e1 !important;
