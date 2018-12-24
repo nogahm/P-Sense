@@ -6,95 +6,105 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var DButilsAzure = require('../DButil');
 
 
-
 /*----------------------------------------------------------------------------------------------------------------*/
-//works
-router.get('/users/login', function (req, res) {
-    var name = req.params.UserName;
-    DButilsAzure.execQuery("SELECT b.PointID, b.PointName, b.Pic, a.OrderNum FROM (SELECT * FROM UserFavorite Where UserName='" + name + "') a JOIN Point b ON a.PointID=b.PointID order by a.OrderNum ASC")
-        .then(function (result) {
-            res.send(result);
-        }).catch(function (err) { res.status(400).send(err); });
+//login
+router.post('/login', function (req, res) {
+    var name = req.body.userName;
+    var password = req.body.password;
+
+    DButilsAzure.execQuery("Select * from Users where UserName = '" + name + "' AND Password = '" + password + "'").then(function (result) {
+        if (result.length > 0) {
+
+            var payload = {
+                UserName: name,
+                Password: password
+            }
+
+            var token = jwt.sign(payload, secret, {
+                expiresIn: "1d"
+            });
+
+            res.json({
+                success: true,
+                massage: 'enjoy your token!',
+                token: token
+            });
+        }
+        else {
+            res.send("connection failed");
+        }
+    }).catch(function (err) { res.status(400).send(err); });
 });
-
 /*----------------------------------------------------------------------------------------------------------------*/
-//works
-router.post('/addToFavorite', function (req, res) {
-    var name = req.body.UserName;
-    var point = req.body.PointID;
-    var today = new Date().toISOString().slice(0,10);
-    var order = req.body.OrderNum;
-    DButilsAzure.execQuery("INSERT INTO UserFavorite values ('" + name + "','" + point + "','" + today + "','" + order + "')")
-        .then(function (result) {
-            res.send(true);
-        }).catch(function (err) { res.status(400).send(err); });
-});
 
-/*----------------------------------------------------------------------------------------------------------------*/
-//works
-router.delete('/deleteFromFavorite', function (req, res) {
-    var name = req.body.UserName;
-    var point = req.body.PointID;
-    DButilsAzure.execQuery("DELETE FROM UserFavorite WHERE UserName = '"+name+"' AND PointID='"+point+"'")
-        .then(function (result) {
-            res.send(true);
-        }).catch(function (err) { res.status(400).send(err); });
-});
+//register
+router.post('/register', function (req, res) {     //Add User
+    var username = req.body.username;
+    var password = req.body.password;
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var age = req.body.age;
+    var country = req.body.Country;
+    var email = req.body.email;
+    var gender = req.body.gender;
+    
+    query1 = "INSERT INTO Users VALUES ('"
+        + username + "','" + password + "','" + firstName + "','" + lastName + "','" + age + "','" + gender + "','" + email  + "')";
 
-/*----------------------------------------------------------------------------------------------------------------*/
-//works
-router.put('/updateFavOrder', function (req, res) {
-    var name = req.body.UserName;
-    var points = req.body.pointsOrder;
-    var pointsOrder = points.split(",");
-
-    for (let i = 0; i < pointsOrder.length; i+=2) {
-            var p=pointsOrder[i];
-            var num=pointsOrder[i+1];
-            DButilsAzure.execQuery("UPDATE UserFavorite SET OrderNum='"+num+"' WHERE PointID='"+p +"' AND UserName='"+name+"'").then(function (result) {
-                res.send(true);
-            }).catch(function (err) { res.status(400).send(err); });
-    }
-});
-
-/*----------------------------------------------------------------------------------------------------------------*/
-//works
-router.post('/addReviewToPoint', function (req, res) {
-    var name = req.body.UserName;
-    var point = req.body.PointID;
-    var review = req.body.Review;
-    var today = new Date().toISOString().slice(0,10);
-    DButilsAzure.execQuery("INSERT INTO Reviews (PointID, UserName, Date, Review) VALUES ('" + point + "','" + name + "','" + today + "','" + review + "')").then(function (result) {
-        res.send(true);
+    DButilsAzure.execQuery(query1).then(function (result) {
     }).catch(function (err) {
         res.status(400).send(err);
     });
 });
 
+
 /*----------------------------------------------------------------------------------------------------------------*/
-//works
-router.post('/addRankToPoint', function (req, res) {
-    var point = req.body.PointID;
-    var rank = req.body.Rank;
-    var name = req.body.UserName;
-    DButilsAzure.execQuery("select Rank, NumOfRanks, CategoryID from Point where PointID='" + point + "'").then(function (result) {
-        var x = result[0].Rank;
-        var y = result[0].NumOfRanks;
-        var z = result[0].CategoryID;
-        var newRank = ( ((x * y) + parseInt(rank)) / (y + 1) );
-        y = y + 1;
-        DButilsAzure.execQuery("UPDATE Point SET NumOfRanks='" + y + "', Rank='" + newRank + "' WHERE PointID='" + point + "'").then(function (result) {
-            DButilsAzure.execQuery("select Rank from CategoryMaxRank where CategoryID='" + z + "'").then(function (result) {
-                if (newRank > result[0].Rank) {
-                    DButilsAzure.execQuery("UPDATE CategoryMaxRank SET Rank='" + newRank + "', PointID='"+point+"' WHERE CategoryID='" + z + "'").then(function (result) {
-                            res.send(true);
-                    }).catch(function (err) { res.status(400).send(err); });
-                }
-                else
-                    res.send(true);
-            }).catch(function (err) { res.status(400).send(err); });
+//get user info {username, firstName, lastName, age, gender, email}
+router.get('/Reginfo', function (req, res) {
+    var userId = req.params.userId;
+    DButilsAzure.execQuery("SELECT a.username, a.firstName, a.lastName, a.age, a.gender, a.email FROM Users a WHERE userId='"+userId+"'")
+        .then(function (result) {
+            res.send(result);
         }).catch(function (err) { res.status(400).send(err); });
-    }).catch(function (err) { res.status(400).send(err); });
 });
 
-module.exports = router;
+
+/*----------------------------------------------------------------------------------------------------------------*/
+//save new not registered user and return userId
+firsName, lastName, age, gender, email
+router.post('/NotRegUser', function (req, res) {     //Add User
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var age = req.body.age;
+    var country = req.body.Country;
+    var email = req.body.email;
+    var gender = req.body.gender;
+    
+    query1 = "INSERT INTO NotRegUsers VALUES ('" + firstName + "','" + lastName + "','" + age + "','" + gender + "','" + email  + "')";
+
+    DButilsAzure.execQuery(query1).then(function (result) {
+       
+    }).catch(function (err) {
+        res.status(400).send(err);
+    });
+});
+
+
+/*----------------------------------------------------------------------------------------------------------------*/
+//GET not register user info {firsName, lastName, age, gender, email}
+router.get('/NotRegUser', function (req, res) {
+    var userId = req.params.userId;
+    DButilsAzure.execQuery("SELECT a.firstName, a.lastName, a.age, a.gender, a.email FROM NotRegUsers a  WHERE userId='"+userId+"'"")
+        .then(function (result) {
+            res.send(result);
+        }).catch(function (err) { res.status(400).send(err); });
+});
+
+//return user email in order to send him a mail with his password
+router.get('/NotRegUser', function (req, res) {
+    var userId = req.params.userId;
+    DButilsAzure.execQuery("SELECT a.email FROM NotRegUsers a  WHERE userId='"+userId+"'"")
+        .then(function (result) {
+            res.send(result);
+        }).catch(function (err) { res.status(400).send(err); });
+});
