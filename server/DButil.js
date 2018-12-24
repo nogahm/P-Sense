@@ -12,10 +12,10 @@ var poolConfig = {
 };
 
 var connectionConfig = {
-    userName: 'POIadmin',
-    password: 'ilanaKarin123',
-    server: 'poi-server.database.windows.net',
-    options: { encrypt: true, database: 'POIdb' }
+    userName: 'pattern',
+    password: '1234Qwer',
+    server: 'patternsserver.database.windows.net',
+    options: { encrypt: true, database: 'PatternsExperimentDB' }
 };
 
 //create the pool

@@ -6,29 +6,10 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var DButilsAzure = require('../DButil');
 
 
-/*----------------------------------------------------------------------------------------------------------------*/
-//works
-router.get('/twoPopularPoints/:UserName', function (req, res) {
-    var name = req.params.UserName;
-    DButilsAzure.execQuery("SELECT TOP 2 c.PointID, c.PointName, c.Pic FROM (SELECT * FROM UserCategory Where UserName='" + name + "') a JOIN CategoryMaxRank b ON a.CategoryID=b.CategoryID Join Point c ON b.PointID=c.PointID")
-        .then(function (result) {
-            res.send(result);
-        }).catch(function (err) { res.status(400).send(err); });
-});
 
 /*----------------------------------------------------------------------------------------------------------------*/
 //works
-router.get('/twoLastPoints/:UserName', function (req, res) {
-    var name = req.params.UserName;
-    DButilsAzure.execQuery("SELECT b.PointID, b.PointName, b.Pic FROM (SELECT TOP 2 * FROM UserFavorite Where UserName='" + name + "' order by Date DESC) a JOIN Point b ON a.PointID=b.PointID")
-        .then(function (result) {
-            res.send(result);
-        }).catch(function (err) { res.status(400).send(err); });
-});
-
-/*----------------------------------------------------------------------------------------------------------------*/
-//works
-router.get('/:UserName', function (req, res) {
+router.get('/users/login', function (req, res) {
     var name = req.params.UserName;
     DButilsAzure.execQuery("SELECT b.PointID, b.PointName, b.Pic, a.OrderNum FROM (SELECT * FROM UserFavorite Where UserName='" + name + "') a JOIN Point b ON a.PointID=b.PointID order by a.OrderNum ASC")
         .then(function (result) {

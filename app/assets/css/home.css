@@ -69,7 +69,12 @@ body{
     color: #ffffff;
     border-color: white;
 }
-
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
 .li:hover {
     /* border: 3px solid #afbee6; */
 }
