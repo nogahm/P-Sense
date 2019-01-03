@@ -72,21 +72,37 @@ router.get('/Reginfo', function (req, res) {
 //NotRegUser - save new not registered user and return userId
 //firsName, lastName, age, gender, email
 router.post('/NotRegUser', function (req, res) {     //Add User
-    var username = req.body.userName;
-    var password = req.body.password;
+
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
     var age = req.body.age;
     var gender = req.body.gender;
     var email = req.body.email;
     
-    query1 = "INSERT INTO NotRegUsers VALUES ('" + firstName + "','" + lastName + "','" + age + "','" + gender + "','" + email  + "')";
-
+    
+    //create userId
+    var userId=0;
+    query1 = "SELECT MAX(userId) as maxId FROM NotRegUsers";
     DButilsAzure.execQuery(query1).then(function (result) {
-       
+
+        if(result.length>0)
+        {
+            userId=result[0].maxId+1;
+            console.log(userId);
+        }
+        console.log(userId);
+        query1 = "INSERT INTO NotRegUsers VALUES ('" +userId+"','"+ firstName + "','" + lastName + "','" + age + "','" + gender + "','" + email  + "')";
+    
+        DButilsAzure.execQuery(query1).then(function (result) {
+            res.send(true);
+           
+        }).catch(function (err) {
+            res.status(400).send(err);
+        });
     }).catch(function (err) {
         res.status(400).send(err);
     });
+   
 });
 
 
@@ -95,8 +111,11 @@ router.post('/NotRegUser', function (req, res) {     //Add User
 //return user email in order to send him a mail with his password
 router.post('/passwordRecovery', function (req, res) {    
     var userName = req.body.userName;
+    console.log(userName);
     query1 = "SELECT a.email FROM Users a WHERE userName='"+userName+"'";
     DButilsAzure.execQuery(query1).then(function (result) {  
+        console.log(result[0]);
+        res.send(result[0]);
     }).catch(function (err) {
         res.status(400).send(err);
     });
