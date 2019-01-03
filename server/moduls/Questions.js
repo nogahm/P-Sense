@@ -46,15 +46,14 @@ router.get('/getPicSenId/:qId', function (req, res) {
 
 
 //GET random n question ids
-router.get('/getRandomQuestions', function (req, res) {
+router.get('/getRandomQuestions/:n', function (req, res) {
     var n = req.params.n;
-    DButilsAzure.execQuery("SELECT TOP(3)* FROM QuestionId").then(function (result) {
-        if (result.length==0)
-            res.status(400).send();
-        else {
-            for(let i=0;i<res.length-1;i++){
-                       ans[i]=result[i].qId;
-                }
+    DButilsAzure.execQuery("SELECT TOP(15)* FROM QuestionId").then(function (result) {
+        // if (result.length==0)
+        //     res.status(400).send();
+        // else {
+
+                // }
             // var size = result.length;
             // if(size<=n)
             // {
@@ -73,8 +72,7 @@ router.get('/getRandomQuestions', function (req, res) {
             // ans[0] = result[rand1];
             // ans[1] = result[rand2];
             // ans[2] = result[rand3];
-            res.send(ans[0]);
-        }
+        
         res.send(result);
     }).catch(function (err) { res.status(400).send(err); });
 });

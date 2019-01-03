@@ -49,7 +49,7 @@ app.config( ['$routeProvider', function($routeProvider) {
         // templateUrl : "./components/test/infoNotReg.html",
         // controller: "testController as testCtrl"
     }).when("/test", {
-        templateUrl : "./components/test/test.html",
+        templateUrl : "./components/test/infoNotReg.html",
         controller: "testController as testCtrl"
 
     }).when("/report", {
