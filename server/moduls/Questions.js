@@ -48,7 +48,7 @@ router.get('/getPicSenId/:qId', function (req, res) {
 //GET random n question ids
 router.get('/getRandomQuestions/:n', function (req, res) {
     var n = req.params.n;
-    DButilsAzure.execQuery("SELECT TOP(15)* FROM QuestionId").then(function (result) {
+    DButilsAzure.execQuery("SELECT TOP(5)* FROM QuestionId").then(function (result) {
         // if (result.length==0)
         //     res.status(400).send();
         // else {

@@ -4,7 +4,7 @@
         <h2 class="logHeader" style="font-size: 25px">Question {{testCtrl.currQ+1}} / {{testCtrl.questions.length}}</h2>
         <div style="height: 5em">
         </div>
-        <button ng-click="testCtrl.findTest()" ng-hide="{{testCtrl.currQ}}>0">Start Test</button>
+        <!-- <button ng-click="testCtrl.findTest()" ng-hide="{{testCtrl.currQ}}>0">Start Test</button> -->
         <table align="center">
             <tr>
                 <td>
@@ -18,11 +18,11 @@
                 </td>
             </tr>
             <tr>
-                <td><button ng-click="testCtrl.prevQ()">Previous</button></td>
-                <td><button ng-click="testCtrl.nextQ()">Next</button></td>
+                <td><button ng-click="testCtrl.prevQ()" class="btn btn-success btn-lg logSubmit">Previous</button></td>
+                <td><button ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
             </tr>
             <tr>
-                <td><button ng-click="testCtrl.SendAns()" ng-disabled={{!testCtrl.finishTest}}>Send Test</button></td>
+                <td><button ng-click="testCtrl.SendAns()" ng-disabled=!testCtrl.finishTest class="btn btn-success btn-lg logSubmit">Send Test</button></td>
             </tr>
         </table>
 

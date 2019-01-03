@@ -18,7 +18,7 @@ angular.module("pointsOfInterest")
             self.saveInfo = function (valid) {
                 if (valid) {
                     //save info and get userId
-                    $http.get(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
+                    $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
                         self.notRegId = res.data;
                         $location.path('/report');
                         $location.replace();
@@ -36,11 +36,12 @@ angular.module("pointsOfInterest")
             self.answers = [];
             self.currQ = 0;
             self.finishTest=false;
+            self.ids=[];
 
             self.findTest = function () {
                 //get from server
                 $http.get(self.httpReq + "Questions/getRandomQuestions/" + self.numberOfQuestions).then(function (res) {
-                    let ids = res.data;
+                    self.ids = res.data;
                     //TODO--check if picture or sentence
                     for (let i = 0; i < ids.length; i++) {
                         // let picId = ids[i].picSentenceId;
@@ -59,7 +60,7 @@ angular.module("pointsOfInterest")
                 );
 
             }
-            // self.findTest();
+            self.findTest();
 
 
             self.prevQ = function () {
@@ -74,7 +75,17 @@ angular.module("pointsOfInterest")
                     self.finishTest=true;
             }
 
-            self.SendAns=function(){
+            // self.UserAns={userId:'1', startTime:'1900-01-01T00:00:00.0000000', endTime:'1900-01-01T00:00:00.0000000', answers: self.answers, happyLevel:1, calmLevel:1, bpSYS:100, bpDIA:150, pulse:100};
+            // self.SendAns=function(){
 
-            }
+            //     $http.post(self.httpReq + "/Tests/NotReg/AddAnswers", self.UserAns).then(function (res) {
+            //         self.notRegId = res.data;
+            //         $location.path('/report');
+            //         $location.replace();
+            //     },
+            //         function (error) {
+            //             alert('failed, please try again' + error);
+            //         }
+            //     );
+            // }
         }]);
