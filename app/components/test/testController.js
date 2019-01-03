@@ -6,13 +6,14 @@ angular.module("pointsOfInterest")
             let self = this;
             self.hasSmartBracelate = false;
             self.httpReq = 'http://localhost:3000/';
+            // -----NotRegInfo-----
             self.isReg = false; //TODO - find if user is registed or not
-            if (true) {
+            if (self.isReg) {
                 $window.location.href='#/report';
             }
             self.notRegUser = { firstName: '', lastName: '', age: null, gender: '', email: '' };
             self.notRegId = null;
-            //save not reg info and continue to report
+            //save not reg info and continue to report-not working
             self.saveInfo = function (valid) {
                 if (valid) {
                     //save info and get userId
@@ -26,6 +27,32 @@ angular.module("pointsOfInterest")
                     );
                 }
             };
+
+            //-----Test-----
+            self.numberOfQuestions=3;
+            self.questions=[];
+            self.answers=[];
+            self.currQ=0;
+
+            //get from server
+            $http.get(self.httpReq + "Questions/getRandomQuestions/"+self.numberOfQuestions).then(function (res) {
+                self.questions = res.data;
+                //TODO--check if picture or sentence
+                
+            },
+            function (error) {
+                    alert('failed to load questions');
+                }
+            );
+
+            self.prevQ=function(){
+                currQ--;
+            }
+
+            self.nextQ=function(){
+                currQ++;
+            }
+
 
             // self.categoryHeader = "Test";
             // self.showAll = true;
