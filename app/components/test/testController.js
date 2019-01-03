@@ -1,10 +1,32 @@
 
 
 angular.module("pointsOfInterest")
-    .controller('testController', ['$scope', '$http', 'localStorageService', '$rootScope', 'ngDialog',
-        function ($scope, $http, localStorageService, UserService, pointsService, $rootScope, favoritesService, ngDialog) {
+    .controller('testController', ['$scope', '$http', 'localStorageService', '$rootScope', 'ngDialog', '$location','$window',
+        function ($scope, $http, localStorageService, UserService, pointsService, $rootScope, favoritesService, ngDialog, $location,$window) {
             let self = this;
-            self.hasSmartBracelate=false;
+            self.hasSmartBracelate = false;
+            self.httpReq = 'http://localhost:3000/';
+            self.isReg = false; //TODO - find if user is registed or not
+            if (true) {
+                $window.location.href='#/report';
+            }
+            self.notRegUser = { firstName: '', lastName: '', age: null, gender: '', email: '' };
+            self.notRegId = null;
+            //save not reg info and continue to report
+            self.saveInfo = function (valid) {
+                if (valid) {
+                    //save info and get userId
+                    $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
+                        self.notRegId = res.data;
+                        $location.path('/report');
+                    },
+                        function (error) {
+                            alert('failed, please try again'+error);
+                        }
+                    );
+                }
+            };
+
             // self.categoryHeader = "Test";
             // self.showAll = true;
             // self.sortedOptions = [{ name: 'point name', label: 'PointName', reverse: false },

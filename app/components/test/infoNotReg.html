@@ -1,0 +1,68 @@
+<div class="logBackground">
+        <h2 class="logHeader">Fill Information</h2>
+        <div class="login-container " ng-controller="testController as testCtrl">
+            <div class="login-form">
+                <form name="infoNotRegForm" ng-submit="testCtrl.saveInfo(infoNotRegForm.$valid)" novalidate>
+                    <div class="form-group">
+                        <label class="logInputHeader">First Name</label>
+                        <input type="text"
+                               ng-model="testCtrl.notRegUser.firstName"
+                               ng-required="true"
+                               class="form-control logInput"
+                               name="firstnameInput"
+                               placeholder="Enter first name">
+                        <!-- <span ng-show="(infoNotRegForm.firstnameInput.$error.required || infoNotRegForm.firstnameInput.$pristine)&& infoNotRegForm.$submitted" class="help-block">first required</span> -->
+                    </div>
+                    <div class="form-group">
+                        <label class="logInputHeader">Last Name</label>
+                        <input type="text"
+                               ng-model="testCtrl.notRegUser.lastName"
+                               ng-required="true"
+                               class="form-control logInput"
+                               name="lastnameInput"
+                               placeholder="Enter last name">
+                        <!-- <span ng-show="(loginForm.passwordInput.$error.required || loginForm.passwordInput.$pristine)&& loginForm.$submitted" class="help-block">Password is required</span> -->
+                    </div>
+                    <div class="form-group">
+                            <label class="logInputHeader">Age</label>
+                            <input type="number"
+                                   ng-model="testCtrl.notRegUser.age"
+                                   ng-required="true"
+                                   class="form-control logInput"
+                                   name="ageInput"
+                                   placeholder="Enter age">
+                            <span ng-show="(infoNotRegForm.ageInput.$error.required || infoNotRegForm.ageInput.$pristine) && infoNotRegForm.$submitted" class="help-block">Age is required</span>
+                    </div>
+                    <div class="form-group">
+                            <label class="logInputHeader">Gender</label>
+                            <select ng-model="testCtrl.notRegUser.gender"
+                                   ng-required="true"
+                                   class="form-control logInput"
+                                   name="genderInput"
+                                   placeholder="choose gender">
+                                   <option value="male">Male</option>
+                                   <option value="female">Female</option>
+                                   </select>
+                                   <span ng-show="(infoNotRegForm.genderInput.$error.required || infoNotRegForm.genderInput.$pristine) && infoNotRegForm.$submitted" class="help-block">Gender is required</span>
+                                </div>
+                    <div class="form-group">
+                            <label class="logInputHeader">Email</label>
+                            <input type="email"
+                                   ng-model="testCtrl.notRegUser.email"
+                                   ng-required="true"
+                                   class="form-control logInput"
+                                   name="emailInput"
+                                   placeholder="Enter Email">
+                            <!-- <span ng-show="(loginForm.passwordInput.$error.required || loginForm.passwordInput.$pristine)&& loginForm.$submitted" class="help-block">Password is required</span> -->
+                    </div>
+                    <br>
+                    <input type="submit"
+                           class="btn btn-success btn-lg logSubmit"
+                           value="Submit And Continue">
+                    <br>
+                </form>
+            </div>
+           </div>
+    
+    </div>
+    

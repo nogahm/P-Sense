@@ -26,7 +26,7 @@ angular.module("pointsOfInterest")
                     $window.alert('Register Successfully');
                     $location.path('/login');
                 }, function (error) {
-                    $window.alert('User name exist, please choose another user name ');
+                    $window.alert('User name exist, please choose another user name');
                 })
             }
         };

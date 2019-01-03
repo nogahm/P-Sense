@@ -5,36 +5,5 @@
     You are asked to enter all the requested data before starting the experiment.
     Thank you very much for your cooperation</h3>
     <IMG SRC="assets\images\gifT.gif" class="center">
-            <span ng-repeat="p in $root.top3" class="container">
-                <table>
-                    <td>
-                        <img ng-src="{{p.Pic}}" class="imgTop3 image" ng-click="prdctCtrl.open(p)" />
-                        <h1 class="headerText"> {{p.PointName}}</h1>
-                    </td>
-                </table>
-            </span>
-        </div>
-        <div class="top3" ng-hide="$root.guest">
-            <h1 class="header">Top Popular Recommended For You</h1>
-            <span ng-repeat="c in $root.popular2" class="container">
-                <table>
-                    <td>
-                        <img ng-src="{{c.Pic}}" class="imgTop3 image" ng-click="prdctCtrl.open(c)" />
-                        <h1 class="headerText"> {{c.PointName}}</h1>
-                    </td>
-                </table>
-            </span>
-    
-        </div>
-        <div class="top3" ng-hide="$root.guest">
-            <h1 class="header">Your Latest Favorites</h1>
-            <span ng-repeat="m in $root.latest2" class="container">
-                <table>
-                    <td>
-                        <img ng-src="{{m.Pic}}" class="imgTop3 image" ng-click="prdctCtrl.open(m)" />
-                        <h1 class="headerText"> {{m.PointName}}</h1>
-                    </td>
-                </table>
-            </span>
-        </div>
+        </div>  
     </div>

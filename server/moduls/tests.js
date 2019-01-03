@@ -28,7 +28,7 @@ router.post('/Reg/AddAnswers', function (req, res) {     //Add User
         else
             testId=0;
     }).catch(function (err) {
-        res.status(400).send(err);
+        res.status(400).send(req.body);
     });
 
 
