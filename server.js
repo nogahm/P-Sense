@@ -42,9 +42,9 @@ app.use('/reg', function(req,res,next){
     }
 })
 
-app.use('/reg/user', users)
-app.use('/point', point)
-app.use('/auth', auth)
+app.use('/Users', Users)
+app.use('/Tests', Tests)
+app.use('/Questions', Questions)
 app.set('port', process.env.PORT || 3000)
 
 app.listen(port, function () {
