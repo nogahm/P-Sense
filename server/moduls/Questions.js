@@ -46,34 +46,36 @@ router.get('/getPicSenId/:qId', function (req, res) {
 
 
 //GET random n question ids
-router.get('/getRandomQuestions/:n', function (req, res) {
+router.get('/getRandomQuestions', function (req, res) {
     var n = req.params.n;
-    DButilsAzure.execQuery("SELECT * FROM QuestionId").then(function (result) {
+    DButilsAzure.execQuery("SELECT TOP(3)* FROM QuestionId").then(function (result) {
         if (result.length==0)
             res.status(400).send();
         else {
-            var size = result.length;
-            if(size<=n)
-            {
-                res.send(result);
-            }
-            var rand1 = Math.floor((Math.random() * size));
-            var rand2 = Math.floor((Math.random() * size));
-            while (rand2 == rand1) {
-                var rand2 = Math.floor((Math.random() * size));
-            }
-            var rand3 = Math.floor((Math.random() * size));
-            while (rand3 == rand1 || rand3 == rand2) {
-                var rand3 = Math.floor((Math.random() * size));
-            }
-            var ans = {};
-            ans[0] = result[rand1];
-            ans[1] = result[rand2];
-            ans[2] = result[rand3];
-            res.send(ans);
+            for(let i=0;i<res.length-1;i++){
+                       ans[i]=result[i].qId;
+                }
+            // var size = result.length;
+            // if(size<=n)
+            // {
+            //     res.send(result);
+            // }
+            // var rand1 = Math.floor((Math.random() * size));
+            // var rand2 = Math.floor((Math.random() * size));
+            // while (rand2 == rand1) {
+            //     var rand2 = Math.floor((Math.random() * size));
+            // }
+            // var rand3 = Math.floor((Math.random() * size));
+            // while (rand3 == rand1 || rand3 == rand2) {
+            //     var rand3 = Math.floor((Math.random() * size));
+            // }
+            // var ans = {};
+            // ans[0] = result[rand1];
+            // ans[1] = result[rand2];
+            // ans[2] = result[rand3];
+            res.send(ans[0]);
         }
         res.send(result);
     }).catch(function (err) { res.status(400).send(err); });
 });
-
 module.exports = router;
