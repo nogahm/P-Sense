@@ -36,12 +36,12 @@ angular.module("pointsOfInterest")
             self.answers = [];
             self.currQ = 0;
             self.finishTest=false;
-            self.ids=[];
+            // self.ids=[];
 
             self.findTest = function () {
                 //get from server
                 $http.get(self.httpReq + "Questions/getRandomQuestions/" + self.numberOfQuestions).then(function (res) {
-                    self.ids = res.data;
+                    let ids = res.data;
                     //TODO--check if picture or sentence
                     for (let i = 0; i < ids.length; i++) {
                         // let picId = ids[i].picSentenceId;
