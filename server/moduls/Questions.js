@@ -5,6 +5,7 @@ var morgan = require('morgan');
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var DButilsAzure = require('../DButil');
 
+//GET picture url by id
 router.get('/Pictures/:picId', function (req, res) {
     var picId = req.params.picId;
     DButilsAzure.execQuery("SELECT pictureUrl FROM Pictures WHERE picId='"+picId+"'").then(function (result) {
@@ -12,6 +13,7 @@ router.get('/Pictures/:picId', function (req, res) {
     });
 });
 
+//GET sentence text by id
 router.get('/Sentences/:sentenceId', function (req, res) {
     var sentenceId = req.params.sentenceId;
     DButilsAzure.execQuery("SELECT sentenceText FROM Sentences WHERE sentenceId='"+sentenceId+"'").then(function (result) {
@@ -26,18 +28,20 @@ router.get('/getQuestionId/:picSentenceId', function (req, res) {
     });
 });
 
-router.get('/getQuestionsAnswers', function (req, res) {
-    var qIds = req.body.qIds;
-    var stringID="";
-    for(let i=0;i<qIds.length-1;i++){
-        stringID+=qIds[i]+" OR picSentenceId= ";
-    }
-    stringID+=qIds[i];
-    DButilsAzure.execQuery("SELECT * FROM QuestionId WHERE picSentenceId='"+stringID+"'").then(function (result) {
-        res.send(result).catch(function (err) { res.status(400).send(err); });
-    });
-});
+// router.get('/getQuestionsAnswers', function (req, res) {
+//     var qIds = req.body.qIds;
+//     var stringID="";
+//     for(let i=0;i<qIds.length-1;i++){
+//         stringID+=qIds[i]+" OR picSentenceId= ";
+//     }
+//     stringID+=qIds[i];
+//     DButilsAzure.execQuery("SELECT * FROM QuestionId WHERE picSentenceId='"+stringID+"'").then(function (result) {
+//         res.send(result).catch(function (err) { res.status(400).send(err); });
+//     });
+// });
 
+
+//GET random n question ids
 router.get('/getRandomQuestions/:n', function (req, res) {
     var n = req.params.n;
     DButilsAzure.execQuery("SELECT * FROM QuestionId").then(function (result) {
