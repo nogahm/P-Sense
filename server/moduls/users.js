@@ -39,7 +39,8 @@ router.post('/login', function (req, res) {
 //register-save new user record in server.
 
 router.post('/register', function (req, res) {     //Add User
-    var username = req.body.userName;
+    // console.print("aaaa");
+    var userName = req.body.userName;
     var password = req.body.password;
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
@@ -52,6 +53,8 @@ router.post('/register', function (req, res) {     //Add User
         + userName + "','" + password + "','" + firstName + "','" + lastName + "','" + age + "','" + gender + "','" + email  + "')";
 
     DButilsAzure.execQuery(query1).then(function (result) {
+        // console.print(result);
+        res.send(true);
     }).catch(function (err) {
         res.status(400).send(err);
     });
