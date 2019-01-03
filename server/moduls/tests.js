@@ -5,28 +5,39 @@ var morgan = require('morgan');
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var DButilsAzure = require('../DButil');
 
-const secret = "ilanaKarin";
+// const secret = "ilanaKarin";
 
-//works
-router.post('/register', function (req, res) {     //Add User
-    var username = req.body.UserName;
-    var password = req.body.Password;
-    var firstName = req.body.FirstName;
-    var lastName = req.body.LastName;
-    var city = req.body.City;
-    var country = req.body.Country;
-    var email = req.body.Email;
-    var a1 = req.body.Answer1;
-    var a2 = req.body.Answer2;
-    var categories = req.body.Category;
-    //var category = categories.split(",");
+//add registered user test
+router.post('/Reg/AddAnswers', function (req, res) {     //Add User
+    var userName = req.body.userName;
+    var startTime = req.body.startTime;
+    var endTime = req.body.endTime;
+    var answers = req.body.answers;
+    var happyLevel = req.body.happyLevel;
+    var calmLevel = req.body.calmLevel;
+    var bpSYS = req.body.bpSYS;
+    var bpDIA = req.body.bpDIA;
+    var pulse = req.body.pulse;
 
-    query1 = "INSERT INTO Users VALUES ('"
-        + username + "','" + password + "','" + firstName + "','" + lastName + "','" + city + "','" + country + "','" + email + "','" + a1 + "','" + a2 + "')";
-
+    //create testId
+    var testId=0;
+    query1 = "SELECT MAX(testId) FROM RegUserTest";
     DButilsAzure.execQuery(query1).then(function (result) {
-        for (var i = 0; i < categories.length; i++) {
-            DButilsAzure.execQuery("insert into UserCategory values ('" + username + "', '" + categories[i].CategoryID + "')").then(function (result) {
+        if(result.length>0)
+            testId=result[0].testId+1;
+        else
+            testId=0;
+    }).catch(function (err) {
+        res.status(400).send(err);
+    });
+
+
+    query2 = "INSERT INTO RegUserTest VALUES ('"
+        + testId + "','"+ userName + "','" + startTime + "','" + endTime + "','" + happyLevel + "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "')";
+
+    DButilsAzure.execQuery(query2).then(function (result) {
+        for (var i = 0; i < answers.length; i++) {
+            DButilsAzure.execQuery("insert into RegUserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer + "')").then(function (result) {
                 res.send(true)
             }).catch(function (err) { res.status(400).send(err); });
         }
@@ -35,47 +46,43 @@ router.post('/register', function (req, res) {     //Add User
     });
 });
 
-//works
-router.post('/login', function (req, res) {
-    var name = req.body.UserName;
-    var password = req.body.Password;
+//add not-registered user test
+router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
+    var userId = req.body.userId;
+    var startTime = req.body.startTime;
+    var endTime = req.body.endTime;
+    var answers = req.body.answers;
+    var happyLevel = req.body.happyLevel;
+    var calmLevel = req.body.calmLevel;
+    var bpSYS = req.body.bpSYS;
+    var bpDIA = req.body.bpDIA;
+    var pulse = req.body.pulse;
+    //var category = categories.split(",");
 
-    DButilsAzure.execQuery("Select * from Users where UserName = '" + name + "' AND Password = '" + password + "'").then(function (result) {
-        if (result.length > 0) {
+    //create testId
+    var testId=0;
+    query = "SELECT MAX(testId) FROM UserTest";
+    DButilsAzure.execQuery(query).then(function (result) {
+        if(result.length>0)
+            testId=result[0].testId+1;
+        else
+            testId=0;
+    }).catch(function (err) {
+        res.status(400).send(err);
+    });
 
-            var payload = {
-                UserName: name,
-                Password: password
-            }
+    query1 = "INSERT INTO UserTest VALUES ('"
+        + testId + "','"+ userId + "','" + startTime + "','" + endTime + "','" + happyLevel + "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "')";
 
-            var token = jwt.sign(payload, secret, {
-                expiresIn: "1d"
-            });
-
-            res.json({
-                success: true,
-                massage: 'enjoy your token!',
-                token: token
-            });
+    DButilsAzure.execQuery(query1).then(function (result) {
+        for (var i = 0; i < answers.length; i++) {
+            DButilsAzure.execQuery("insert into UserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer + "')").then(function (result) {
+                res.send(true)
+            }).catch(function (err) { res.status(400).send(err); });
         }
-        else {
-            res.send("connection failed");
-        }
-    }).catch(function (err) { res.status(400).send(err); });
-});
-
-//works
-router.post('/retrivePassword', function (req, res) {
-    var name = req.body.UserName;
-    var a1 = req.body.Answer1;
-    var a2 = req.body.Answer2;
-    DButilsAzure.execQuery("Select Password from Users Where UserName = '" + name + "' AND Answer1 = '" + a1 + "' AND Answer2 = '" + a2 + "'")
-        .then(function (result) {
-            if (result.length > 0)
-                res.send(result[0].Password);
-            else
-                res.status(400).send();
-        }).catch(function (err) { res.status(400).send(err); });
+    }).catch(function (err) {
+        res.status(400).send(err);
+    });
 });
 
 
