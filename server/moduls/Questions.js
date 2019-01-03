@@ -9,22 +9,26 @@ var DButilsAzure = require('../DButil');
 router.get('/Pictures/:picId', function (req, res) {
     var picId = req.params.picId;
     DButilsAzure.execQuery("SELECT pictureUrl FROM Pictures WHERE picId='"+picId+"'").then(function (result) {
-        res.send(result).catch(function (err) { res.status(400).send(err); });
-    });
+        res.send(result);
+    }).catch(function (err) { res.status(400).send(err); });
 });
 
 //GET sentence text by id
 router.get('/Sentences/:sentenceId', function (req, res) {
     var sentenceId = req.params.sentenceId;
     DButilsAzure.execQuery("SELECT sentenceText FROM Sentences WHERE sentenceId='"+sentenceId+"'").then(function (result) {
-        res.send(result).catch(function (err) { res.status(400).send(err); });
+        res.send(result);
+    }).catch(function (err) { res.status(400).send(err);
     });
 });
 
-router.get('/getQuestionId/:picSentenceId', function (req, res) {
-    var picSentenceId = req.params.picSentenceId;
-    DButilsAzure.execQuery("SELECT qId FROM QuestionId WHERE picSentenceId='"+picSentenceId+"'").then(function (result) {
-        res.send(result).catch(function (err) { res.status(400).send(err); });
+//type: 0-picture, 1-sentence
+router.get('/getPicSenId/:qId', function (req, res) {
+    var qId = req.params.qId;
+    DButilsAzure.execQuery("SELECT * FROM QuestionId WHERE qId='"+qId+"'").then(function (result) {
+        var ans={"type":result[0].isPicture, "id":result[0].picSentenceId};
+        res.send(ans);
+    }).catch(function (err) { res.status(400).send(err);
     });
 });
 
@@ -49,7 +53,7 @@ router.get('/getRandomQuestions/:n', function (req, res) {
             res.status(400).send();
         else {
             var size = result.length;
-            if(size<=3)
+            if(size<=n)
             {
                 res.send(result);
             }
