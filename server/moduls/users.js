@@ -95,7 +95,7 @@ router.post('/NotRegUser', function (req, res) {     //Add User
         query1 = "INSERT INTO NotRegUsers VALUES ('" +userId+"','"+ firstName + "','" + lastName + "','" + age + "','" + gender + "','" + email  + "')";
     
         DButilsAzure.execQuery(query1).then(function (result) {
-            res.send(userId);
+            res.send(userId+"");
            
         }).catch(function (err) {
             res.status(400).send(err);

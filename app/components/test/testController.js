@@ -39,8 +39,8 @@ angular.module("pointsOfInterest")
 
             // -----Report-----
             self.hasSmartBracelate = false;
-            self.sadnessLevel;
-            self.stressLevel;
+            self.happyLevel;
+            self.calmLevel;
             self.sys;
             self.dia;
             self.pulse;
@@ -50,9 +50,9 @@ angular.module("pointsOfInterest")
                 if(self.hasSmartBracelate&&(self.sys==0 || self.dia==0 || self.pulse==0)){
                     physicalIndices=false;
                 }
-                if(self.sadnessLevel>0 && self.stressLevel>0 && physicalIndices){
+                if(self.happyLevel>0 && self.calmLevel>0 && physicalIndices){
                     //save localy the reported info and start test
-                    localStorageModel.addLocalStorage('reportInfo', {sadnessLevel:self.sadnessLevel, stressLevel:self.stressLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
+                    localStorageModel.addLocalStorage('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
                     $location.path('/startTest').replace().reload(false)
                 }
 
