@@ -1,8 +1,6 @@
-
-
 angular.module("pointsOfInterest")
-    .controller('testController', ['$scope', '$http', 'localStorageModel', '$rootScope', 'ngDialog', '$location', '$window',
-        function ($scope, $http, localStorageModel, $rootScope, ngDialog, $location, $window) {
+    .controller('testController', ['$scope', '$http', 'localStorageModel', '$rootScope', 'ngDialog', '$location', '$window','localStorageService',
+        function ($scope, $http, localStorageModel, $rootScope, ngDialog, $location, $window,localStorageService) {
             let self = this;
             self.httpReq = 'http://localhost:3000/';
             // -----NotRegInfo-----
@@ -19,8 +17,8 @@ angular.module("pointsOfInterest")
                     //save info and get userId
                     $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
                         self.notRegId = res.data;
-                        localStorageModel.addLocalStorage('userId', self.notRegId);
-
+                        // localStorageModel.addLocalStorage('userId', self.notRegId);
+                        localStorageService.set('userId', self.notRegId)
                         $location.path('/video');
                         $location.replace();
 
@@ -53,7 +51,8 @@ angular.module("pointsOfInterest")
                 }
                 if(self.happyLevel>0 && self.calmLevel>0 && physicalIndices){
                     //save localy the reported info and start test
-                    localStorageModel.addLocalStorage('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
+                    // localStorageModel.addLocalStorage('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
+                    localStorageService.set('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
                     $location.path('/startTest');
                     $location.replace();
                 }
@@ -63,26 +62,27 @@ angular.module("pointsOfInterest")
             //-----Test-----
             self.numberOfQuestions = 5;
             self.questions=[];
-            self.answers=[];
+            self.answers=new Array();
             self.currQ = 0;
             self.finishTest=false;
             self.testStartTime;
             self.testEndTime;
             
 
-            // self.ids=[];
+            self.ids=[];
 
             self.findTest = function () {
                 //save start time
-                self.testStartTime=new Date().getTime();
+                self.testStartTime=(new Date()).toISOString();
                 //get from server
                 $http.get(self.httpReq + "Questions/getRandomQuestions/" + self.numberOfQuestions).then(function (res) {
                     let ids = res.data;
                     //TODO--check if picture or sentence
                     for (let i = 0; i < ids.length; i++) {
-                        // let picId = ids[i].picSentenceId;
+                        let picId = ids[i].picSentenceId;
                         $http.get(self.httpReq + "Questions/Pictures/" + ids[i].picSentenceId).then(function (res) {
                             self.questions[i] = res.data[0].pictureUrl;
+                            self.ids[i]=picId;
                         },
                             function (error) {
                                 alert('failed to get picture from DB');
@@ -113,13 +113,25 @@ angular.module("pointsOfInterest")
 
 
             self.SendAnsNotReg=function(){
-                self.testEndTime=new Date().getTime();
-                reportInfo=localStorageModel.getLocalStorage('reportInfo');
+                self.testEndTime=(new Date()).toISOString();
+                // reportInfo=localStorageModel.getLocalStorage('reportInfo');
+                reportInfo= localStorageService.get('reportInfo')
+                let answersArr=[];
+                for(i=0;i<self.questions.length;i++){
+                    picId=self.ids[i];
+                    ans=self.answers[picId];
+                    if(ans ==undefined)
+                    {
+                        ans="";
+                    }
+                    answersArr[i]={qid:picId, answer:ans};
+                }
                 testAnswer={
-                    userId: localStorageModel.getLocalStorage('userId'),
+                    // userId: localStorageModel.getLocalStorage('userId'),
+                    userId:localStorageService.get('userId'),
                     startTime: self.testStartTime,
                     endTime: self.testEndTime,
-                    answers: self.answers,
+                    answers: answersArr,
                     happyLevel: reportInfo.happyLevel,
                     calmLevel: reportInfo.calmLevel,
                     bpSYS: reportInfo.sys,

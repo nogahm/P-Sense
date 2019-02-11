@@ -8,25 +8,23 @@
         <table align="center">
             <tr>
                 <td>
-                    <a>{{testCtrl.questions[testCtrl.currQ]}}</a>
-                    <img ng-src="{{testCtrl.questions[testCtrl.currQ]}}">
+                    <img ng-src="{{testCtrl.questions[testCtrl.currQ]}}" class="centerImage">
                     <!-- <img ng-src="http://drive.google.com/uc?export=view&id=1BhTOodZGUqfCS7aaUX3-fxi3smMJKraS"> -->
                 </td>
             </tr>
             <tr>
                 <td>
-                    <input type="text" ng-pattern="/^[a-zA-Z]*$/" ng-model="testCtrl.answers[testCtrl.currQ]" ng-required="true" class="form-control logInput"
-                        name="usernameInput" placeholder="what you see">
+                    <div class="centerFillText">
+                            <input type="text" ng-pattern="/^[a-zA-Z]*$/" ng-model="testCtrl.answers[testCtrl.currQ]" ng-required="true" class="form-control logInput"
+                            name="usernameInput" placeholder="what you see">
+                    </div>
                 </td>
             </tr>
             <tr>
                 <td><button ng-click="testCtrl.prevQ()" class="btn btn-success btn-lg logSubmit" style="float:left">Previous</button></td>
                 <td><button ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
             </tr>
-            <tr>
-                <td><button ng-click="testCtrl.SendAnsNotReg()" ng-disabled=!testCtrl.finishTest class="btn btn-success btn-lg logSubmit">Send Test</button></td>
-            </tr>
         </table>
-
+        <button ng-click="testCtrl.SendAnsNotReg()" ng-disabled=!testCtrl.finishTest class="btn btn-success btn-lg logSubmit">Send Test</button>
     </div>
 </div>

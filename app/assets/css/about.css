@@ -28,3 +28,16 @@
     transition: .5s ease;
     backface-visibility: hidden;
 }
+
+.centerImage {
+    display: block;
+    margin-left: 30%;
+    margin-right: 50%;
+    width: 70%;
+  }
+  .centerFillText {
+    display: block;
+    margin-left: 35%;
+    margin-right: 50%;
+    width: 70%;
+  }

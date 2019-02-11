@@ -67,22 +67,24 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
             testId=result[0].testId+1;
         else
             testId=0;
+        
+        query1 = "INSERT INTO UserTest VALUES ('"
+            + testId + "','"+ userId + "','" + startTime + "','" + endTime + "','" + happyLevel + "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "')";
+    
+        DButilsAzure.execQuery(query1).then(function (result) {
+            for (var i = 0; i < answers.length; i++) {
+                DButilsAzure.execQuery("insert into UserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer + "')").then(function (result) {
+                    res.send(true)
+                }).catch(function (err) { res.status(400).send(err+"3333333"); });
+            }
+        }).catch(function (err) {
+            res.status(400).send(err+"2222222222222222");
+        });
     }).catch(function (err) {
-        res.status(400).send(err);
+        res.status(400).send(err+"111111111111");
     });
 
-    query1 = "INSERT INTO UserTest VALUES ('"
-        + testId + "','"+ userId + "','" + startTime + "','" + endTime + "','" + happyLevel + "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "')";
-
-    DButilsAzure.execQuery(query1).then(function (result) {
-        for (var i = 0; i < answers.length; i++) {
-            DButilsAzure.execQuery("insert into UserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer + "')").then(function (result) {
-                res.send(true)
-            }).catch(function (err) { res.status(400).send(err); });
-        }
-    }).catch(function (err) {
-        res.status(400).send(err);
-    });
+    
 });
 
 
