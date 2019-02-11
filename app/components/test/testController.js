@@ -20,9 +20,9 @@ angular.module("pointsOfInterest")
                     $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
                         self.notRegId = res.data;
                         localStorageModel.addLocalStorage('userId', self.notRegId);
-                        // $location.path('/report');
-                        // $location.replace();
-                        $location.path('/video').replace().reload(false)
+
+                        $location.path('/video');
+                        $location.replace();
 
                     },
                         function (error) {
@@ -34,7 +34,8 @@ angular.module("pointsOfInterest")
 
             // -----Video-----
             self.nextTophase3=function(){
-                $location.path('/report').replace().reload(false)
+                $location.path('/report');
+                $location.replace();
             }
 
             // -----Report-----
@@ -53,7 +54,8 @@ angular.module("pointsOfInterest")
                 if(self.happyLevel>0 && self.calmLevel>0 && physicalIndices){
                     //save localy the reported info and start test
                     localStorageModel.addLocalStorage('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
-                    $location.path('/startTest').replace().reload(false)
+                    $location.path('/startTest');
+                    $location.replace();
                 }
 
             }
@@ -115,9 +117,9 @@ angular.module("pointsOfInterest")
                 reportInfo=localStorageModel.getLocalStorage('reportInfo');
                 testAnswer={
                     userId: localStorageModel.getLocalStorage('userId'),
-                    startTime: reportInfo.testStartTime,
-                    endTime: reportInfo.testEndTime,
-                    answers: reportInfo.answers,
+                    startTime: self.testStartTime,
+                    endTime: self.testEndTime,
+                    answers: self.answers,
                     happyLevel: reportInfo.happyLevel,
                     calmLevel: reportInfo.calmLevel,
                     bpSYS: reportInfo.sys,
