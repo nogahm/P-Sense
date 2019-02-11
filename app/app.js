@@ -45,18 +45,21 @@ app.config( ['$routeProvider', function($routeProvider) {
             templateUrl : "./components/login/login.html"})
         .when("/register", {
             templateUrl : "./components/register/register.html"
-         }).when("/test", {
-         templateUrl : "./components/test/infoNotReg.html",
-         controller: "testController as testCtrl"
+        //  }).when("/test", {
+        //  templateUrl : "./components/test/infoNotReg.html",
+        //  controller: "testController as testCtrl"
     // }).when("/test", {
     //     templateUrl : "./components/test/test.html",
     //     controller: "testController as testCtrl"
     }).when("/report", {
         templateUrl : "./components/test/report.html",
         controller: "testController as testCtrl"
-    }).when("/startTest", {
-        templateUrl : "./components/test/test.html",
+    }).when("/test", {
+        templateUrl : "./components/test/Video.html",
         controller: "testController as testCtrl"
+    // }).when("/startTest", {
+    //     templateUrl : "./components/test/test.html",
+    //     controller: "testController as testCtrl"
     }).otherwise({
         redirectTo : "/"
     });

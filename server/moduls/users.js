@@ -22,12 +22,13 @@ router.post('/login', function (req, res) {
             var token = jwt.sign(payload, secret, {
                 expiresIn: "1d"
             });
-
             res.json({
                 success: true,
                 massage: 'enjoy your token!',
                 token: token
             });
+            res.send("connectionSSSSSSSSS");
+
         }
         else {
             res.send("connection failed");
