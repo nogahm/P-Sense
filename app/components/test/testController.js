@@ -19,8 +19,10 @@ angular.module("pointsOfInterest")
                     //save info and get userId
                     $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
                         self.notRegId = res.data;
-                        $location.path('/report');
-                        $location.replace();
+                        // $location.path('/report');
+                        // $location.replace();
+                        $location.path('/report').replace().reload(false)
+
                     },
                         function (error) {
                             alert('failed, please try again' + error);
@@ -31,11 +33,13 @@ angular.module("pointsOfInterest")
 
             // -----Report-----
             self.hasSmartBracelate = false;
-            self.sadnessLevel=-1;
-            self.stressLevel=-1;
-            self.sys=0;
-            self.dia=0;
-            self.pulse=0;
+            self.sadnessLevel;
+            self.stressLevel;
+            self.sys;
+            self.dia;
+            self.pulse;
+            
+            
             self.reportAndStart=function(){
                 physicalIndices=true;
                 if(self.hasSmartBracelate&&(self.sys==0 || self.dia==0 || self.pulse==0)){
@@ -43,21 +47,26 @@ angular.module("pointsOfInterest")
                 }
                 if(self.sadnessLevel>0 && self.stressLevel>0 && physicalIndices){
                     //save localy the reported info and start test
-                    $location.path('/startTest');
-                    $location.replace();
+                    $location.path('/startTest').replace().reload(false)
                 }
 
             }
 
             //-----Test-----
-            self.numberOfQuestions = 3;
-            self.questions = [];
-            self.answers = [];
+            self.numberOfQuestions = 5;
+            self.questions=[];
+            self.answers=[];
             self.currQ = 0;
             self.finishTest=false;
+            self.testStartTime;
+            self.testEndTime;
+            
+
             // self.ids=[];
 
             self.findTest = function () {
+                //save start time
+                self.testStartTime=new Date().getTime();
                 //get from server
                 $http.get(self.httpReq + "Questions/getRandomQuestions/" + self.numberOfQuestions).then(function (res) {
                     let ids = res.data;
@@ -92,6 +101,30 @@ angular.module("pointsOfInterest")
                     self.currQ++;
                 else
                     self.finishTest=true;
+            }
+
+            self.SendAnsNotReg=function(){
+                self.testEndTime=new Date().getTime();
+                testAnswer={
+                    userId: self.userId,
+                    startTime: self.testStartTime,
+                    endTime: self.testEndTime,
+                    answers: self.answers,
+                    happyLevel: self.happyLevel,
+                    calmLevel: self.calmLevel,
+                    bpSYS: self.sys,
+                    bpDIA: self.dia,
+                    pulse: self.pulse
+                }
+                $http.post(self.httpReq + "Tests/NotReg/AddAnswers", testAnswer).then(function (res) {
+                    alert("Thank you for your answers!")
+                    $location.path('/home');
+                    $location.replace();
+                },
+                    function (error) {
+                        alert('failed, please try again' + error);
+                    }
+                );
             }
 
         }]);
