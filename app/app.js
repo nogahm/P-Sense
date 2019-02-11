@@ -51,7 +51,6 @@ app.config( ['$routeProvider', function($routeProvider) {
     // }).when("/test", {
     //     templateUrl : "./components/test/test.html",
     //     controller: "testController as testCtrl"
-
     }).when("/report", {
         templateUrl : "./components/test/report.html",
         controller: "testController as testCtrl"

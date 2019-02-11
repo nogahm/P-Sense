@@ -4,7 +4,6 @@ angular.module("pointsOfInterest")
     .controller('testController', ['$scope', '$http', 'localStorageService', '$rootScope', 'ngDialog', '$location', '$window',
         function ($scope, $http, localStorageService, $rootScope, ngDialog, $location, $window) {
             let self = this;
-            self.hasSmartBracelate = false;
             self.httpReq = 'http://localhost:3000/';
             // -----NotRegInfo-----
             self.isReg = false; //TODO - find if user is registed or not
@@ -29,6 +28,26 @@ angular.module("pointsOfInterest")
                     );
                 }
             };
+
+            // -----Report-----
+            self.hasSmartBracelate = false;
+            self.sadnessLevel=-1;
+            self.stressLevel=-1;
+            self.sys=0;
+            self.dia=0;
+            self.pulse=0;
+            self.reportAndStart=function(){
+                physicalIndices=true;
+                if(self.hasSmartBracelate&&(self.sys==0 || self.dia==0 || self.pulse==0)){
+                    physicalIndices=false;
+                }
+                if(self.sadnessLevel>0 && self.stressLevel>0 && physicalIndices){
+                    //save localy the reported info and start test
+                    $location.path('/startTest');
+                    $location.replace();
+                }
+
+            }
 
             //-----Test-----
             self.numberOfQuestions = 3;
@@ -75,17 +94,4 @@ angular.module("pointsOfInterest")
                     self.finishTest=true;
             }
 
-            // self.UserAns={userId:'1', startTime:'1900-01-01T00:00:00.0000000', endTime:'1900-01-01T00:00:00.0000000', answers: self.answers, happyLevel:1, calmLevel:1, bpSYS:100, bpDIA:150, pulse:100};
-            // self.SendAns=function(){
-
-            //     $http.post(self.httpReq + "/Tests/NotReg/AddAnswers", self.UserAns).then(function (res) {
-            //         self.notRegId = res.data;
-            //         $location.path('/report');
-            //         $location.replace();
-            //     },
-            //         function (error) {
-            //             alert('failed, please try again' + error);
-            //         }
-            //     );
-            // }
         }]);

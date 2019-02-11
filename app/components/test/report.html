@@ -1,4 +1,4 @@
-<div id="main" ng-controller="testController  as pointCtrl">
+<div id="main" ng-controller="testController  as testCtrl">
     <!-- Mood -->
     <div class="logBackground">
         <div style="height: 6.8em">
@@ -12,11 +12,11 @@
                             <img src="assets\images\happy.png" class="moodImage" />
                         </td>
                         <td>
-                            <input type="radio" name="sadnessLevel" value="1"> 1
-                            <input type="radio" name="sadnessLevel" value="2"> 2
-                            <input type="radio" name="sadnessLevel" value="3"> 3
-                            <input type="radio" name="sadnessLevel" value="4"> 4
-                            <input type="radio" name="sadnessLevel" value="5"> 5
+                            <input type="radio" name="sadnessLevel" value="1" ng-model="testCtrl.sadnessLevel"> 1
+                            <input type="radio" name="sadnessLevel" value="2" ng-model="testCtrl.sadnessLevel"> 2
+                            <input type="radio" name="sadnessLevel" value="3" ng-model="testCtrl.sadnessLevel"> 3
+                            <input type="radio" name="sadnessLevel" value="4" ng-model="testCtrl.sadnessLevel"> 4
+                            <input type="radio" name="sadnessLevel" value="5" ng-model="testCtrl.sadnessLevel"> 5
                         </td>
                         <td>&emsp;
                             <img src="assets\images\sad.png" class="moodImage" />
@@ -38,11 +38,11 @@
                             <img src="assets\images\calm1.png" class="moodImage" />
                         </td>
                         <td>
-                            <input type="radio" name="stressLevel" value="1"> 1
-                            <input type="radio" name="stressLevel" value="2"> 2
-                            <input type="radio" name="stressLevel" value="3"> 3
-                            <input type="radio" name="stressLevel" value="4"> 4
-                            <input type="radio" name="stressLevel" value="5"> 5
+                            <input type="radio" name="stressLevel" value="1" ng-model="testCtrl.stressLevel"> 1
+                            <input type="radio" name="stressLevel" value="2" ng-model="testCtrl.stressLevel"> 2
+                            <input type="radio" name="stressLevel" value="3" ng-model="testCtrl.stressLevel"> 3
+                            <input type="radio" name="stressLevel" value="4" ng-model="testCtrl.stressLevel"> 4
+                            <input type="radio" name="stressLevel" value="5" ng-model="testCtrl.stressLevel"> 5
                         </td>
                         <td>&emsp;
                             <img src="assets\images\stressed.png" class="moodImage" />
@@ -60,12 +60,12 @@
     <br>
     <!-- checkbox -->
         <div class="positionCenter">
-            <input type="checkbox" id="test2" checked="checked" ng-model="pointCtrl.hasSmartBracelate"/>
+            <input type="checkbox" id="test2" checked="checked" ng-model="testCtrl.hasSmartBracelate"/>
         <label for="test2">I have a smart Bracelate</label>
         </div>
         
     <!-- Physical -->
-    <div class="POI" ng-show="pointCtrl.hasSmartBracelate">
+    <div class="POI" ng-show="testCtrl.hasSmartBracelate">
         <div style="height: 6.8em">
             <label class="regHeader">• • Physiological Indices • •</label>
         </div>
@@ -81,7 +81,7 @@
                         <label>SYS:</label>
                     </td>
                     <td>
-                        <input type="number" name="SYS" min="70" max="200">
+                        <input type="number" name="SYS" min="70" max="200" ng-model="testCtrl.sys">
                     </td>
                 </tr>
                 <tr>
@@ -92,7 +92,7 @@
                         <label>DIA:</label>
                     </td>
                     <td>
-                        <input type="number" name="DIA" min="50" max="150">
+                        <input type="number" name="DIA" min="50" max="150" ng-model="testCtrl.dia">
                     </td>
                 </tr>
                 <tr>
@@ -106,7 +106,7 @@
                         <b>Pulse:</b>
                     </td>
                     <td>
-                        <input type="number" name="Pulse" min="50" max="250">
+                        <input type="number" name="Pulse" min="50" max="250" ng-model="testCtrl.pulse">
                     </td>
                 </tr>
             </table>
@@ -114,6 +114,6 @@
     </div>
     <div>
         <br>
-        <button class="logSubmit">Report and Start Test</button>
+        <button class="logSubmit" ng-click="testCtrl.reportAndStart()">Report and Start Test</button>
     </div>
 </div>
