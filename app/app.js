@@ -57,9 +57,9 @@ app.config( ['$routeProvider', function($routeProvider) {
     }).when("/test", {
         templateUrl : "./components/test/Video.html",
         controller: "testController as testCtrl"
-    // }).when("/startTest", {
-    //     templateUrl : "./components/test/test.html",
-    //     controller: "testController as testCtrl"
+    }).when("/startTest", {
+        templateUrl : "./components/test/test.html",
+        controller: "testController as testCtrl"
     }).otherwise({
         redirectTo : "/"
     });
