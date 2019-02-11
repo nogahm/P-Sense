@@ -1,8 +1,8 @@
 
 
 angular.module("pointsOfInterest")
-    .controller('testController', ['$scope', '$http', 'localStorageService', '$rootScope', 'ngDialog', '$location', '$window',
-        function ($scope, $http, localStorageService, $rootScope, ngDialog, $location, $window) {
+    .controller('testController', ['$scope', '$http', 'localStorageModel', '$rootScope', 'ngDialog', '$location', '$window',
+        function ($scope, $http, localStorageModel, $rootScope, ngDialog, $location, $window) {
             let self = this;
             self.httpReq = 'http://localhost:3000/';
             // -----NotRegInfo-----
@@ -19,9 +19,10 @@ angular.module("pointsOfInterest")
                     //save info and get userId
                     $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
                         self.notRegId = res.data;
+                        localStorageModel.addLocalStorage('userId', self.notRegId);
                         // $location.path('/report');
                         // $location.replace();
-                        $location.path('/report').replace().reload(false)
+                        $location.path('/video').replace().reload(false)
 
                     },
                         function (error) {
@@ -31,6 +32,11 @@ angular.module("pointsOfInterest")
                 }
             };
 
+            // -----Video-----
+            self.nextTophase3=function(){
+                $location.path('/report').replace().reload(false)
+            }
+
             // -----Report-----
             self.hasSmartBracelate = false;
             self.sadnessLevel;
@@ -39,7 +45,6 @@ angular.module("pointsOfInterest")
             self.dia;
             self.pulse;
             
-            
             self.reportAndStart=function(){
                 physicalIndices=true;
                 if(self.hasSmartBracelate&&(self.sys==0 || self.dia==0 || self.pulse==0)){
@@ -47,6 +52,7 @@ angular.module("pointsOfInterest")
                 }
                 if(self.sadnessLevel>0 && self.stressLevel>0 && physicalIndices){
                     //save localy the reported info and start test
+                    localStorageModel.addLocalStorage('reportInfo', {sadnessLevel:self.sadnessLevel, stressLevel:self.stressLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
                     $location.path('/startTest').replace().reload(false)
                 }
 
@@ -103,18 +109,20 @@ angular.module("pointsOfInterest")
                     self.finishTest=true;
             }
 
+
             self.SendAnsNotReg=function(){
                 self.testEndTime=new Date().getTime();
+                reportInfo=localStorageModel.getLocalStorage('reportInfo');
                 testAnswer={
-                    userId: self.userId,
-                    startTime: self.testStartTime,
-                    endTime: self.testEndTime,
-                    answers: self.answers,
-                    happyLevel: self.happyLevel,
-                    calmLevel: self.calmLevel,
-                    bpSYS: self.sys,
-                    bpDIA: self.dia,
-                    pulse: self.pulse
+                    userId: localStorageModel.getLocalStorage('userId'),
+                    startTime: reportInfo.testStartTime,
+                    endTime: reportInfo.testEndTime,
+                    answers: reportInfo.answers,
+                    happyLevel: reportInfo.happyLevel,
+                    calmLevel: reportInfo.calmLevel,
+                    bpSYS: reportInfo.sys,
+                    bpDIA: reportInfo.dia,
+                    pulse: reportInfo.pulse
                 }
                 $http.post(self.httpReq + "Tests/NotReg/AddAnswers", testAnswer).then(function (res) {
                     alert("Thank you for your answers!")

@@ -1,7 +1,7 @@
 
 angular.module("pointsOfInterest")
-.controller('homeController', ['$scope', '$http', 'localStorageService', '$rootScope', 'UserService', 'favoritesService', 'ngDialog',
-    function ($scope, $http, localStorageService, $rootScope, UserService, favoritesService, ngDialog) {
+.controller('homeController', ['$scope', '$http', 'localStorageService', '$rootScope', 'UserService', 'ngDialog',
+    function ($scope, $http, localStorageService, $rootScope, UserService, ngDialog) {
         let self = this;
         self.selectedPoint = null;
 
