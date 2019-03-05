@@ -14,6 +14,7 @@ var jwt = require('jsonwebtoken');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+app.use(express.static('app'));
 var superSecret= "secret";
 //complete your code here
 
