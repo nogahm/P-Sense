@@ -2,7 +2,7 @@ angular.module("pointsOfInterest")
     .controller('testController', ['$scope', '$http', 'localStorageModel', '$rootScope', 'ngDialog', '$location', '$window','localStorageService',
         function ($scope, $http, localStorageModel, $rootScope, ngDialog, $location, $window,localStorageService) {
             let self = this;
-            self.httpReq = 'http://localhost:3000/';
+            self.httpReq = 'https://psense.herokuapp.com/';
             // -----NotRegInfo-----
             self.isReg = false; //TODO - find if user is registed or not
             if (self.isReg) {
