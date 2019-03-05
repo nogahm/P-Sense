@@ -15,6 +15,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(express.static('app'));
+app.use(express.static('app/assets'));
+
 var superSecret= "secret";
 //complete your code here
 
