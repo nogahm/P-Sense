@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(express.static('app'));
 app.use(express.static('app/assets'));
+app.use(express.static('app/assets/images'));
 app.use(express.static('app/assets/images/questionsImages'));
 
 var superSecret= "secret";
