@@ -61,7 +61,7 @@ angular.module("pointsOfInterest")
             //-----Test-----
             self.numberOfQuestions = 5;
             self.questions=[];
-            self.answers=new Array();
+            self.answers=[];
             self.currQ = 0;
             self.finishTest=false;
             self.testStartTime;
@@ -71,30 +71,62 @@ angular.module("pointsOfInterest")
             self.ids=[];
 
             self.findTest = function () {
+                
                 //save start time
                 self.testStartTime=(new Date()).toISOString();
-                //get from server
-                $http.get(self.httpReq + "Questions/getRandomQuestions/" + self.numberOfQuestions).then(function (res) {
-                    let ids = res.data;
+                let ids1=[];
+                //get random numbers
+                for(let i=0;i<5;i++)
+                {
+                    // console.log('find');
+                    ids1[i]=Math.floor(Math.random() *100+3);
+                    // console.log(ids1[i]);
+                    
+                }                   
+
+          
                     //TODO--check if picture or sentence
-                    for (let i = 0; i < ids.length; i++) {
-                        let picId = ids[i].picSentenceId;
-                        $http.get(self.httpReq + "Questions/Pictures/" + ids[i].picSentenceId).then(function (res) {
+                    for (let i = 0; i < ids1.length; i++) {
+                        let picId = ids1[i];
+                        $http.get(self.httpReq + "Questions/Pictures/" + ids1[i]).then(function (res) {
                             self.questions[i] = res.data[0].pictureUrl;
                             self.ids[i]=picId;
+                            self.answers[i]=null;
                         },
                             function (error) {
-                                alert('failed to get picture from DB');
+                                //alert('failed to get picture from DB');
                             }
                         );
                     }
-                },
-                    function (error) {
-                        alert('failed to load questions');
-                    }
-                );
+                }
 
-            }
+
+
+            // self.findTest = function () {
+            //     //save start time
+            //     self.testStartTime=(new Date()).toISOString();
+            //     //get from server
+            //     $http.get(self.httpReq + "Questions/getRandomQuestions/" + self.numberOfQuestions).then(function (res) {
+            //         let ids = res.data;
+            //         //TODO--check if picture or sentence
+            //         for (let i = 0; i < ids.length; i++) {
+            //             let picId = ids[i].picSentenceId;
+            //             $http.get(self.httpReq + "Questions/Pictures/" + ids[i].picSentenceId).then(function (res) {
+            //                 self.questions[i] = res.data[0].pictureUrl;
+            //                 self.ids[i]=picId;
+            //             },
+            //                 function (error) {
+            //                     alert('failed to get picture from DB');
+            //                 }
+            //             );
+            //         }
+            //     },
+            //         function (error) {
+            //             alert('failed to load questions');
+            //         }
+            //     );
+
+            // }
             self.findTest();
 
 
@@ -106,7 +138,7 @@ angular.module("pointsOfInterest")
             self.nextQ = function () {
                 if(self.currQ<self.questions.length-1)
                     self.currQ++;
-                else
+                if(self.currQ==self.questions.length-1)
                     self.finishTest=true;
             }
 
