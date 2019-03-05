@@ -4,7 +4,7 @@ var app = express();
 var cors = require('cors');
 app.use(cors());
 var Questions= require('./server/moduls/Questions');
-var Tests= require('./server/moduls/Tests');
+var Tests= require('./server/moduls/tests');
 var users= require('./server/moduls/users');
 
 var DButilsAzure = require('./server/DButil');
