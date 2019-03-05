@@ -22,9 +22,9 @@ app.use('/Users', users);
 app.use('/Questions', Questions);
 app.use('/Tests',Tests );
 
-const port = process.env.PORT || 3000;
-app.listen(port, function () {
-    console.log('Example app listening on port ' + port);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, function () {
+    console.log('Example app listening on port ' + PORT);
 });
 // //-------------------------------------------------------------------------------------------------------------------
 // route middleware to verify a token
