@@ -40,9 +40,9 @@ angular.module("pointsOfInterest")
             self.hasSmartBracelate = false;
             self.happyLevel;
             self.calmLevel;
-            self.sys;
-            self.dia;
-            self.pulse;
+            self.sys=-1;
+            self.dia=-1;
+            self.pulse=-1;
             
             self.reportAndStart=function(){
                 physicalIndices=true;
@@ -56,7 +56,6 @@ angular.module("pointsOfInterest")
                     $location.path('/startTest');
                     $location.replace();
                 }
-
             }
 
             //-----Test-----
@@ -119,12 +118,12 @@ angular.module("pointsOfInterest")
                 let answersArr=[];
                 for(i=0;i<self.questions.length;i++){
                     picId=self.ids[i];
-                    ans=self.answers[picId];
+                    ans=self.answers[i];
                     if(ans ==undefined)
                     {
                         ans="";
                     }
-                    answersArr[i]={qid:picId, answer:ans};
+                    answersArr[i]={qId:picId, answer:ans};
                 }
                 testAnswer={
                     // userId: localStorageModel.getLocalStorage('userId'),

@@ -49,7 +49,7 @@ router.post('/Reg/AddAnswers', function (req, res) {     //Add User
 //add not-registered user test
 router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
     var userId = req.body.userId;
-    var startTime = req.body.startTime;
+    var  startTime= req.body.startTime;
     var endTime = req.body.endTime;
     var answers = req.body.answers;
     var happyLevel = req.body.happyLevel;
@@ -57,28 +57,26 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
     var bpSYS = req.body.bpSYS;
     var bpDIA = req.body.bpDIA;
     var pulse = req.body.pulse;
-    //var category = categories.split(",");
 
     //create testId
     var testId=0;
-    query = "SELECT MAX(testId) FROM UserTest";
+    query = "SELECT MAX(testId) as testId FROM UserTest";
     DButilsAzure.execQuery(query).then(function (result) {
         if(result.length>0)
             testId=result[0].testId+1;
         else
             testId=0;
-        
         query1 = "INSERT INTO UserTest VALUES ('"
-            + testId + "','"+ userId + "','" + startTime + "','" + endTime + "','" + happyLevel + "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "')";
+            + testId + "','"+ userId + "','" + startTime + "','" + endTime +  "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "','" + happyLevel +"')";
     
-        DButilsAzure.execQuery(query1).then(function (result) {
+        DButilsAzure.execQuery(query1).then(function (result2) {
             for (var i = 0; i < answers.length; i++) {
-                DButilsAzure.execQuery("insert into UserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer + "')").then(function (result) {
+                DButilsAzure.execQuery("insert into UserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer + "')").then(function (result3) {
                     res.send(true)
                 }).catch(function (err) { res.status(400).send(err+"3333333"); });
             }
         }).catch(function (err) {
-            res.status(400).send(err+"2222222222222222");
+            res.status(400).send(err);
         });
     }).catch(function (err) {
         res.status(400).send(err+"111111111111");
