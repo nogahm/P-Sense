@@ -49,7 +49,7 @@ angular.module("pointsOfInterest")
             
 
             self.reportAndStart=function(){
-                session=localStorageService.get('session')
+                let session=localStorageService.get('session')
                 localStorageService.set('session', session+1)
 
                 physicalIndices=true;
@@ -61,12 +61,12 @@ angular.module("pointsOfInterest")
                     //save localy the reported info and start test
                     // localStorageModel.addLocalStorage('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
                     localStorageService.set('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
-                    if(self.session==1)
+                    if(session==0)
                     {
                         $location.path('/video');
                         $location.replace();    
                     }
-                    if(self.session==2)
+                    if(session==1)
                     {
                         $location.path('/startTest');
                         $location.replace();
