@@ -63,8 +63,26 @@ angular.module("pointsOfInterest")
                     localStorageService.set('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
                     if(session==0)
                     {
-                        $location.path('/video');
-                        $location.replace();    
+                        reportInfo= localStorageService.get('reportInfo') 
+                        //save first report
+                        report={
+                            // userId: localStorageModel.getLocalStorage('userId'),
+                            userId:localStorageService.get('userId'),
+                            happyLevel: reportInfo.happyLevel,
+                            calmLevel: reportInfo.calmLevel,
+                            bpSYS: reportInfo.sys,
+                            bpDIA: reportInfo.dia,
+                            pulse: reportInfo.pulse
+                        }
+                        $http.post(self.httpReq + "Tests/NotReg/Report", report).then(function (res) {
+                            $location.path('/video');
+                            $location.replace();
+                        },
+                            function (error) {
+                                alert('failed, please try again' + error);
+                            }
+                        );
+                        
                     }
                     if(session==1)
                     {

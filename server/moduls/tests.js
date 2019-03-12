@@ -85,5 +85,32 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
     
 });
 
+//add not-registered user test
+router.post('/NotReg/Report', function (req, res) {     //Add User
+    var userId = req.body.userId;
+    var startTime= null;
+    var endTime = null;
+    var happyLevel = req.body.happyLevel;
+    var calmLevel = req.body.calmLevel;
+    var bpSYS = req.body.bpSYS;
+    var bpDIA = req.body.bpDIA;
+    var pulse = req.body.pulse;
 
+    //create testId
+    var testId=0;
+    query = "SELECT MAX(testId) as testId FROM UserTest";
+    DButilsAzure.execQuery(query).then(function (result) {
+        if(result.length>0)
+            testId=result[0].testId+1;
+        else
+            testId=0;
+        query1 = "INSERT INTO UserTest VALUES ('"
+            + testId + "','"+ userId + "','" + startTime + "','" + endTime +  "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "','" + happyLevel +"')";
+
+    }).catch(function (err) {
+        res.status(400).send(err);
+    });
+
+    
+});
 module.exports = router;
