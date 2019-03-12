@@ -79,8 +79,8 @@ router.post('/NotRegUser', function (req, res) {     //Add User
     var age = req.body.age;
     var gender = req.body.gender;
     var email = req.body.email;
-    
-    
+    var hand = req.body.hand;
+
     //create userId
     var userId=0;
     query1 = "SELECT MAX(userId) as maxId FROM NotRegUsers";
@@ -92,7 +92,7 @@ router.post('/NotRegUser', function (req, res) {     //Add User
             console.log(userId);
         }
         console.log(userId);
-        query1 = "INSERT INTO NotRegUsers VALUES ('" +userId+"','"+ firstName + "','" + lastName + "','" + age + "','" + gender + "','" + email  + "')";
+        query1 = "INSERT INTO NotRegUsers VALUES ('" +userId+"','"+ firstName + "','" + lastName + "','" + age + "','" + gender + "','" + email  + "','" + hand  + "')";
     
         DButilsAzure.execQuery(query1).then(function (result) {
             res.send(userId+"");

@@ -44,7 +44,20 @@
                                    <option value="female">Female</option>
                                    </select>
                                    <span ng-show="(infoNotRegForm.genderInput.$error.required || infoNotRegForm.genderInput.$pristine) && infoNotRegForm.$submitted" class="help-block">Gender is required</span>
-                                </div>
+                     </div>
+                     <div class="form-group">
+                            <label class="logInputHeader">Dominant Hand</label>
+                            <select ng-model="testCtrl.notRegUser.hand"
+                                   ng-required="true"
+                                   class="form-control logInput"
+                                   name="hand"
+                                   placeholder="">
+                                   <option value="right">Right</option>
+                                   <option value="left">Left</option>
+                                   <option value="both">Both</option>
+                                   </select>
+                                   <span ng-show="(infoNotRegForm.hand.$error.required || infoNotRegForm.hand.$pristine) && infoNotRegForm.$submitted" class="help-block">Dominant Hand is required</span>
+                     </div>
                     <div class="form-group">
                             <label class="logInputHeader">Email</label>
                             <input type="email"

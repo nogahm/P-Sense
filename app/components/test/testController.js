@@ -9,7 +9,7 @@ angular.module("pointsOfInterest")
                 $location.path('/report');
                 $location.replace();
             }
-            self.notRegUser = { firstName: '', lastName: '', age: null, gender: '', email: '' };
+            self.notRegUser = { firstName: '', lastName: '', age: null, gender: '', email: '', hand: '' };
             self.notRegId = null;
             //save not reg info and continue to report-not working
             self.saveInfo = function (valid) {
