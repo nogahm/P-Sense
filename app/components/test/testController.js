@@ -3,6 +3,7 @@ angular.module("pointsOfInterest")
         function ($scope, $http, localStorageModel, $rootScope, ngDialog, $location, $window,localStorageService) {
             let self = this;
             self.httpReq = 'https://psense.herokuapp.com/';
+            // self.httpReq = 'localhost:3000/';
             // -----NotRegInfo-----
             self.isReg = false; //TODO - find if user is registed or not
             if (self.isReg) {
@@ -19,7 +20,9 @@ angular.module("pointsOfInterest")
                         self.notRegId = res.data;
                         // localStorageModel.addLocalStorage('userId', self.notRegId);
                         localStorageService.set('userId', self.notRegId)
-                        $location.path('/video');
+                        localStorageService.set('session', 0)
+
+                        $location.path('/report');
                         $location.replace();
 
                     },
@@ -44,8 +47,13 @@ angular.module("pointsOfInterest")
             self.dia=-1;
             self.pulse=-1;
             
+
             self.reportAndStart=function(){
+                session=localStorageService.get('session')
+                localStorageService.set('session', session+1)
+
                 physicalIndices=true;
+                self.session++;
                 if(self.hasSmartBracelate&&(self.sys==0 || self.dia==0 || self.pulse==0)){
                     physicalIndices=false;
                 }
@@ -53,9 +61,19 @@ angular.module("pointsOfInterest")
                     //save localy the reported info and start test
                     // localStorageModel.addLocalStorage('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
                     localStorageService.set('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
-                    $location.path('/startTest');
-                    $location.replace();
+                    if(self.session==1)
+                    {
+                        $location.path('/video');
+                        $location.replace();    
+                    }
+                    if(self.session==2)
+                    {
+                        $location.path('/startTest');
+                        $location.replace();
+                    }
+                    
                 }
+
             }
 
             //-----Test-----
