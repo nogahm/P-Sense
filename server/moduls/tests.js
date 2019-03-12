@@ -88,8 +88,8 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
 //add not-registered user test
 router.post('/NotReg/Report', function (req, res) {     //Add User
     var userId = req.body.userId;
-    var startTime= null;
-    var endTime = null;
+    var startTime= (new Date()).toISOString();
+    var endTime = (new Date()).toISOString();
     var happyLevel = req.body.happyLevel;
     var calmLevel = req.body.calmLevel;
     var bpSYS = req.body.bpSYS;
@@ -107,6 +107,11 @@ router.post('/NotReg/Report', function (req, res) {     //Add User
         query1 = "INSERT INTO UserTest VALUES ('"
             + testId + "','"+ userId + "','" + startTime + "','" + endTime +  "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "','" + happyLevel +"')";
 
+        DButilsAzure.execQuery(query1).then(function (result2) {
+            res.send(true)
+            }).catch(function (err) {
+                res.status(400).send(err);
+            });
     }).catch(function (err) {
         res.status(400).send(err);
     });
