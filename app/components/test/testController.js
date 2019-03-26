@@ -78,6 +78,7 @@ angular.module("pointsOfInterest")
                         {
                             $location.path('/startTest');
                             $location.replace();
+                            self.startTest()
                         }
                     },
                         function (error) {
@@ -99,7 +100,7 @@ angular.module("pointsOfInterest")
             self.testStartTime;
             self.testEndTime;
             self.questions=[];
-            self.allIds[i]
+            self.allIds=[];
             self.ids=[];
 
             self.findTest = function () {
