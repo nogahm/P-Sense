@@ -18,17 +18,18 @@ body{
 }
 
 .menu {
-    /* list-style-type: none; */
+    margin:0 auto;
+    list-style-type: none;
     /* letter-spacing:4px; */
     text-align: center;
     display: inline-flex;
     /* width: 55em; */
     /* left: 10em; */
-    margin: auto;
     position: absolute;
     /* left: 35%; */
     margin-top: 10px;
-    
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
 .li {

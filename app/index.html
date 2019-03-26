@@ -37,7 +37,7 @@
 </head>
 
 <body style="display:flex; flex-flow: column;" ng-app="pointsOfInterest">
-        <div style="order:2" ng-controller="mainController as mainCtrl">
+    <div style="order:2" ng-controller="mainController as mainCtrl">
         <div class="menu" name="guestMenu" ng-show="$root.guest">
             <li class="li"><a class="btn_menu" href="#/">Home</a></li>
             <!-- <li class="li"><a class="btn_menu" href="#/about">About</a></li> -->
@@ -45,7 +45,7 @@
             <!-- <li class="li"><a class="btn_menu" href="#/register">Register</a></li> -->
             <li class="li"><a class="btn_menu" href="#/test">Start Test</a></li>
         </div>
-        <div class="menu" name="registeredUserMenu" ng-hide="$root.guest">
+        <!-- <div class="menu" name="registeredUserMenu" ng-hide="$root.guest">
             <li class="li"><a class="btn_menu" href="#/">Home</a></li>
             <li class="li"><a class="btn_menu" href="#/points">Points</a></li>
             <li class="li">
@@ -54,15 +54,15 @@
             </li>
             <li class="li"><a class="btn_menu" ng-click="mainCtrl.logout()" style=" cursor: pointer;">Logout</a></li>
             <li class="li"><a class="btn_menu" href="#/about">About</a></li>
-        </div>
+        </div> -->
         
-        <div ng-show="$root.guest">
+        <!-- <div ng-show="$root.guest">
             <label class="welcomeUser">Hello guest</label>
         </div>
         <div ng-hide="$root.guest">
             <label class="welcomeUser">Hello {{$root.UserName}},</label>
         </div>
-        <br><br>
+        <br><br> -->
         <br><br>
         <br><br>
         <div ng-view style="order:3"> </div>

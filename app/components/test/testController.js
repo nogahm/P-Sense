@@ -89,6 +89,10 @@ angular.module("pointsOfInterest")
                     
                     
                 }
+                else
+                {
+                    alert('Please report your mood');
+                }
 
             }
 
@@ -207,6 +211,11 @@ angular.module("pointsOfInterest")
 
 
             self.SendAnsNotReg=function(){
+                if(!self.finishTest)
+                {
+                    alert("Please answer all questions befor sending the test");
+                    return;
+                }
                 let testTime=localStorageService.get('testTime')
 
                 self.testEndTime=(new Date()).toISOString();
@@ -230,7 +239,6 @@ angular.module("pointsOfInterest")
                     answers: answersArr
                 }
                 $http.post(self.httpReq + "Tests/NotReg/AddAnswers", testAnswer).then(function (res) {
-                    alert("Thank you for your answers!")
                     localStorageService.set('testTime', testTime+1)
                     if(testTime==0)
                     {
@@ -239,6 +247,7 @@ angular.module("pointsOfInterest")
                     }
                     else
                     {
+                        alert("Thank you for your answers!");
                         $location.path('/home');
                         $location.replace();
                     }
