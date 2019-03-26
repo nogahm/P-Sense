@@ -10,7 +10,7 @@ angular.module("pointsOfInterest")
                 $location.path('/report');
                 $location.replace();
             }
-            self.notRegUser = { firstName: '', lastName: '', age: null, gender: '', email: '', hand: '' };
+            self.notRegUser = { age: null, gender: '', email: '', hand: '' };
             self.notRegId = null;
             //save not reg info and continue to report-not working
             self.saveInfo = function (valid) {
@@ -20,7 +20,8 @@ angular.module("pointsOfInterest")
                         self.notRegId = res.data;
                         // localStorageModel.addLocalStorage('userId', self.notRegId);
                         localStorageService.set('userId', self.notRegId)
-                        localStorageService.set('session', 0)
+                        localStorageService.set('reportTime', 0)
+                        localStorageService.set('testTime', 0)
 
                         $location.path('/report');
                         $location.replace();
@@ -49,46 +50,40 @@ angular.module("pointsOfInterest")
             
 
             self.reportAndStart=function(){
-                let session=localStorageService.get('session')
-                localStorageService.set('session', session+1)
+                let reportTime=localStorageService.get('reportTime')
+                localStorageService.set('reportTime', reportTime+1)
 
                 physicalIndices=true;
-                self.session++;
+                reportTime++;
+
                 if(self.hasSmartBracelate&&(self.sys==0 || self.dia==0 || self.pulse==0)){
                     physicalIndices=false;
                 }
                 if(self.happyLevel>0 && self.calmLevel>0 && physicalIndices){
                     //save localy the reported info and start test
                     // localStorageModel.addLocalStorage('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
-                    localStorageService.set('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
-                    if(session==0)
-                    {
-                        reportInfo= localStorageService.get('reportInfo') 
-                        //save first report
-                        report={
-                            // userId: localStorageModel.getLocalStorage('userId'),
-                            userId:localStorageService.get('userId'),
-                            happyLevel: reportInfo.happyLevel,
-                            calmLevel: reportInfo.calmLevel,
-                            bpSYS: reportInfo.sys,
-                            bpDIA: reportInfo.dia,
-                            pulse: reportInfo.pulse
-                        }
-                        $http.post(self.httpReq + "Tests/NotReg/Report", report).then(function (res) {
+                    // localStorageService.set('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
+                    //save report info
+                    report={userId:localStorageService.get('userId'), happyLevel:self.happyLevel, calmLevel:self.calmLevel, bpSYS:self.sys, bpDIA:self.dia, pulse:self.pulse}
+                    $http.post(self.httpReq + "Tests/NotReg/Report", report).then(function (res) {
+                        //go to next page according to report time
+                        if(reportTime==1)
+                        {
                             $location.path('/video');
                             $location.replace();
-                        },
-                            function (error) {
-                                alert('failed, please try again' + error);
-                            }
-                        );
-                        
-                    }
-                    if(session==1)
-                    {
-                        $location.path('/startTest');
-                        $location.replace();
-                    }
+                            
+                        }
+                        if(reportTime==2 || reportTime==3)
+                        {
+                            $location.path('/startTest');
+                            $location.replace();
+                        }
+                    },
+                        function (error) {
+                            alert('failed, please try again' + error);
+                        }
+                    );
+                    
                     
                 }
 
@@ -180,6 +175,8 @@ angular.module("pointsOfInterest")
 
 
             self.SendAnsNotReg=function(){
+                let reportTime=localStorageService.get('reportTime')
+
                 self.testEndTime=(new Date()).toISOString();
                 // reportInfo=localStorageModel.getLocalStorage('reportInfo');
                 reportInfo= localStorageService.get('reportInfo')
@@ -198,17 +195,21 @@ angular.module("pointsOfInterest")
                     userId:localStorageService.get('userId'),
                     startTime: self.testStartTime,
                     endTime: self.testEndTime,
-                    answers: answersArr,
-                    happyLevel: reportInfo.happyLevel,
-                    calmLevel: reportInfo.calmLevel,
-                    bpSYS: reportInfo.sys,
-                    bpDIA: reportInfo.dia,
-                    pulse: reportInfo.pulse
+                    answers: answersArr
                 }
                 $http.post(self.httpReq + "Tests/NotReg/AddAnswers", testAnswer).then(function (res) {
                     alert("Thank you for your answers!")
-                    $location.path('/home');
-                    $location.replace();
+                    localStorageService.set('reportTime', reportTime+1)
+                    if(reportTime==0)
+                    {
+                        $location.path('/video');
+                        $location.replace();    
+                    }
+                    else
+                    {
+                        $location.path('/home');
+                        $location.replace();
+                    }
                 },
                     function (error) {
                         alert('failed, please try again' + error);

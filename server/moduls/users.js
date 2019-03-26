@@ -7,7 +7,7 @@ var DButilsAzure = require('../DButil');
 
 //login -get user information from server - use POST because GET is not secured.
 
-router.post('/login', function (req, res) {
+/*router.post('/login', function (req, res) {
     var name = req.body.userName;
     var password = req.body.password;
 
@@ -34,12 +34,12 @@ router.post('/login', function (req, res) {
             res.send("connection failed");
         }
     }).catch(function (err) { res.status(400).send(err); });
-});
+});*/
 
 
 //register-save new user record in server.
 
-router.post('/register', function (req, res) {     //Add User
+/*router.post('/register', function (req, res) {     //Add User
     // console.print("aaaa");
     var userName = req.body.userName;
     var password = req.body.password;
@@ -60,7 +60,8 @@ router.post('/register', function (req, res) {     //Add User
         res.status(400).send(err);
     });
 });
-
+*/
+/*
 //get user info {username, firstName, lastName, age, gender, email}
 router.get('/Reginfo', function (req, res) {
     var userName = req.params.userName;
@@ -69,13 +70,14 @@ router.get('/Reginfo', function (req, res) {
             res.send(result);
         }).catch(function (err) { res.status(400).send(err); });
 });
+*/
 
 //NotRegUser - save new not registered user and return userId
 //firsName, lastName, age, gender, email
 router.post('/NotRegUser', function (req, res) {     //Add User
 
-    var firstName = req.body.firstName;
-    var lastName = req.body.lastName;
+    //var firstName = req.body.firstName;
+    //var lastName = req.body.lastName;
     var age = req.body.age;
     var gender = req.body.gender;
     var email = req.body.email;
@@ -92,7 +94,7 @@ router.post('/NotRegUser', function (req, res) {     //Add User
             console.log(userId);
         }
         console.log(userId);
-        query1 = "INSERT INTO NotRegUsers VALUES ('" +userId+"','"+ firstName + "','" + lastName + "','" + age + "','" + gender + "','" + email  + "','" + hand  + "')";
+        query1 = "INSERT INTO NotRegUsers VALUES ('" +userId+ "','" + age + "','" + gender + "','" + email  + "','" + hand  + "')";
     
         DButilsAzure.execQuery(query1).then(function (result) {
             res.send(userId+"");
@@ -108,7 +110,7 @@ router.post('/NotRegUser', function (req, res) {     //Add User
 
 
 
-
+/*
 //return user email in order to send him a mail with his password
 router.post('/passwordRecovery', function (req, res) {    
     var userName = req.body.userName;
@@ -121,5 +123,5 @@ router.post('/passwordRecovery', function (req, res) {
         res.status(400).send(err);
     });
 });
-
+*/
 module.exports = router;

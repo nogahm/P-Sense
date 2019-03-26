@@ -8,16 +8,16 @@ var DButilsAzure = require('../DButil');
 // const secret = "ilanaKarin";
 
 //add registered user test
-router.post('/Reg/AddAnswers', function (req, res) {     //Add User
+/*router.post('/Reg/AddAnswers', function (req, res) {     //Add User
     var userName = req.body.userName;
     var startTime = req.body.startTime;
     var endTime = req.body.endTime;
     var answers = req.body.answers;
-    var happyLevel = req.body.happyLevel;
-    var calmLevel = req.body.calmLevel;
-    var bpSYS = req.body.bpSYS;
-    var bpDIA = req.body.bpDIA;
-    var pulse = req.body.pulse;
+    // var happyLevel = req.body.happyLevel;
+    // var calmLevel = req.body.calmLevel;
+    // var bpSYS = req.body.bpSYS;
+    // var bpDIA = req.body.bpDIA;
+    // var pulse = req.body.pulse;
 
     //create testId
     var testId=0;
@@ -44,19 +44,19 @@ router.post('/Reg/AddAnswers', function (req, res) {     //Add User
     }).catch(function (err) {
         res.status(400).send(err);
     });
-});
+});*/
 
 //add not-registered user test
 router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
     var userId = req.body.userId;
-    var  startTime= req.body.startTime;
+    var startTime= req.body.startTime;
     var endTime = req.body.endTime;
     var answers = req.body.answers;
-    var happyLevel = req.body.happyLevel;
-    var calmLevel = req.body.calmLevel;
-    var bpSYS = req.body.bpSYS;
-    var bpDIA = req.body.bpDIA;
-    var pulse = req.body.pulse;
+    // var happyLevel = req.body.happyLevel;
+    // var calmLevel = req.body.calmLevel;
+    // var bpSYS = req.body.bpSYS;
+    // var bpDIA = req.body.bpDIA;
+    // var pulse = req.body.pulse;
 
     //create testId
     var testId=0;
@@ -66,8 +66,7 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
             testId=result[0].testId+1;
         else
             testId=0;
-        query1 = "INSERT INTO UserTest VALUES ('"
-            + testId + "','"+ userId + "','" + startTime + "','" + endTime +  "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "','" + happyLevel +"')";
+        query1 = "INSERT INTO UserTest VALUES ('"+ testId + "', '"+ userId + "', '" + startTime + "', '" + endTime +"')";
     
         DButilsAzure.execQuery(query1).then(function (result2) {
             for (var i = 0; i < answers.length; i++) {
@@ -76,7 +75,7 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
                 }).catch(function (err) { res.status(400).send(err+"3333333"); });
             }
         }).catch(function (err) {
-            res.status(400).send(err);
+            res.status(400).send(err+"2222222222222");
         });
     }).catch(function (err) {
         res.status(400).send(err+"111111111111");
@@ -85,11 +84,11 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
     
 });
 
+
+
 //add not-registered user test
 router.post('/NotReg/Report', function (req, res) {     //Add User
     var userId = req.body.userId;
-    var startTime= (new Date()).toISOString();
-    var endTime = (new Date()).toISOString();
     var happyLevel = req.body.happyLevel;
     var calmLevel = req.body.calmLevel;
     var bpSYS = req.body.bpSYS;
@@ -97,15 +96,15 @@ router.post('/NotReg/Report', function (req, res) {     //Add User
     var pulse = req.body.pulse;
 
     //create testId
-    var testId=0;
-    query = "SELECT MAX(testId) as testId FROM UserTest";
+    var reportId=0;
+    query = "SELECT MAX(reportId) as reportId FROM Report";
     DButilsAzure.execQuery(query).then(function (result) {
         if(result.length>0)
-            testId=result[0].testId+1;
+            reportId=result[0].reportId+1;
         else
-            testId=0;
-        query1 = "INSERT INTO UserTest VALUES ('"
-            + testId + "','"+ userId + "','" + startTime + "','" + endTime +  "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "','" + happyLevel +"')";
+            reportId=0;
+        query1 = "INSERT INTO Report VALUES ('"
+            + reportId + "','"+ userId + "','" + happyLevel+ "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse  +"')";
 
         DButilsAzure.execQuery(query1).then(function (result2) {
             res.send(true)

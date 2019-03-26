@@ -14,13 +14,13 @@ router.get('/Pictures/:picId', function (req, res) {
 });
 
 //GET sentence text by id
-router.get('/Sentences/:sentenceId', function (req, res) {
+/*router.get('/Sentences/:sentenceId', function (req, res) {
     var sentenceId = req.params.sentenceId;
     DButilsAzure.execQuery("SELECT sentenceText FROM Sentences WHERE sentenceId='"+sentenceId+"'").then(function (result) {
         res.send(result);
     }).catch(function (err) { res.status(400).send(err);
     });
-});
+});*/
 
 //type: 0-picture, 1-sentence
 router.get('/getPicSenId/:qId', function (req, res) {
@@ -46,7 +46,7 @@ router.get('/getPicSenId/:qId', function (req, res) {
 
 
 //GET random n question ids
-router.get('/getRandomQuestions/:n', function (req, res) {
+/*router.get('/getRandomQuestions/:n', function (req, res) {
     var n = req.params.n;
     DButilsAzure.execQuery("SELECT TOP(5)* FROM QuestionId").then(function (result) {
         // if (result.length==0)
@@ -75,5 +75,5 @@ router.get('/getRandomQuestions/:n', function (req, res) {
         
         res.send(result);
     }).catch(function (err) { res.status(400).send(err); });
-});
+});*/
 module.exports = router;

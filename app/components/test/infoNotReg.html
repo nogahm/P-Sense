@@ -3,7 +3,7 @@
         <div class="login-container" ng-controller="testController as testCtrl">
             <div class="login-form">
                 <form name="infoNotRegForm" ng-submit="testCtrl.saveInfo(infoNotRegForm.$valid)" novalidate>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="logInputHeader">First Name</label>
                         <input type="text"
                                ng-model="testCtrl.notRegUser.firstName"
@@ -11,7 +11,7 @@
                                class="form-control logInput"
                                name="firstnameInput"
                                placeholder="Enter first name">
-                        <!-- <span ng-show="(infoNotRegForm.firstnameInput.$error.required || infoNotRegForm.firstnameInput.$pristine)&& infoNotRegForm.$submitted" class="help-block">first required</span> -->
+                        <span ng-show="(infoNotRegForm.firstnameInput.$error.required || infoNotRegForm.firstnameInput.$pristine)&& infoNotRegForm.$submitted" class="help-block">first required</span>
                     </div>
                     <div class="form-group">
                         <label class="logInputHeader">Last Name</label>
@@ -21,8 +21,8 @@
                                class="form-control logInput"
                                name="lastnameInput"
                                placeholder="Enter last name">
-                        <!-- <span ng-show="(loginForm.passwordInput.$error.required || loginForm.passwordInput.$pristine)&& loginForm.$submitted" class="help-block">Password is required</span> -->
-                    </div>
+                        <span ng-show="(loginForm.passwordInput.$error.required || loginForm.passwordInput.$pristine)&& loginForm.$submitted" class="help-block">Password is required</span>
+                    </div> -->
                     <div class="form-group">
                             <label class="logInputHeader">Age</label>
                             <input type="number"
