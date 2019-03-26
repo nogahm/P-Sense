@@ -22,6 +22,7 @@ angular.module("pointsOfInterest")
                         localStorageService.set('userId', self.notRegId)
                         localStorageService.set('reportTime', 0)
                         localStorageService.set('testTime', 0)
+                        self.findTest();
 
                         $location.path('/report');
                         $location.replace();
@@ -91,47 +92,68 @@ angular.module("pointsOfInterest")
 
             //-----Test-----
             self.numberOfQuestions = 5;
-            self.questions=[];
+            self.allQuestions=[];
             self.answers=[];
             self.currQ = 0;
             self.finishTest=false;
             self.testStartTime;
             self.testEndTime;
-            
-
+            self.questions=[];
+            self.allIds[i]
             self.ids=[];
 
             self.findTest = function () {
                 
-                //save start time
-                self.testStartTime=(new Date()).toISOString();
+                // //save start time
+                // self.testStartTime=(new Date()).toISOString();
                 let ids1=[];
                 //get random numbers
-                for(let i=0;i<5;i++)
-                {
-                    // console.log('find');
-                    ids1[i]=Math.floor(Math.random() *100+3);
-                    // console.log(ids1[i]);
-                    
-                }                   
-
-          
-                    //TODO--check if picture or sentence
-                    for (let i = 0; i < ids1.length; i++) {
-                        let picId = ids1[i];
-                        $http.get(self.httpReq + "Questions/Pictures/" + ids1[i]).then(function (res) {
-                            self.questions[i] = res.data[0].pictureUrl;
-                            self.ids[i]=picId;
-                            self.answers[i]=null;
-                        },
-                            function (error) {
-                                //alert('failed to get picture from DB');
-                            }
-                        );
-                    }
+                while(ids1.length < 30){
+                    var r = Math.floor(Math.random()*95) + 1;
+                    if(ids1.indexOf(r) === -1) ids1.push(r);
+                }      
+                //TODO--check if picture or sentence
+                for (let i = 0; i < ids1.length; i++) {
+                    let picId = ids1[i];
+                    $http.get(self.httpReq + "Questions/Pictures/" + ids1[i]).then(function (res) {
+                        self.allQuestions[i] = res.data[0].pictureUrl;
+                        self.allIds[i]=picId;
+                        // self.answers[i]=null;
+                    },
+                        function (error) {
+                            //alert('failed to get picture from DB');
+                        }
+                    );
                 }
+                localStorageService.set('allIds', self.allIds);
+                localStorageService.set('allQuestions', self.allQuestions);
+            }
 
+            self.startTest=function()
+            {
+                //save start time
+                self.testStartTime=(new Date()).toISOString();
+                //check what time of test
+                let testTime=localStorageService.get('testTime');
+                localStorageService.set('testTime', testTime+1);
 
+                //get first 15 or last 15 pictures according to test time
+                let index=0;
+                //second time
+                if(testTime==1)
+                {
+                    index=14;
+                }
+                self.allQuestions = localStorageService.get('allQuestions');
+                self.allIds = localStorageService.get('allIds');
+
+                for(let i=0;i<15;i++)
+                {
+                    self.ids[i]=self.allIds[i+index];
+                    self.questions[i]=self.allQuestions[i+index];
+                    self.answers[i]=null;
+                }
+            }
 
             // self.findTest = function () {
             //     //save start time
@@ -158,7 +180,6 @@ angular.module("pointsOfInterest")
             //     );
 
             // }
-            self.findTest();
 
 
             self.prevQ = function () {
@@ -191,7 +212,7 @@ angular.module("pointsOfInterest")
                     answersArr[i]={qId:picId, answer:ans};
                 }
                 testAnswer={
-                    // userId: localStorageModel.getLocalStorage('userId'),
+                    //userId: localStorageModel.getLocalStorage('userId'),
                     userId:localStorageService.get('userId'),
                     startTime: self.testStartTime,
                     endTime: self.testEndTime,
