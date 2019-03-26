@@ -19,7 +19,7 @@ angular.module("pointsOfInterest")
                     $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
                         self.notRegId = res.data;
                         // localStorageModel.addLocalStorage('userId', self.notRegId);
-                        localStorageService.set('userId', self.notRegId)
+                        localStorageService.set('userId', Number(self.notRegId))
                         localStorageService.set('reportTime', 0)
                         localStorageService.set('testTime', 0)
                         self.findTest();
@@ -36,6 +36,7 @@ angular.module("pointsOfInterest")
             };
 
             // -----Video-----
+            self.stress=((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')==0)) || ((localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')>0));
             self.nextTophase3=function(){
                 $location.path('/report');
                 $location.replace();
@@ -78,7 +79,7 @@ angular.module("pointsOfInterest")
                         {
                             $location.path('/startTest');
                             $location.replace();
-                            self.startTest()
+                            //self.startTest()
                         }
                     },
                         function (error) {
@@ -111,8 +112,13 @@ angular.module("pointsOfInterest")
                 //get random numbers
                 while(ids1.length < 30){
                     var r = Math.floor(Math.random()*95) + 1;
-                    if(ids1.indexOf(r) === -1) ids1.push(r);
-                }      
+                    if(ids1.indexOf(r) === -1 && r!=25 && r!=2 && r!=37 && r!=44)
+                        ids1.push(r);
+                }
+                ids1[1]=25;
+                ids1[5]=2;
+                ids1[20]=37;
+                ids1[22]=44;
                 //TODO--check if picture or sentence
                 for (let i = 0; i < ids1.length; i++) {
                     let picId = ids1[i];
@@ -120,14 +126,18 @@ angular.module("pointsOfInterest")
                         self.allQuestions[i] = res.data[0].pictureUrl;
                         self.allIds[i]=picId;
                         // self.answers[i]=null;
+                        if(i==ids1.length-1)
+                        {
+                            localStorageService.set('allIds', self.allIds);
+                            localStorageService.set('allQuestions', self.allQuestions);
+                        }
                     },
                         function (error) {
                             //alert('failed to get picture from DB');
                         }
                     );
                 }
-                localStorageService.set('allIds', self.allIds);
-                localStorageService.set('allQuestions', self.allQuestions);
+
             }
 
             self.startTest=function()
@@ -136,7 +146,7 @@ angular.module("pointsOfInterest")
                 self.testStartTime=(new Date()).toISOString();
                 //check what time of test
                 let testTime=localStorageService.get('testTime');
-                localStorageService.set('testTime', testTime+1);
+                // localStorageService.set('testTime', testTime+1);
 
                 //get first 15 or last 15 pictures according to test time
                 let index=0;
@@ -197,7 +207,7 @@ angular.module("pointsOfInterest")
 
 
             self.SendAnsNotReg=function(){
-                let reportTime=localStorageService.get('reportTime')
+                let testTime=localStorageService.get('testTime')
 
                 self.testEndTime=(new Date()).toISOString();
                 // reportInfo=localStorageModel.getLocalStorage('reportInfo');
@@ -221,8 +231,8 @@ angular.module("pointsOfInterest")
                 }
                 $http.post(self.httpReq + "Tests/NotReg/AddAnswers", testAnswer).then(function (res) {
                     alert("Thank you for your answers!")
-                    localStorageService.set('reportTime', reportTime+1)
-                    if(reportTime==0)
+                    localStorageService.set('testTime', testTime+1)
+                    if(testTime==0)
                     {
                         $location.path('/video');
                         $location.replace();    
