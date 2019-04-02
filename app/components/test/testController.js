@@ -208,7 +208,7 @@ angular.module("pointsOfInterest")
                 //second time
                 if(testTime==1)
                 {
-                    index=19;
+                    index=20;
                 }
                 self.allQuestions = localStorageService.get('allQuestions');
                 self.allIds = localStorageService.get('allIds');
