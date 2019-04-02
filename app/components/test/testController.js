@@ -281,7 +281,7 @@ angular.module("pointsOfInterest")
                     }
                     let type="pic";
                     if(i>14)
-                        type=face;
+                        type="face";
                     answersArr[i]={qId:picId, answer:ans, Qtype:type};
                 }
                 testAnswer={
