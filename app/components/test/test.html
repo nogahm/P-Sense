@@ -16,15 +16,13 @@
                 <tr>
                     <td>
                         <div ng-hide="testCtrl.currQ>14" class="centerFillText">
-                                <input type="text" ng-pattern="/^[a-zA-Z]*$/" ng-model="testCtrl.answers[testCtrl.currQ]" ng-required="true" class="form-control logInput"
-                                name="usernameInput" placeholder="what you see">
+                                <input type="text" ng-pattern="/^[a-zA-Z]*$/" ng-model="testCtrl.answers[testCtrl.currQ]" ng-required="true" class="form-control logInput" name="usernameInput" placeholder="what you see">
                         </div>
                         <div ng-show="testCtrl.currQ>14" class="centerFillText">
-                                <select ng-model="testCtrl.answers[testCtrl.currQ]"
+                                <select ng-model="testCtrl.FaceAnswers[testCtrl.currQ]"
                                 ng-required="true"
                                 class="form-control logInput"
-                                name="genderInput"
-                                placeholder="">
+                                name="genderInput">
                                 <option value="face">Face</option>
                                 <option value="nonFace">Not Face</option>
                                 </select>

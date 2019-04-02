@@ -100,6 +100,7 @@ angular.module("pointsOfInterest")
             self.numberOfQuestions = 5;
             self.allQuestions=[];
             self.answers=[];
+            self.FaceAnswers=[];
             self.currQ = 0;
             self.finishTest=false;
             self.testStartTime;
@@ -180,7 +181,7 @@ angular.module("pointsOfInterest")
                             self.allIds[i+30]=(picId);
                         }
                         
-                        // self.answers[i]=null;
+                        self.FaceAnswers[i]=null;
                         if(counter>=40)
                         {
                             localStorageService.set('allIds', self.allIds);
@@ -274,7 +275,10 @@ angular.module("pointsOfInterest")
                 let answersArr=[];
                 for(i=0;i<self.questions.length;i++){
                     picId=self.ids[i];
-                    ans=self.answers[i];
+                    if(i<15)
+                        ans=self.answers[i];
+                    else
+                        ans=self.FaceAnswers[i];
                     if(ans ==undefined)
                     {
                         ans="";
