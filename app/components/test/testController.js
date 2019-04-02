@@ -128,7 +128,7 @@ angular.module("pointsOfInterest")
                 //get 10 random faces
                 let faceIds=[];
                 while(faceIds.length < 10){
-                    var r = Math.floor(Math.random()*20) + 1;//for faceId
+                    var r = Math.floor(Math.random()*31) + 1;//for faceId
                     if(faceIds.indexOf(r) === -1)
                         faceIds.push(r);
                 }
@@ -166,17 +166,17 @@ angular.module("pointsOfInterest")
                 //get face info
                 for (let i = 0; i < faceIds.length; i++) {
                     let picId = faceIds[i];
-                    $http.get(self.httpReq + "Questions/Pictures/" + faceIds[i]).then(function (res) { //TODO - Change to face
+                    $http.get(self.httpReq + "Questions/FacesPictures/" + faceIds[i]).then(function (res) { //TODO - Change to face
                         counter++;
                         //first 5 faces
                         if(i<5)
                         {
-                            self.allQuestions[i+15]=(res.data[0].pictureUrl);
+                            self.allQuestions[i+15]=(res.data[0].PICURL);
                             self.allIds[i+15]=(picId);
                         }
                         else
                         {
-                            self.allQuestions[i+30]=(res.data[0].pictureUrl);
+                            self.allQuestions[i+30]=(res.data[0].PICURL);
                             self.allIds[i+30]=(picId);
                         }
                         
@@ -279,7 +279,10 @@ angular.module("pointsOfInterest")
                     {
                         ans="";
                     }
-                    answersArr[i]={qId:picId, answer:ans};
+                    let type="pic";
+                    if(i>14)
+                        type=face;
+                    answersArr[i]={qId:picId, answer:ans, Qtype:pic};
                 }
                 testAnswer={
                     //userId: localStorageModel.getLocalStorage('userId'),
