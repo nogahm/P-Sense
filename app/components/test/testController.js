@@ -10,6 +10,8 @@ angular.module("pointsOfInterest")
                 $location.path('/report');
                 $location.replace();
             }
+
+            
             self.notRegUser = { age: null, gender: '', email: '', hand: '' };
             self.notRegId = null;
             //save not reg info and continue to report-not working
@@ -18,10 +20,11 @@ angular.module("pointsOfInterest")
                     //save info and get userId
                     $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
                         self.notRegId = res.data;
+                        self.infoSaved=true;
                         // localStorageModel.addLocalStorage('userId', self.notRegId);
-                        localStorageService.set('userId', Number(self.notRegId))
-                        localStorageService.set('reportTime', 0)
-                        localStorageService.set('testTime', 0)
+                        localStorageService.set('userId', Number(self.notRegId));
+                        localStorageService.set('reportTime', 0);
+                        localStorageService.set('testTime', 0);
                         self.findTest();
 
                         $location.path('/report');
@@ -259,8 +262,10 @@ angular.module("pointsOfInterest")
             self.nextQ = function () {
                 if(self.currQ<self.questions.length-1)
                     self.currQ++;
+                else
+                    alert("If you answered all questions, please press 'Send Test'")
                 if(self.currQ==self.questions.length-1)
-                    self.finishTest=true;
+                    self.finishTest=true;                    
             }
 
 
