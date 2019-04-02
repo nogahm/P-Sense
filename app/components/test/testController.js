@@ -151,7 +151,7 @@ angular.module("pointsOfInterest")
                             self.allQuestions[i+5] = res.data[0].pictureUrl;
                             self.allIds[i+5]=picId;
                         }
-                        self.answers[i]=null;
+                        // self.answers[i]=null;
                         if(counter>=40)
                         {
                             localStorageService.set('allIds', self.allIds);
@@ -181,7 +181,7 @@ angular.module("pointsOfInterest")
                             self.allIds[i+30]=(picId);
                         }
                         
-                        self.FaceAnswers[i]=null;
+                        // self.FaceAnswers[i]=null;
                         if(counter>=40)
                         {
                             localStorageService.set('allIds', self.allIds);
@@ -218,6 +218,7 @@ angular.module("pointsOfInterest")
                     self.ids[i]=self.allIds[i+index];
                     self.questions[i]=self.allQuestions[i+index];
                     self.answers[i]=null;
+                    self.FaceAnswers[i]=null;
                 }
             }
 
