@@ -22,6 +22,24 @@ router.get('/Pictures/:picId', function (req, res) {
     });
 });*/
 
+
+//GET picture url by id
+router.get('/FacesPictures/:picId', function (req, res) {
+    var picId = req.params.picId;
+    DButilsAzure.execQuery("SELECT PICURL FROM FacesPictures WHERE PicID='"+picId+"'").then(function (result) {
+        res.send(result);
+    }).catch(function (err) { res.status(400).send(err); });
+});
+
+//GET sentence text by id
+/*router.get('/Sentences/:sentenceId', function (req, res) {
+    var sentenceId = req.params.sentenceId;
+    DButilsAzure.execQuery("SELECT sentenceText FROM Sentences WHERE sentenceId='"+sentenceId+"'").then(function (result) {
+        res.send(result);
+    }).catch(function (err) { res.status(400).send(err);
+    });
+});*/
+
 //type: 0-picture, 1-sentence
 router.get('/getPicSenId/:qId', function (req, res) {
     var qId = req.params.qId;
@@ -31,7 +49,6 @@ router.get('/getPicSenId/:qId', function (req, res) {
     }).catch(function (err) { res.status(400).send(err);
     });
 });
-
 // router.get('/getQuestionsAnswers', function (req, res) {
 //     var qIds = req.body.qIds;
 //     var stringID="";
