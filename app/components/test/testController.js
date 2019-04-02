@@ -55,9 +55,8 @@ angular.module("pointsOfInterest")
                 let reportTime=localStorageService.get('reportTime')
 
                 physicalIndices=true;
-                reportTime++;
 
-                if(self.hasSmartBracelate&&(self.sys==undefined || self.dia==undefined || self.pulse==undefined)){
+                if(self.hasSmartBracelate&&(self.sys==undefined || self.dia==undefined || self.pulse==undefined ||self.sys==-1 || self.dia==-1 || self.pulse==-1)){
                     alert('Please report your physical indices');
                     return;
                 }
@@ -69,6 +68,8 @@ angular.module("pointsOfInterest")
                     report={userId:localStorageService.get('userId'), happyLevel:self.happyLevel, calmLevel:self.calmLevel, bpSYS:self.sys, bpDIA:self.dia, pulse:self.pulse}
                     $http.post(self.httpReq + "Tests/NotReg/Report", report).then(function (res) {
                         localStorageService.set('reportTime', reportTime+1)
+                        reportTime++;
+
                         //go to next page according to report time
                         if(reportTime==1)
                         {
