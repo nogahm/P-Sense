@@ -57,10 +57,11 @@ angular.module("pointsOfInterest")
                 physicalIndices=true;
                 reportTime++;
 
-                if(self.hasSmartBracelate&&(self.sys==0 || self.dia==0 || self.pulse==0)){
-                    physicalIndices=false;
+                if(self.hasSmartBracelate&&(self.sys==undefined || self.dia==undefined || self.pulse==undefined)){
+                    alert('Please report your physical indices');
+                    return;
                 }
-                if(self.happyLevel>0 && self.calmLevel>0 && physicalIndices){
+                if(self.happyLevel>0 && self.calmLevel>0){
                     //save localy the reported info and start test
                     // localStorageModel.addLocalStorage('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
                     // localStorageService.set('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
