@@ -53,7 +53,6 @@ angular.module("pointsOfInterest")
 
             self.reportAndStart=function(){
                 let reportTime=localStorageService.get('reportTime')
-                localStorageService.set('reportTime', reportTime+1)
 
                 physicalIndices=true;
                 reportTime++;
@@ -68,6 +67,7 @@ angular.module("pointsOfInterest")
                     //save report info
                     report={userId:localStorageService.get('userId'), happyLevel:self.happyLevel, calmLevel:self.calmLevel, bpSYS:self.sys, bpDIA:self.dia, pulse:self.pulse}
                     $http.post(self.httpReq + "Tests/NotReg/Report", report).then(function (res) {
+                        localStorageService.set('reportTime', reportTime+1)
                         //go to next page according to report time
                         if(reportTime==1)
                         {
