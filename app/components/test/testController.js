@@ -282,7 +282,7 @@ angular.module("pointsOfInterest")
                     let type="pic";
                     if(i>14)
                         type=face;
-                    answersArr[i]={qId:picId, answer:ans, Qtype:pic};
+                    answersArr[i]={qId:picId, answer:ans, Qtype:type};
                 }
                 testAnswer={
                     //userId: localStorageModel.getLocalStorage('userId'),
