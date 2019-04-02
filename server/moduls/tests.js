@@ -57,7 +57,7 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
     // var bpSYS = req.body.bpSYS;
     // var bpDIA = req.body.bpDIA;
     // var pulse = req.body.pulse;
-
+    var x=0;
     //create testId
     var testId=0;
     query = "SELECT MAX(testId) as testId FROM UserTest";
@@ -70,7 +70,7 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
     
         DButilsAzure.execQuery(query1).then(function (result2) {
             for (var i = 0; i < answers.length; i++) {
-                DButilsAzure.execQuery("insert into UserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer + "')").then(function (result3) {
+                DButilsAzure.execQuery("insert into UserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer+"', '" + x + "')").then(function (result3) {
                     res.send(true)
                 }).catch(function (err) { res.status(400).send(err+"3333333"); });
             }
