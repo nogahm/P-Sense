@@ -1,120 +1,311 @@
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
-var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var DButilsAzure = require('../DButil');
-
-// const secret = "ilanaKarin";
-
-//add registered user test
-/*router.post('/Reg/AddAnswers', function (req, res) {     //Add User
-    var userName = req.body.userName;
-    var startTime = req.body.startTime;
-    var endTime = req.body.endTime;
-    var answers = req.body.answers;
-    // var happyLevel = req.body.happyLevel;
-    // var calmLevel = req.body.calmLevel;
-    // var bpSYS = req.body.bpSYS;
-    // var bpDIA = req.body.bpDIA;
-    // var pulse = req.body.pulse;
-
-    //create testId
-    var testId=0;
-    query1 = "SELECT MAX(testId) FROM RegUserTest";
-    DButilsAzure.execQuery(query1).then(function (result) {
-        if(result.length>0)
-            testId=result[0].testId+1;
-        else
-            testId=0;
-    }).catch(function (err) {
-        res.status(400).send(req.body);
-    });
-
-
-    query2 = "INSERT INTO RegUserTest VALUES ('"
-        + testId + "','"+ userName + "','" + startTime + "','" + endTime + "','" + happyLevel + "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse + "')";
-
-    DButilsAzure.execQuery(query2).then(function (result) {
-        for (var i = 0; i < answers.length; i++) {
-            DButilsAzure.execQuery("insert into RegUserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer + "')").then(function (result) {
-                res.send(true)
-            }).catch(function (err) { res.status(400).send(err); });
-        }
-    }).catch(function (err) {
-        res.status(400).send(err);
-    });
-});*/
-
-//add not-registered user test
-router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
-    var userId = req.body.userId;
-    var startTime= req.body.startTime;
-    var endTime = req.body.endTime;
-    var answers = req.body.answers;
-    // var happyLevel = req.body.happyLevel;
-    // var calmLevel = req.body.calmLevel;
-    // var bpSYS = req.body.bpSYS;
-    // var bpDIA = req.body.bpDIA;
-    // var pulse = req.body.pulse;
-    var x=0;
-    //create testId
-    var testId=0;
-    query = "SELECT MAX(testId) as testId FROM UserTest";
-    DButilsAzure.execQuery(query).then(function (result) {
-        if(result.length>0)
-            testId=result[0].testId+1;
-        else
-            testId=0;
-        query1 = "INSERT INTO UserTest VALUES ('"+ testId + "', '"+ userId + "', '" + startTime + "', '" + endTime +"')";
-    
-        DButilsAzure.execQuery(query1).then(function (result2) {
-            for (var i = 0; i < answers.length; i++) {
-                DButilsAzure.execQuery("insert into UserAnswer values ('" + testId + "', '" + answers[i].qId +"', '" + answers[i].answer +"', '" + x+ "')").then(function (result3) {
-                    res.send(true)
-                }).catch(function (err) { res.status(400).send(err+"3333333"); });
+angular.module("pointsOfInterest")
+    .controller('testController', ['$scope', '$http', 'localStorageModel', '$rootScope', 'ngDialog', '$location', '$window','localStorageService',
+        function ($scope, $http, localStorageModel, $rootScope, ngDialog, $location, $window,localStorageService) {
+            let self = this;
+            self.httpReq = 'https://psense.herokuapp.com/';
+            // self.httpReq = 'localhost:3000/';
+            // -----NotRegInfo-----
+            self.isReg = false; //TODO - find if user is registed or not
+            if (self.isReg) {
+                $location.path('/report');
+                $location.replace();
             }
-        }).catch(function (err) {
-            res.status(400).send(err+"2222222222222");
-        });
-    }).catch(function (err) {
-        res.status(400).send(err+"111111111111");
-    });
+            self.notRegUser = { age: null, gender: '', email: '', hand: '' };
+            self.notRegId = null;
+            //save not reg info and continue to report-not working
+            self.saveInfo = function (valid) {
+                if (valid) {
+                    //save info and get userId
+                    $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
+                        self.notRegId = res.data;
+                        // localStorageModel.addLocalStorage('userId', self.notRegId);
+                        localStorageService.set('userId', Number(self.notRegId))
+                        localStorageService.set('reportTime', 0)
+                        localStorageService.set('testTime', 0)
+                        self.findTest();
 
-    
-});
+                        $location.path('/report');
+                        $location.replace();
+
+                    },
+                        function (error) {
+                            alert('failed, please try again' + error);
+                        }
+                    );
+                }
+            };
+
+            // -----Video-----
+            self.stress=((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')==0)) || ((localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')>0));
+            self.nextTophase3=function(){
+                $location.path('/report');
+                $location.replace();
+            }
+
+            // -----Report-----
+            self.hasSmartBracelate = false;
+            self.happyLevel;
+            self.calmLevel;
+            self.sys=-1;
+            self.dia=-1;
+            self.pulse=-1;
+            
+
+            self.reportAndStart=function(){
+                let reportTime=localStorageService.get('reportTime')
+                localStorageService.set('reportTime', reportTime+1)
+
+                physicalIndices=true;
+                reportTime++;
+
+                if(self.hasSmartBracelate&&(self.sys==0 || self.dia==0 || self.pulse==0)){
+                    physicalIndices=false;
+                }
+                if(self.happyLevel>0 && self.calmLevel>0 && physicalIndices){
+                    //save localy the reported info and start test
+                    // localStorageModel.addLocalStorage('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
+                    // localStorageService.set('reportInfo', {happyLevel:self.happyLevel, calmLevel:self.calmLevel, sys:self.sys, dia:self.dia, pulse:self.pulse});
+                    //save report info
+                    report={userId:localStorageService.get('userId'), happyLevel:self.happyLevel, calmLevel:self.calmLevel, bpSYS:self.sys, bpDIA:self.dia, pulse:self.pulse}
+                    $http.post(self.httpReq + "Tests/NotReg/Report", report).then(function (res) {
+                        //go to next page according to report time
+                        if(reportTime==1)
+                        {
+                            $location.path('/video');
+                            $location.replace();
+                            
+                        }
+                        if(reportTime==2 || reportTime==3)
+                        {
+                            $location.path('/startTest');
+                            $location.replace();
+                            //self.startTest()
+                        }
+                    },
+                        function (error) {
+                            alert('failed, please try again' + error);
+                        }
+                    );
+                    
+                    
+                }
+                else
+                {
+                    alert('Please report your mood');
+                }
+
+            }
+
+            //-----Test-----
+            self.numberOfQuestions = 5;
+            self.allQuestions=[];
+            self.answers=[];
+            self.currQ = 0;
+            self.finishTest=false;
+            self.testStartTime;
+            self.testEndTime;
+            self.questions=[];
+            self.allIds=[];
+            self.ids=[];
+
+            self.findTest = function () {
+                
+                // //save start time
+                // self.testStartTime=(new Date()).toISOString();
+                let ids1=[];
+                //get random numbers for pictures
+                while(ids1.length < 30){
+                    var r = Math.floor(Math.random()*95) + 1;
+                    if(ids1.indexOf(r) === -1 && r!=25 && r!=2 && r!=37 && r!=44)
+                        ids1.push(r);
+                }
+                //pictured in order to see if user is reliable
+                ids1[1]=25;
+                ids1[5]=2;
+                ids1[20]=37;
+                ids1[22]=44;
+
+                //get 10 random faces
+                let faceIds=[];
+                while(faceIds.length < 10){
+                    var r = Math.floor(Math.random()*20) + 1;//for faceId
+                    if(faceIds.indexOf(r) === -1)
+                        faceIds.push(r);
+                }
+
+                //get pictures info
+                let counter=0;
+                for (let i = 0; i < ids1.length; i++) {
+                    let picId = ids1[i];
+                    $http.get(self.httpReq + "Questions/Pictures/" + ids1[i]).then(function (res) {
+                        counter++;
+                        //first 15
+                        if(i<15)
+                        {
+                            self.allQuestions[i] = res.data[0].pictureUrl;
+                            self.allIds[i]=picId;    
+                        }
+                        else
+                        {
+                            self.allQuestions[i+5] = res.data[0].pictureUrl;
+                            self.allIds[i+5]=picId;
+                        }
+                        self.answers[i]=null;
+                        if(counter>=40)
+                        {
+                            localStorageService.set('allIds', self.allIds);
+                            localStorageService.set('allQuestions', self.allQuestions);
+                        }
+                    },
+                        function (error) {
+                            //alert('failed to get picture from DB');
+                        }
+                    );
+                }
+
+                //get face info
+                for (let i = 0; i < faceIds.length; i++) {
+                    let picId = faceIds[i];
+                    $http.get(self.httpReq + "Questions/Pictures/" + faceIds[i]).then(function (res) { //TODO - Change to face
+                        counter++;
+                        //first 5 faces
+                        if(i<5)
+                        {
+                            self.allQuestions[i+15]=(res.data[0].pictureUrl);
+                            self.allIds[i+15]=(picId);
+                        }
+                        else
+                        {
+                            self.allQuestions[i+30]=(res.data[0].pictureUrl);
+                            self.allIds[i+30]=(picId);
+                        }
+                        
+                        // self.answers[i]=null;
+                        if(counter>=40)
+                        {
+                            localStorageService.set('allIds', self.allIds);
+                            localStorageService.set('allQuestions', self.allQuestions);
+                        }
+                    },
+                        function (error) {
+                            //alert('failed to get picture from DB');
+                        }
+                    );
+                }
+            }
+
+            self.startTest=function()
+            {
+                //save start time
+                self.testStartTime=(new Date()).toISOString();
+                //check what time of test
+                let testTime=localStorageService.get('testTime');
+                // localStorageService.set('testTime', testTime+1);
+
+                //get first 15 or last 15 pictures according to test time
+                let index=0;
+                //second time
+                if(testTime==1)
+                {
+                    index=19;
+                }
+                self.allQuestions = localStorageService.get('allQuestions');
+                self.allIds = localStorageService.get('allIds');
+
+                for(let i=0;i<20;i++)
+                {
+                    self.ids[i]=self.allIds[i+index];
+                    self.questions[i]=self.allQuestions[i+index];
+                    self.answers[i]=null;
+                }
+            }
+
+            // self.findTest = function () {
+            //     //save start time
+            //     self.testStartTime=(new Date()).toISOString();
+            //     //get from server
+            //     $http.get(self.httpReq + "Questions/getRandomQuestions/" + self.numberOfQuestions).then(function (res) {
+            //         let ids = res.data;
+            //         //TODO--check if picture or sentence
+            //         for (let i = 0; i < ids.length; i++) {
+            //             let picId = ids[i].picSentenceId;
+            //             $http.get(self.httpReq + "Questions/Pictures/" + ids[i].picSentenceId).then(function (res) {
+            //                 self.questions[i] = res.data[0].pictureUrl;
+            //                 self.ids[i]=picId;
+            //             },
+            //                 function (error) {
+            //                     alert('failed to get picture from DB');
+            //                 }
+            //             );
+            //         }
+            //     },
+            //         function (error) {
+            //             alert('failed to load questions');
+            //         }
+            //     );
+
+            // }
 
 
+            self.prevQ = function () {
+                if(self.currQ>0)
+                    self.currQ--;
+            }
 
-//add not-registered user test
-router.post('/NotReg/Report', function (req, res) {     //Add User
-    var userId = req.body.userId;
-    var happyLevel = req.body.happyLevel;
-    var calmLevel = req.body.calmLevel;
-    var bpSYS = req.body.bpSYS;
-    var bpDIA = req.body.bpDIA;
-    var pulse = req.body.pulse;
+            self.nextQ = function () {
+                if(self.currQ<self.questions.length-1)
+                    self.currQ++;
+                if(self.currQ==self.questions.length-1)
+                    self.finishTest=true;
+            }
 
-    //create testId
-    var reportId=0;
-    query = "SELECT MAX(reportId) as reportId FROM Report";
-    DButilsAzure.execQuery(query).then(function (result) {
-        if(result.length>0)
-            reportId=result[0].reportId+1;
-        else
-            reportId=0;
-        query1 = "INSERT INTO Report VALUES ('"
-            + reportId + "','"+ userId + "','" + happyLevel+ "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse  +"')";
 
-        DButilsAzure.execQuery(query1).then(function (result2) {
-            res.send(true)
-            }).catch(function (err) {
-                res.status(400).send(err);
-            });
-    }).catch(function (err) {
-        res.status(400).send(err);
-    });
+            self.SendAnsNotReg=function(){
+                if(!self.finishTest)
+                {
+                    alert("Please answer all questions befor sending the test");
+                    return;
+                }
+                let testTime=localStorageService.get('testTime')
 
-    
-});
-module.exports = router;
+                self.testEndTime=(new Date()).toISOString();
+                // reportInfo=localStorageModel.getLocalStorage('reportInfo');
+                reportInfo= localStorageService.get('reportInfo')
+                let answersArr=[];
+                for(i=0;i<self.questions.length;i++){
+                    picId=self.ids[i];
+                    ans=self.answers[i];
+                    if(ans ==undefined)
+                    {
+                        ans="";
+                    }
+                    answersArr[i]={qId:picId, answer:ans};
+                }
+                testAnswer={
+                    //userId: localStorageModel.getLocalStorage('userId'),
+                    userId:localStorageService.get('userId'),
+                    startTime: self.testStartTime,
+                    endTime: self.testEndTime,
+                    answers: answersArr
+                }
+                $http.post(self.httpReq + "Tests/NotReg/AddAnswers", testAnswer).then(function (res) {
+                    localStorageService.set('testTime', testTime+1)
+                    if(testTime==0)
+                    {
+                        $location.path('/video');
+                        $location.replace();    
+                    }
+                    else
+                    {
+                        alert("Thank you for your answers!");
+                        $location.path('/home');
+                        $location.replace();
+                    }
+                },
+                    function (error) {
+                        alert('failed, please try again' + error);
+                    }
+                );
+            }
+
+        }]);
