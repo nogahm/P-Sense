@@ -39,10 +39,16 @@ angular.module("pointsOfInterest")
             };
 
             // -----Video-----
+            self.videoEnded=false;
             self.stress=((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')==0)) || ((localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')>0));
             self.nextTophase3=function(){
                 $location.path('/report');
                 $location.replace();
+            }
+            self.videoEnded=function(number)
+            {
+                alert('ended');
+                self.videoEnded=(number==0 && !self.stress) || (number==1 && self.stress);
             }
 
             // -----Report-----

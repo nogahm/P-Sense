@@ -4,13 +4,15 @@
         <h1 class="header">video </h1>
         <h3 class="header2" align="center">  
             Please watch a short video</h3>
+            <!-- 0-calm, 1-stress -->
             <iframe ng-show="testCtrl.stress" width="488" height="252" src="https://www.youtube.com/embed/GvVoO5cKiSk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" class="center"></iframe>
-            <video ng-hide="testCtrl.stress" id="myVideo"  style="width:600px; height:500px;" class="center" controls>
+            
+            <video ng-hide="testCtrl.stress" id="myVideo"  style="width:600px; height:500px;" class="center" autoplay>
                 <source src="assets\video\relaxVideo.mp4" type="video/mp4">
             </video>
             
-            <h3 class="header2" align="center">   Enjoy 
+            <!-- <h3 class="header2" align="center">   Enjoy  -->
    </h3>    
-   <td><button ng-click="testCtrl.nextTophase3()" class="btn btn-success btn-lg logSubmit">Next</button></td>
+   <td><button  ng-click="testCtrl.nextTophase3()" class="btn btn-success btn-lg logSubmit">Next</button></td>
 </div>  
 </div>
