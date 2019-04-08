@@ -60,6 +60,9 @@ app.config( ['$routeProvider', function($routeProvider) {
     }).when("/startTest", {
         templateUrl : "./components/test/test.html",
         controller: "testController as testCtrl"
+    }).when("/thankYou", {
+        templateUrl : "./components/home/thankYou.html",
+        controller: "homeController as homeCtrl"
     }).otherwise({
         redirectTo : "/"
     });

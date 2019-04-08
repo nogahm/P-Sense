@@ -1,5 +1,6 @@
 body{
-    background-image:url('../images/background.jpg');
+    /* background-image:url('../images/background.jpg'); */
+    background: lightseagreen;
     /* background-repeat:no-repeat;
     background-size: cover;
     background-position:center; */

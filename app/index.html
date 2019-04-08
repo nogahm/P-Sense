@@ -7,6 +7,7 @@
     <script src="angularScripts/angular.js"></script>
     <script src="angularScripts/angular-local-storage.min.js"></script>
     <!-- <script src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script> -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="angularScripts/angular-route.js"></script>
@@ -38,7 +39,7 @@
 
 <body style="display:flex; flex-flow: column;" ng-app="pointsOfInterest">
     <div style="order:2" ng-controller="mainController as mainCtrl">
-        <div class="menu" name="guestMenu" ng-show="$root.guest">
+        <div ng-hide=true class="menu" name="guestMenu">
             <li class="li"><a class="btn_menu" href="#/">Home</a></li>
             <!-- <li class="li"><a class="btn_menu" href="#/about">About</a></li> -->
             <!-- <li class="li"><a class="btn_menu" href="#/login">Login</a></li> -->
@@ -64,10 +65,13 @@
         </div>
         <br><br> -->
         <br><br>
-        <br><br>
         <div ng-view style="order:3"> </div>
     </div>
     <br>
     <br>
 </body>
 </html>
+
+<script type="text/javascript">
+    $('#nextBtn').delay(5000).show(0);
+</script>

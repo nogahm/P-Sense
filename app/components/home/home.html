@@ -1,11 +1,34 @@
 <div ng-controller="homeController as prdctCtrl">
         <div class="top3" ng-hide="!$root.guest">
-            <h1 class="header">P-Sense Patterns Experiment</h1>
-            <h3 class="header2">   Welcome,
-                You are asked to enter all the requested data before starting the experiment.
-                Thank you very much for your cooperation.
-            </h3>
-    <IMG SRC="assets\images\gifT.gif" class="center">
-       
-        </div>  
+            <h1 class="header">P-Sense Experiment</h1>
+            <h3 style="line-height: 1.6; text-align: justify; text-decoration:none; font-size: 16px;">
+                    Welcome to our experiment.<br>
+                    Please consider this information carefully before deciding whether to accept this task.<br>
+                    PURPOSE OF RESEARCH: Visual recognition test <br>
+                    WHAT YOU WILL DO: You will be asked to recognize items in images, watch videos and give information about yourself<br>
+                    TIME REQUIRED: Participation will take approximately 10 minutes.<br>
+                    RISKS: There are no anticipated risks associated with participating in this study. The effects of participating should be comparable to those you would experience from viewing a computer monitor for 10 minutes and using a mouse.<br>
+                    CONFIDENTIALITY: Your participation in this study will remain confidential. Your responses will be assigned a code number.<br>
+                          You will NOT be asked to provide your name. You will be asked to provide your age and gender.<br>
+                         Throughout the experiment, we may collect data such as browser type, operating system version, mouse movements, and error rates.<br>
+                         The records of this study will be kept private.<br>
+                         We will delete your Amazon Mechanical Turk Worker ID once we process your task and payment (within 3 days of completing this task).<br>
+                         In any sort of report we make public we will not include any information that will make<br>
+                         it possible to identify you without your explicit consent.<br>
+                         Research records will be kept in a locked file; only the researchers will have access to the records.<br>
+                    PARTICIPATION AND WITHDRAWAL: Your participation in this study is voluntarily, and you may withdraw and return the task to Amazon Mechanical Turk at any time. You will receive a compensation only if you complete the task. You may withdraw at any time by closing the web page of the task.<br>
+                    <br>
+                    CONTACT: This study is conducted by researchers at the Ben-Gurion University. If you have any questions or concerns about this study, please contact hilla.shinitzky@gmail.com<br>
+                    <br>
+                    Consent: I have read the above information and the nature and purpose of this research have been sufficiently explained. I consent to take part in the study.  I understand that I am free to withdraw at any time.  <br>
+            </h3> 
+            <div class="positionCenter">
+                    <input type="checkbox" id="test3" checked="checked" ng-model="prdctCtrl.checkbok"/>
+                <label for="test3" style="color:red;"> I agree and will participate in this study.</label>
+                </div>
+        </div> 
+
+
+        <br>
+        <button ng-show="prdctCtrl.checkbok" class="btn btn-success btn-lg logSubmit" ng-click="prdctCtrl.startTest()">Continue To Test</button>
     </div>

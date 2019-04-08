@@ -51,6 +51,7 @@ angular.module("pointsOfInterest")
                 self.videoEnded=(number==0 && !self.stress) || (number==1 && self.stress);
             }
 
+
             // -----Report-----
             self.hasSmartBracelate = false;
             self.happyLevel;
@@ -318,8 +319,8 @@ angular.module("pointsOfInterest")
                     }
                     else
                     {
-                        alert("Thank you for your answers!");
-                        $location.path('/home');
+                        // alert("Thank you for your answers!");
+                        $location.path('/thankYou');
                         $location.replace();
                     }
                 },
@@ -328,5 +329,5 @@ angular.module("pointsOfInterest")
                     }
                 );
             }
-
+ 
         }]);
