@@ -126,17 +126,25 @@ angular.module("pointsOfInterest")
                 // //save start time
                 // self.testStartTime=(new Date()).toISOString();
                 let ids1=[];
+                //count number of real pictures (at least 2 for each test)
+
                 //get random numbers for pictures
                 while(ids1.length < 30){
                     var r = Math.floor(Math.random()*95) + 1;
-                    if(ids1.indexOf(r) === -1 && r!=25 && r!=2 && r!=37 && r!=44)
+                    if(ids1.indexOf(r) === -1 && ![25,2,37,44,26,92,89,87].includes(r))
                         ids1.push(r);
                 }
+                //28-84 - nothing
                 //pictured in order to see if user is reliable
                 ids1[1]=25;
                 ids1[5]=2;
                 ids1[20]=37;
                 ids1[22]=44;
+                //add for each test 2 real pictures
+                ids1[0]=26;
+                ids1[10]=92;
+                ids1[15]=89;
+                ids1[25]=87;
 
                 //get 10 random faces
                 let faceIds=[];
