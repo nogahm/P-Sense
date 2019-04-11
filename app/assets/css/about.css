@@ -31,15 +31,15 @@
 
 .centerImage {
   display: block;
-  margin-left: 20%;
-  margin-right: 50%;
+  margin-left: 1%;
+  margin-right: 80%;
   border: 1px solid black;
   border-radius: 10px;
   padding: 5px;
 }
   .centerFillText {
     display: block;
-    margin-left: 35%;
-    margin-right: 50%;
+    margin-left: 15%;
+    margin-right: 70%;
     width: 70%;
   }
