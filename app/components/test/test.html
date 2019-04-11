@@ -48,6 +48,6 @@
                     <td><button ng-hide="(testCtrl.currQ<=14 && testCtrl.answers[testCtrl.currQ] == null) || (testCtrl.currQ>14 && testCtrl.FaceAnswers[testCtrl.currQ] == null) " ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
                 </tr>
             </table>
-            <button ng-show="testCtrl.finishTest && testCtrl.FaceAnswers[testCtrl.currQ] != null" ng-click="testCtrl.SendAnsNotReg()" class="btn btn-success btn-lg logSubmit">Send Test</button>
+            <button ng-show="testCtrl.finishTest && testCtrl.FaceAnswers[testCtrl.currQ] != null" ng-disabled="testCtrl.toDisableSend" ng-click="testCtrl.SendAnsNotReg()" class="btn btn-success btn-lg logSubmit">Send Test</button>
         </div>
     </div>

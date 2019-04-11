@@ -58,7 +58,7 @@
                                    </select>
                                    <span ng-show="(infoNotRegForm.hand.$error.required || infoNotRegForm.hand.$pristine) && infoNotRegForm.$submitted" class="help-block">Dominant Hand is required</span>
                      </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                             <label class="logInputHeader">Email</label>
                             <input type="email"
                                    ng-model="testCtrl.notRegUser.email"
@@ -66,10 +66,9 @@
                                    class="form-control logInput"
                                    name="emailInput"
                                    placeholder="Enter Email">
-                            <!-- <span ng-show="(loginForm.passwordInput.$error.required || loginForm.passwordInput.$pristine)&& loginForm.$submitted" class="help-block">Password is required</span> -->
-                    </div>
+                    </div> -->
                     <br>
-                    <input type="submit"
+                    <input type="submit" ng-disabled="testCtrl.toDisable"
                            class="btn btn-success btn-lg logSubmit"
                            value="Submit And Continue">
                     <br>

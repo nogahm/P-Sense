@@ -2,6 +2,10 @@ angular.module("pointsOfInterest")
     .controller('testController', ['$scope', '$http', 'localStorageModel', '$rootScope', 'ngDialog', '$location', '$window','localStorageService',
         function ($scope, $http, localStorageModel, $rootScope, ngDialog, $location, $window,localStorageService) {
             let self = this;
+            let itSend=false;
+            self.toDisable = false;
+            self.toDisableReport=false;
+            self.toDisableSend=false;
             self.httpReq = 'https://psense.herokuapp.com/';
             // self.httpReq = 'localhost:3000/';
             // -----NotRegInfo-----
@@ -11,14 +15,26 @@ angular.module("pointsOfInterest")
                 $location.replace();
             }
 
-            
+         
+            $(document).ready(function(){  
+                 $("#submit").submit(function() {
+                        $(this).submit(function() {
+                            return false;
+                        });
+                        return true;
+                    }); 
+             });
+
             self.notRegUser = { age: null, gender: '', email: '', hand: '' };
             self.notRegId = null;
             //save not reg info and continue to report-not working
             self.saveInfo = function (valid) {
                 if (valid) {
+                    self.toDisable = true;
+
                     //save info and get userId
                     $http.post(self.httpReq + "Users/NotRegUser", self.notRegUser).then(function (res) {
+                        itSend=true;
                         self.notRegId = res.data;
                         self.infoSaved=true;
                         // localStorageModel.addLocalStorage('userId', self.notRegId);
@@ -36,6 +52,7 @@ angular.module("pointsOfInterest")
                         }
                     );
                 }
+            
             };
 
             // -----Video-----
@@ -67,6 +84,7 @@ angular.module("pointsOfInterest")
             
 
             self.reportAndStart=function(){
+                self.toDisableReport=true;
                 let reportTime=localStorageService.get('reportTime')
 
                 physicalIndices=true;
@@ -290,6 +308,7 @@ angular.module("pointsOfInterest")
 
 
             self.SendAnsNotReg=function(){
+                self.toDisableSend=true;
                 if(!self.finishTest)
                 {
                     alert("Please answer all questions befor sending the test");
