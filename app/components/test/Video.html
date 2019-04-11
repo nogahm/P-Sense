@@ -4,14 +4,20 @@
         <h1 class="header">video </h1>
         <h3 class="header2" align="center"> Please watch a short video</h3>
             <!-- <iframe ng-show="testCtrl.stress" width="488" height="252" src="https://www.youtube.com/embed/GvVoO5cKiSk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" class="center"></iframe> -->
-            <video ng-show="testCtrl.stress" id="myVideo"  style="width:600px; height:500px;" class="center" autoplay onended="myFunction(1)" >
+            <video id="myVideo"  style="width:600px; height:500px;" class="center" autoplay onended="myFunction(0)">
+                <source ng-src={{testCtrl.videoURL}} type="video/mp4">
+            </video>
+            
+            
+            
+            <!-- <video ng-show="testCtrl.stress" id="myVideo"  style="width:600px; height:500px;" class="center" autoplay onended="myFunction(1)" >
                     <source src="assets\video\stressVideo.mp4" type="video/mp4">
                 </video>
 
             <video ng-hide="testCtrl.stress" id="myVideo"  style="width:600px; height:500px;" class="center" autoplay onended="myFunction(0)">
                 <source src="assets\video\relaxVideo.mp4" type="video/mp4">
             </video>
-            
+             -->
             <!-- <h3 class="header2" align="center">   Enjoy  -->
    </h3>    
    <td><button style="display:none;" id="nextBtn" ng-click="testCtrl.nextTophase3()" class="btn btn-success btn-lg logSubmit">Next</button></td>

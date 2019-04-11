@@ -41,6 +41,11 @@ angular.module("pointsOfInterest")
             // -----Video-----
             self.videoEnded=false;
             self.stress=((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')==0)) || ((localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')>0));
+            self.videoURL="assets\\video\\relaxVideo.mp4";
+            if(self.stress)
+            {
+                self.videoURL="assets\\video\\stressVideo.mp4";
+            }
             self.nextTophase3=function(){
                 $location.path('/report');
                 $location.replace();

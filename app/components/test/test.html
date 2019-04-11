@@ -19,35 +19,35 @@
                         <!-- <img src="assets\images\questionsImages\screw.jpg"> -->
                     </td>
                 </tr>
-                    <tr>
-                        <td>
-                            <div ng-hide="testCtrl.currQ>14" class="centerFillText">
-                                    <input type="text" ng-model="testCtrl.answers[testCtrl.currQ]" ng-required="true" class="form-control logInput" name="usernameInput" placeholder="what you see">
-                            </div>
-                            <div ng-show="testCtrl.currQ>14" class="centerFillText">
-                                    <select ng-model="testCtrl.FaceAnswers[testCtrl.currQ]"
-                                    ng-required="true"
-                                    class="form-control logInput"
-                                    name="genderInput">
-                                    <option value="face">Face</option>
-                                    <option value="nonFace">Not Face</option>
-                                    </select>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="centerFillText">
-                                <h2 class="logHeader" style="font-size: 25px;">Question {{testCtrl.currQ+1}} / {{testCtrl.questions.length}}</h2>
-                            </div>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <div ng-hide="testCtrl.currQ>14" class="centerFillText">
+                                <input type="text" ng-model="testCtrl.answers[testCtrl.currQ]" ng-required="true" class="form-control logInput" name="usernameInput" placeholder="what you see">
+                        </div>
+                        <div ng-show="testCtrl.currQ>14" class="centerFillText">
+                                <select ng-model="testCtrl.FaceAnswers[testCtrl.currQ]"
+                                ng-required="true"
+                                class="form-control logInput"
+                                name="genderInput">
+                                <option value="face">Face</option>
+                                <option value="nonFace">Not Face</option>
+                                </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="centerFillText">
+                            <h2 class="logHeader" style="font-size: 25px;">Question {{testCtrl.currQ+1}} / {{testCtrl.questions.length}}</h2>
+                        </div>
+                    </td>
+                </tr>
                 
                 <tr>
-                    <td><button ng-click="testCtrl.prevQ()" class="btn btn-success btn-lg logSubmit" style="float:left">Previous</button></td>
-                    <td><button ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
+                    <!-- <td><button ng-click="testCtrl.prevQ()" class="btn btn-success btn-lg logSubmit" style="float:left">Previous</button></td> -->
+                    <td><button ng-hide="(testCtrl.currQ<=14 && testCtrl.answers[testCtrl.currQ] == null) || (testCtrl.currQ>14 && testCtrl.FaceAnswers[testCtrl.currQ] == null) " ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
                 </tr>
             </table>
-            <button ng-show="testCtrl.finishTest" ng-click="testCtrl.SendAnsNotReg()" class="btn btn-success btn-lg logSubmit">Send Test</button>
+            <button ng-show="testCtrl.finishTest && testCtrl.FaceAnswers[testCtrl.currQ] != null" ng-click="testCtrl.SendAnsNotReg()" class="btn btn-success btn-lg logSubmit">Send Test</button>
         </div>
     </div>
