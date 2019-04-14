@@ -146,11 +146,16 @@ angular.module("pointsOfInterest")
 
             self.findTest = function () {
                 
-                // //save start time
-                // self.testStartTime=(new Date()).toISOString();
-                let ids1=[];
-                //count number of real pictures (at least 2 for each test)
-
+                //test1
+                //0-14: pictures
+                //15-19: faces
+                //20-34: words
+                //test2
+                //35-49: pictures
+                //50-54: faces
+                //55-69: words    
+                let ids1=[]; /// 35 question for each test
+                
                 //get random numbers for pictures
                 while(ids1.length < 30){
                     var r = Math.floor(Math.random()*95) + 1;
@@ -177,6 +182,14 @@ angular.module("pointsOfInterest")
                         faceIds.push(r);
                 }
 
+                //30 wordIds
+                let wordIds=[];
+                while(wordIds.length < 30){
+                    var r = Math.floor(Math.random()*31) + 1;//for faceId
+                    if(wordIds.indexOf(r) === -1)
+                        wordIds.push(r);
+                }
+
                 //get pictures info
                 let counter=0;
                 for (let i = 0; i < ids1.length; i++) {
@@ -191,11 +204,11 @@ angular.module("pointsOfInterest")
                         }
                         else
                         {
-                            self.allQuestions[i+5] = res.data[0].pictureUrl;
-                            self.allIds[i+5]=picId;
+                            self.allQuestions[i+20] = res.data[0].pictureUrl;
+                            self.allIds[i+20]=picId;
                         }
                         // self.answers[i]=null;
-                        if(counter>=40)
+                        if(counter>=70)
                         {
                             localStorageService.set('allIds', self.allIds);
                             localStorageService.set('allQuestions', self.allQuestions);
@@ -220,12 +233,12 @@ angular.module("pointsOfInterest")
                         }
                         else
                         {
-                            self.allQuestions[i+30]=(res.data[0].PICURL);
-                            self.allIds[i+30]=(picId);
+                            self.allQuestions[i+35]=(res.data[0].PICURL);
+                            self.allIds[i+35]=(picId);
                         }
                         
                         // self.FaceAnswers[i]=null;
-                        if(counter>=40)
+                        if(counter>=70)
                         {
                             localStorageService.set('allIds', self.allIds);
                             localStorageService.set('allQuestions', self.allQuestions);
@@ -236,6 +249,37 @@ angular.module("pointsOfInterest")
                         }
                     );
                 }
+
+                // get word info
+                for (let i = 0; i < wordIds.length; i++) {
+                    let wordId = wordIds[i];
+                    $http.get(self.httpReq + "Questions/WordQuestion/" + wordIds[i]).then(function (res) {
+                        counter++;
+                        //first 15 words
+                        if(i<15)
+                        {
+                            self.allQuestions[i+20]=(res.data[0].wordId);
+                            self.allIds[i+20]=(wordId);
+                        }
+                        else
+                        {
+                            self.allQuestions[i+40]=(res.data[0].wordId);
+                            self.allIds[i+40]=(wordId);
+                        }
+                        
+                        // self.FaceAnswers[i]=null;
+                        if(counter>=70)
+                        {
+                            localStorageService.set('allIds', self.allIds);
+                            localStorageService.set('allQuestions', self.allQuestions);
+                        }
+                    },
+                        function (error) {
+                            //alert('failed to get picture from DB');
+                        }
+                    );
+                }
+                // /WordQuestion/:wordId
             }
 
             self.startTest=function()
@@ -265,32 +309,10 @@ angular.module("pointsOfInterest")
                 }
             }
 
-            // self.findTest = function () {
-            //     //save start time
-            //     self.testStartTime=(new Date()).toISOString();
-            //     //get from server
-            //     $http.get(self.httpReq + "Questions/getRandomQuestions/" + self.numberOfQuestions).then(function (res) {
-            //         let ids = res.data;
-            //         //TODO--check if picture or sentence
-            //         for (let i = 0; i < ids.length; i++) {
-            //             let picId = ids[i].picSentenceId;
-            //             $http.get(self.httpReq + "Questions/Pictures/" + ids[i].picSentenceId).then(function (res) {
-            //                 self.questions[i] = res.data[0].pictureUrl;
-            //                 self.ids[i]=picId;
-            //             },
-            //                 function (error) {
-            //                     alert('failed to get picture from DB');
-            //                 }
-            //             );
-            //         }
-            //     },
-            //         function (error) {
-            //             alert('failed to load questions');
-            //         }
-            //     );
-
-            // }
-
+            // set word time to 10 seconds
+            var x = document.getElementById("word");
+            if(x!=undefined)
+                setTimeout(function(){ x.hidden=true }, 10000);
 
             self.prevQ = function () {
                 if(self.currQ>0)

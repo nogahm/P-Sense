@@ -30,7 +30,8 @@
                                    ng-required="true"
                                    class="form-control logInput"
                                    name="ageInput"
-                                   placeholder="Enter age">
+                                   placeholder="Enter age"
+                                   min="18">
                             <span ng-show="(infoNotRegForm.ageInput.$error.required || infoNotRegForm.ageInput.$pristine) && infoNotRegForm.$submitted" class="help-block">Age is required</span>
                     </div>
                     <div class="form-group">
@@ -58,20 +59,25 @@
                                    </select>
                                    <span ng-show="(infoNotRegForm.hand.$error.required || infoNotRegForm.hand.$pristine) && infoNotRegForm.$submitted" class="help-block">Dominant Hand is required</span>
                      </div>
-                    <!-- <div class="form-group">
-                            <label class="logInputHeader">Email</label>
-                            <input type="email"
-                                   ng-model="testCtrl.notRegUser.email"
-                                   ng-required="false"
+                     <div class="form-group">
+                            <label class="logInputHeader">English Knowledge Level</label>
+                            <select ng-model="testCtrl.notRegUser.email"
+                                   ng-required="true"
                                    class="form-control logInput"
-                                   name="emailInput"
-                                   placeholder="Enter Email">
-                    </div> -->
-                    <br>
-                    <input type="submit" ng-disabled="testCtrl.toDisable"
+                                   name="englishLevel"
+                                   placeholder="">
+                                   <option value="native language">Native Language</option>
+                                   <option value="very good">Very Good</option>
+                                   <option value="good">Good</option>
+                                   <option value="Low">Low</option>
+                                   </select>
+                                   <span ng-show="(infoNotRegForm.englishLevel.$error.required || infoNotRegForm.englishLevel.$pristine) && infoNotRegForm.$submitted" class="help-block">English Level is required</span>
+                     </div>
+                     <br>
+                     <input type="submit" ng-disabled="testCtrl.toDisable"
                            class="btn btn-success btn-lg logSubmit"
                            value="Submit And Continue">
-                    <br>
+                     <br>
                 </form>
                 <br>
             </div>

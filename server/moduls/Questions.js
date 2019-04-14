@@ -23,10 +23,19 @@ router.get('/Pictures/:picId', function (req, res) {
 });*/
 
 
-//GET picture url by id
+//GET face url by id
 router.get('/FacesPictures/:picId', function (req, res) {
     var picId = req.params.picId;
     DButilsAzure.execQuery("SELECT PICURL FROM FacesPictures WHERE PicID='"+picId+"'").then(function (result) {
+        res.send(result);
+    }).catch(function (err) { res.status(400).send(err); });
+});
+
+
+//GET word by id
+router.get('/WordQuestion/:wordId', function (req, res) {
+    var wordId = req.params.wordId;
+    DButilsAzure.execQuery("SELECT Word FROM Words WHERE WordId='"+wordId+"'").then(function (result) {
         res.send(result);
     }).catch(function (err) { res.status(400).send(err); });
 });
@@ -49,6 +58,8 @@ router.get('/getPicSenId/:qId', function (req, res) {
     }).catch(function (err) { res.status(400).send(err);
     });
 });
+
+
 // router.get('/getQuestionsAnswers', function (req, res) {
 //     var qIds = req.body.qIds;
 //     var stringID="";
