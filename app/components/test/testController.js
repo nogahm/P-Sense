@@ -1,6 +1,6 @@
 angular.module("pointsOfInterest")
-    .controller('testController', ['$scope', '$http', 'localStorageModel', '$rootScope', 'ngDialog', '$location', '$window','localStorageService',
-        function ($scope, $http, localStorageModel, $rootScope, ngDialog, $location, $window,localStorageService) {
+    .controller('testController', ['$scope', '$http', 'localStorageModel', '$rootScope', 'ngDialog', '$location', '$window','localStorageService','$timeout',
+        function ($scope, $http, localStorageModel, $rootScope, ngDialog, $location, $window,localStorageService,$timeout) {
             let self = this;
             let itSend=false;
             self.toDisable = false;
@@ -136,6 +136,7 @@ angular.module("pointsOfInterest")
             self.allQuestions=[];
             self.answers=[];
             self.FaceAnswers=[];
+            self.WordAnswers=[];
             self.currQ = 0;
             self.finishTest=false;
             self.testStartTime;
@@ -233,8 +234,8 @@ angular.module("pointsOfInterest")
                         }
                         else
                         {
-                            self.allQuestions[i+35]=(res.data[0].PICURL);
-                            self.allIds[i+35]=(picId);
+                            self.allQuestions[i+45]=(res.data[0].PICURL);
+                            self.allIds[i+45]=(picId);
                         }
                         
                         // self.FaceAnswers[i]=null;
@@ -258,12 +259,12 @@ angular.module("pointsOfInterest")
                         //first 15 words
                         if(i<15)
                         {
-                            self.allQuestions[i+20]=(res.data[0].wordId);
+                            self.allQuestions[i+20]=(res.data[0].Word);
                             self.allIds[i+20]=(wordId);
                         }
                         else
                         {
-                            self.allQuestions[i+40]=(res.data[0].wordId);
+                            self.allQuestions[i+40]=(res.data[0].Word);
                             self.allIds[i+40]=(wordId);
                         }
                         
@@ -295,25 +296,22 @@ angular.module("pointsOfInterest")
                 //second time
                 if(testTime==1)
                 {
-                    index=20;
+                    index=35;
                 }
                 self.allQuestions = localStorageService.get('allQuestions');
                 self.allIds = localStorageService.get('allIds');
 
-                for(let i=0;i<20;i++)
+                for(let i=0;i<35;i++)
                 {
                     self.ids[i]=self.allIds[i+index];
                     self.questions[i]=self.allQuestions[i+index];
                     self.answers[i]=null;
                     self.FaceAnswers[i]=null;
+                    self.WordAnswers[i]=null;
                 }
             }
 
-            // set word time to 10 seconds
-            var x = document.getElementById("word");
-            if(x!=undefined)
-                setTimeout(function(){ x.hidden=true }, 10000);
-
+            
             self.prevQ = function () {
                 if(self.currQ>0)
                     self.currQ--;
@@ -325,7 +323,15 @@ angular.module("pointsOfInterest")
                 else
                     alert("If you answered all questions, please press 'Send Test'")
                 if(self.currQ==self.questions.length-1)
-                    self.finishTest=true;                    
+                    self.finishTest=true;   
+                // set word time to 10 seconds
+                self.x = document.getElementById("word");
+                if(self.x!=undefined && self.currQ>19)
+                {
+                    self.x.hidden=false;
+                    $timeout(function(){ self.x.hidden=true },5000);
+                }
+                                     
             }
 
 
@@ -346,15 +352,19 @@ angular.module("pointsOfInterest")
                     picId=self.ids[i];
                     if(i<15)
                         ans=self.answers[i];
-                    else
+                    else if(i<19)
                         ans=self.FaceAnswers[i];
+                    else
+                        ans=self.WordAnswers[i];
                     if(ans ==undefined)
                     {
                         ans="";
                     }
                     let type="pic";
-                    if(i>14)
+                    if(i>14 && i<19)
                         type="face";
+                    else if(i>19)
+                        type="word";
                     answersArr[i]={qId:picId, answer:ans, Qtype:type};
                 }
                 testAnswer={

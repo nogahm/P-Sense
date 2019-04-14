@@ -5,8 +5,11 @@
             <div ng-hide="testCtrl.currQ>14" style="color: red; font-size: 18px;" >
                 Please write in english what you see in the picture,<br> if you see nothing write "nothing".
             </div>
-            <div ng-show="testCtrl.currQ>14" style="color: red; font-size: 18px;">
+            <div ng-show="testCtrl.currQ>14 && testCtrl.currQ<20" style="color: red; font-size: 18px;">
                 Choose Face/Not Face according to what you see in the picture.
+            </div>
+            <div ng-show="testCtrl.currQ>19" style="color: red; font-size: 18px;">
+                Answer "Word" if you see a real word, otherwise choose "Not a Word"
             </div>
             <br>
             <!-- <div style="height: 5em">
@@ -17,11 +20,16 @@
             <table align="center">
                 <!-- question -->
                 <tr>
-                    <td>
-                        <img ng-show="testCtrl.currQ<20" ng-src="{{testCtrl.questions[testCtrl.currQ]}}" class="centerImage" width="500" height="300">
+                    <td  width="600">
+                        <div  ng-show="testCtrl.currQ>19">
+                            <div id="word" style="font-size: 45px; text-align: center;">
+                                {{testCtrl.questions[testCtrl.currQ]}}
+                            </div>
+                        </div>
+
+                        <img ng-show="testCtrl.currQ<20" ng-src="{{testCtrl.questions[testCtrl.currQ]}}" on-error-src="http://google.com/favicon.ico" class="centerImage" width="500" height="300">
                         <!-- <img src="assets\images\questionsImages\screw.jpg"> -->
                         <!-- eord -->
-                        <div ng-show="testCtrl.currQ>=20" id="word">{{testCtrl.questions[testCtrl.currQ]}}</div>
                     </td>
                 </tr>
                 <!-- answer -->
@@ -39,13 +47,13 @@
                                 <option value="nonFace">Not Face</option>
                                 </select>
                         </div>
-                        <div ng-show="testCtrl.currQ>19" class="centerFillText">
+                        <div ng-show="testCtrl.currQ>19 && testCtrl.x.hidden" class="centerFillText">
                                 <select ng-model="testCtrl.WordAnswers[testCtrl.currQ]"
                                 ng-required="true"
                                 class="form-control logInput"
                                 name="genderInput">
-                                <option value="face">Word</option>
-                                <option value="nonFace">Not a Word</option>
+                                <option value="word">Word</option>
+                                <option value="nonWord">Not a Word</option>
                                 </select>
                         </div>
                     </td>
@@ -60,9 +68,9 @@
                 
                 <tr>
                     <!-- <td><button ng-click="testCtrl.prevQ()" class="btn btn-success btn-lg logSubmit" style="float:left">Previous</button></td> -->
-                    <td><button ng-hide="(testCtrl.currQ<=14 && testCtrl.answers[testCtrl.currQ] == null) || (testCtrl.currQ>14 && testCtrl.FaceAnswers[testCtrl.currQ] == null) " ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
+                    <td><button ng-hide="(testCtrl.currQ<=14 && testCtrl.answers[testCtrl.currQ] == null) || (testCtrl.currQ>14 && testCtrl.currQ<20 && testCtrl.FaceAnswers[testCtrl.currQ] == null) || (testCtrl.currQ>19 && testCtrl.WordAnswers[testCtrl.currQ] == null)" ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
                 </tr>
             </table>
-            <button ng-show="testCtrl.finishTest && testCtrl.FaceAnswers[testCtrl.currQ] != null" ng-disabled="testCtrl.toDisableSend" ng-click="testCtrl.SendAnsNotReg()" class="btn btn-success btn-lg logSubmit">Send Test</button>
+            <button ng-show="testCtrl.finishTest && testCtrl.WordAnswers[testCtrl.currQ] != null" ng-disabled="testCtrl.toDisableSend" ng-click="testCtrl.SendAnsNotReg()" class="btn btn-success btn-lg logSubmit">Send Test</button>
         </div>
     </div>
