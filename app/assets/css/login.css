@@ -76,3 +76,30 @@
     color: #ffffff;
     border-color: white;
 }
+
+
+.wordBtn{
+    /* margin: auto; */
+    outline:none;
+    border:none;
+    /* display: block; */
+    color: black;
+    /* text-align: center; */
+    padding: 5px;
+    border: 8px solid white;
+    /* padding: 14px 16px; */
+    border-radius: 15pt;
+    text-decoration: none;
+    font-size: 25px;
+    transition: .3s background-color;
+    background-color: #ffffff !important;
+    /* margin-right: 10px; */
+    font-family: 'Acme', sans-serif;
+    width: 300px;
+    height: 70px;
+}
+.wordBtn:hover{
+    background-color: #e6e1e1 !important;
+    color: #ffffff;
+    border-color: white;
+}

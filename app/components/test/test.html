@@ -47,15 +47,22 @@
                                 <option value="nonFace">Not Face</option>
                                 </select>
                         </div>
-                        <div ng-show="testCtrl.currQ>19 && testCtrl.x.hidden" class="centerFillText">
-                                <select ng-model="testCtrl.WordAnswers[testCtrl.currQ]"
-                                ng-required="true"
-                                class="form-control logInput"
-                                name="genderInput">
-                                <option value="word">Word</option>
-                                <option value="nonWord">Not a Word</option>
-                                </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div ng-show="testCtrl.currQ>19 && testCtrl.x.hidden">
+                            <!-- <select ng-model="testCtrl.WordAnswers[testCtrl.currQ]"
+                            ng-required="true"
+                            class="form-control logInput"
+                            name="genderInput">
+                            <option value="word">Word</option>
+                            <option value="nonWord">Not a Word</option>
+                            </select> -->
+                            <button ng-click="testCtrl.nextQWord('word')" class="wordBtn">Word</button>
+                            <button ng-click="testCtrl.nextQWord('nonWord')" class="wordBtn">Not a Word</button>        
                         </div>
+
                     </td>
                 </tr>
                 <tr>
@@ -68,9 +75,9 @@
                 
                 <tr>
                     <!-- <td><button ng-click="testCtrl.prevQ()" class="btn btn-success btn-lg logSubmit" style="float:left">Previous</button></td> -->
-                    <td><button ng-hide="(testCtrl.currQ<=14 && testCtrl.answers[testCtrl.currQ] == null) || (testCtrl.currQ>14 && testCtrl.currQ<20 && testCtrl.FaceAnswers[testCtrl.currQ] == null) || (testCtrl.currQ>19 && testCtrl.WordAnswers[testCtrl.currQ] == null)" ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
+                    <td><button ng-hide="(testCtrl.currQ<=14 && testCtrl.answers[testCtrl.currQ] == null) || (testCtrl.currQ>14 && testCtrl.currQ<20 && testCtrl.FaceAnswers[testCtrl.currQ] == null) || (testCtrl.currQ>19)" ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
                 </tr>
             </table>
-            <button ng-show="testCtrl.finishTest && testCtrl.WordAnswers[testCtrl.currQ] != null" ng-disabled="testCtrl.toDisableSend" ng-click="testCtrl.SendAnsNotReg()" class="btn btn-success btn-lg logSubmit">Send Test</button>
+            <button ng-show="testCtrl.finishTest && testCtrl.WordAnswers[testCtrl.currQ] != null" ng-disabled="testCtrl.toDisableSend" ng-click="testCtrl.SendAnsNotReg()" class="btn btn-success btn-lg logSubmit">Continue</button>
         </div>
     </div>

@@ -317,6 +317,12 @@ angular.module("pointsOfInterest")
                     self.currQ--;
             }
 
+            self.nextQWord=function(ans)
+            {
+                self.WordAnswers[self.currQ]=ans;
+                self.nextQ();
+            }
+
             self.nextQ = function () {
                 if(self.currQ<self.questions.length-1)
                     self.currQ++;
@@ -329,7 +335,7 @@ angular.module("pointsOfInterest")
                 if(self.x!=undefined && self.currQ>19)
                 {
                     self.x.hidden=false;
-                    $timeout(function(){ self.x.hidden=true },5000);
+                    $timeout(function(){ self.x.hidden=true },100);
                 }
                                      
             }
