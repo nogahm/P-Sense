@@ -131,25 +131,20 @@ router.post('/NotReg/ReportPANAS', function (req, res) {     //Add User
     var hostileLevel = req.body.hostileLevel;
     var ashamedLevel = req.body.ashamedLevel;
 
-
-
-    DButilsAzure.execQuery(query).then(function (result) {
-        if(result.length>0)
-            reportId=result[0].reportId+1;
-        else
-            reportId=0;
+    
+   
         query1 = "INSERT INTO ReportPANAS VALUES ('"
-             + "','"+ userId + "','" + activeLevel+ "','" + determinedLevel + "','" + attentiveLevel + "','" + inspiredLevel + "','" + alertLevel+ "','" + afraidLevel+ "','" + upsetLevel+ "','" + nervousLevel+ "','"   + hostileLevel+ "','" + ashamedLevel+"')";
+            + userId + "','" + activeLevel+ "','" + determinedLevel + "','" + attentiveLevel + "','" + inspiredLevel + "','" + alertLevel+ "','" + afraidLevel+ "','" + nervousLevel+ "','" + upsetLevel+ "','"   + hostileLevel+ "','" + ashamedLevel+"')";
 
         DButilsAzure.execQuery(query1).then(function (result2) {
+          
             res.send(true)
             }).catch(function (err) {
+         
                 res.status(400).send(err);
             });
-    }).catch(function (err) {
-        res.status(400).send(err);
     });
 
     
-});
+
 module.exports = router;
