@@ -84,8 +84,6 @@ router.post('/NotReg/AddAnswers', function (req, res) {     //Add User
     
 });
 
-
-
 //add not-registered user test
 router.post('/NotReg/Report', function (req, res) {     //Add User
     var userId = req.body.userId;
@@ -105,6 +103,43 @@ router.post('/NotReg/Report', function (req, res) {     //Add User
             reportId=0;
         query1 = "INSERT INTO Report VALUES ('"
             + reportId + "','"+ userId + "','" + happyLevel+ "','" + calmLevel + "','" + bpSYS + "','" + bpDIA + "','" + pulse  +"')";
+
+        DButilsAzure.execQuery(query1).then(function (result2) {
+            res.send(true)
+            }).catch(function (err) {
+                res.status(400).send(err);
+            });
+    }).catch(function (err) {
+        res.status(400).send(err);
+    });
+
+    
+});
+
+
+//add not-registered user test
+router.post('/NotReg/ReportPANAS', function (req, res) {     //Add User
+    var userId = req.body.userId;
+    var activeLevel = req.body.activeLevel;
+    var determinedLevel = req.body.determinedLevel;
+    var attentiveLevel = req.body.attentiveLevel;
+    var inspiredLevel = req.body.inspiredLevel;
+    var alertLevel = req.body.alertLevel;
+    var afraidLevel = req.body.afraidLevel;
+    var upsetLevel = req.body.upsetLevel;
+    var nervousLevel = req.body.nervousLevel;
+    var hostileLevel = req.body.hostileLevel;
+    var ashamedLevel = req.body.ashamedLevel;
+
+
+
+    DButilsAzure.execQuery(query).then(function (result) {
+        if(result.length>0)
+            reportId=result[0].reportId+1;
+        else
+            reportId=0;
+        query1 = "INSERT INTO ReportPANAS VALUES ('"
+             + "','"+ userId + "','" + activeLevel+ "','" + determinedLevel + "','" + attentiveLevel + "','" + inspiredLevel + "','" + alertLevel+ "','" + afraidLevel+ "','" + upsetLevel+ "','" + nervousLevel+ "','"   + hostileLevel+ "','" + ashamedLevel+"')";
 
         DButilsAzure.execQuery(query1).then(function (result2) {
             res.send(true)
