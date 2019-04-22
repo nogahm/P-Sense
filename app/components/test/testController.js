@@ -29,6 +29,11 @@ angular.module("pointsOfInterest")
             self.notRegId = null;
             //save not reg info and continue to report-not working
             self.saveInfo = function (valid) {
+                if(self.notRegUser.age<18)
+                {
+                    alert('age must be over 18');
+                    return;
+                }
                 if (valid) {
                     self.toDisable = true;
 
@@ -57,7 +62,7 @@ angular.module("pointsOfInterest")
 
             // -----Video-----
             self.videoEnded=false;
-            self.stress=((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')<2)) || ((localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')==2));
+            self.stress=((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')<2)) || ((localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')>0));
             self.videoURL="assets\\video\\relaxVideo.mp4";
             if(self.stress)
             {
@@ -317,6 +322,7 @@ angular.module("pointsOfInterest")
                     self.FaceAnswers[i]=null;
                     self.WordAnswers[i]=null;
                 }
+                alert('In the next questions, you are asked to write in english what you see in the picture (if you see nothing write "nothing").');
             }
 
             
@@ -338,12 +344,21 @@ angular.module("pointsOfInterest")
                     // alert("If you answered all questions, please press 'Send Test'")
                 if(self.currQ==self.questions.length-1)
                     self.finishTest=true;   
+                //check if new kind of questions
+                if((self.length==30 && self.currQ==10) || (self.length==15 && self.currQ==5))
+                {
+                    alert('In the next questions, you are asked to choose if you see face in the picture or not.');
+                }
+                if((self.length==30 && self.currQ==20) || (self.length==15 && self.currQ==10))
+                {
+                    alert('In the next questions, you will see a word for SHORT TIME and will be asked to answer if it is a real word or not.');
+                }
                 // set word time to 10 seconds
                 self.x = document.getElementById("word");
                 if(self.x!=undefined && ((self.currQ>19 && self.length==30) || (self.currQ>9 && self.length==15)) && !self.finishTest)
                 {
                     self.x.hidden=false;
-                    $timeout(function(){ self.x.hidden=true },200);
+                    $timeout(function(){ self.x.hidden=true },400);
                 }
                                      
             }

@@ -30,8 +30,7 @@
                                    ng-required="true"
                                    class="form-control logInput"
                                    name="ageInput"
-                                   placeholder="Enter age"
-                                   min="18">
+                                   placeholder="Enter age">
                             <span ng-show="(infoNotRegForm.ageInput.$error.required || infoNotRegForm.ageInput.$pristine) && infoNotRegForm.$submitted" class="help-block">Age is required</span>
                     </div>
                     <div class="form-group">
@@ -74,6 +73,7 @@
                                    <span ng-show="(infoNotRegForm.englishLevel.$error.required || infoNotRegForm.englishLevel.$pristine) && infoNotRegForm.$submitted" class="help-block">English Level is required</span>
                      </div>
                      <br>
+                     <div>It may take a few minutes to load</div>
                      <input type="submit" ng-disabled="testCtrl.toDisable"
                            class="btn btn-success btn-lg logSubmit"
                            value="Submit And Continue">
