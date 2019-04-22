@@ -322,7 +322,7 @@ angular.module("pointsOfInterest")
                     self.FaceAnswers[i]=null;
                     self.WordAnswers[i]=null;
                 }
-                alert('In the next questions, you are asked to write in english what you see in the picture (if you see nothing write "nothing").');
+                alert('In the next questions, you are asked to write in english what you see in the picture (if you see nothing write "nothing"). Note: the pictures may contain objects - but not geometric figures');
             }
 
             
