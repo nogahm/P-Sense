@@ -63,7 +63,7 @@ angular.module("pointsOfInterest")
             {
                 if((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')==0) || (localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')==1))
                 {
-                    self.videoURL="assets\\video\\stressVideo.mp4";
+                    self.videoURL="assets\\video\\stress1.mp4";
                 }
                 else
                 {
