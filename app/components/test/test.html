@@ -20,14 +20,14 @@
             <table align="center">
                 <!-- question -->
                 <tr>
-                    <td  width="600">
-                        <div  ng-show="testCtrl.currQ>19">
+                    <td width="600">
+                        <div ng-show="(testCtrl.currQ>19 && testCtrl.length==30) || (testCtrl.currQ>9 && testCtrl.length==15) && !testCtrl.finishTest">
                             <div id="word" style="font-size: 45px; text-align: center;">
                                 {{testCtrl.questions[testCtrl.currQ]}}
                             </div>
                         </div>
 
-                        <img ng-show="testCtrl.currQ<20" ng-src="{{testCtrl.questions[testCtrl.currQ]}}" on-error-src="http://google.com/favicon.ico" class="centerImage" width="500" height="300">
+                        <img ng-show="(testCtrl.currQ<20 && testCtrl.length==30) || (testCtrl.currQ<10 && testCtrl.length==15)" ng-src="{{testCtrl.questions[testCtrl.currQ]}}" on-error-src="http://google.com/favicon.ico" class="centerImage" width="500" height="300">
                         <!-- <img src="assets\images\questionsImages\screw.jpg"> -->
                         <!-- eord -->
                     </td>
@@ -35,10 +35,10 @@
                 <!-- answer -->
                 <tr>
                     <td>
-                        <div ng-hide="testCtrl.currQ>14" class="centerFillText">
+                        <div ng-hide="(testCtrl.currQ>9 && testCtrl.length==30) || (testCtrl.currQ>4 && testCtrl.length==15)" class="centerFillText">
                                 <input type="text" ng-model="testCtrl.answers[testCtrl.currQ]" ng-required="true" class="form-control logInput" name="usernameInput" placeholder="what you see">
                         </div>
-                        <div ng-show="testCtrl.currQ>14 && testCtrl.currQ<20" class="centerFillText">
+                        <div ng-show="(testCtrl.currQ>9 && testCtrl.currQ<20 && testCtrl.length==30) || (testCtrl.currQ>4 && testCtrl.currQ<10 && testCtrl.length==15)" class="centerFillText">
                                 <select ng-model="testCtrl.FaceAnswers[testCtrl.currQ]"
                                 ng-required="true"
                                 class="form-control logInput"
@@ -49,9 +49,10 @@
                         </div>
                     </td>
                 </tr>
+                <!-- Word -->
                 <tr>
                     <td>
-                        <div ng-show="testCtrl.currQ>19 && testCtrl.x.hidden">
+                        <div ng-show="((testCtrl.currQ>19 && testCtrl.length==30) || (testCtrl.currQ>9 && testCtrl.length==15)) && testCtrl.x.hidden && !testCtrl.finishTest">
                             <!-- <select ng-model="testCtrl.WordAnswers[testCtrl.currQ]"
                             ng-required="true"
                             class="form-control logInput"
@@ -75,7 +76,7 @@
                 
                 <tr>
                     <!-- <td><button ng-click="testCtrl.prevQ()" class="btn btn-success btn-lg logSubmit" style="float:left">Previous</button></td> -->
-                    <td><button ng-hide="(testCtrl.currQ<=14 && testCtrl.answers[testCtrl.currQ] == null) || (testCtrl.currQ>14 && testCtrl.currQ<20 && testCtrl.FaceAnswers[testCtrl.currQ] == null) || (testCtrl.currQ>19)" ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
+                    <td><button ng-show="(testCtrl.answers[testCtrl.currQ] != null) || (testCtrl.FaceAnswers[testCtrl.currQ] != null)" ng-click="testCtrl.nextQ()" class="btn btn-success btn-lg logSubmit">Next</button></td>
                 </tr>
             </table>
             <button ng-show="testCtrl.finishTest && testCtrl.WordAnswers[testCtrl.currQ] != null" ng-disabled="testCtrl.toDisableSend" ng-click="testCtrl.SendAnsNotReg()" class="btn btn-success btn-lg logSubmit">Continue</button>

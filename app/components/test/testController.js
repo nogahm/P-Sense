@@ -57,11 +57,19 @@ angular.module("pointsOfInterest")
 
             // -----Video-----
             self.videoEnded=false;
-            self.stress=((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')==0)) || ((localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')>0));
+            self.stress=((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')<2)) || ((localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')==2));
             self.videoURL="assets\\video\\relaxVideo.mp4";
             if(self.stress)
             {
-                self.videoURL="assets\\video\\stressVideo.mp4";
+                if((localStorageService.get('userId')%2!=0)&&(localStorageService.get('testTime')==0) || (localStorageService.get('userId')%2==0)&&(localStorageService.get('testTime')==1))
+                {
+                    self.videoURL="assets\\video\\stressVideo.mp4";
+                }
+                else
+                {
+                    self.videoURL="assets\\video\\stress2.mp4"
+                }
+                
             }
             self.nextTophase3=function(){
                 $location.path('/report');
@@ -110,7 +118,7 @@ angular.module("pointsOfInterest")
                             $location.replace();
                             
                         }
-                        if(reportTime==2 || reportTime==3)
+                        if(reportTime>=2)
                         {
                             $location.path('/startTest');
                             $location.replace();
@@ -121,8 +129,6 @@ angular.module("pointsOfInterest")
                             alert('failed, please try again' + error);
                         }
                     );
-                    
-                    
                 }
                 else
                 {
@@ -144,75 +150,44 @@ angular.module("pointsOfInterest")
             self.questions=[];
             self.allIds=[];
             self.ids=[];
+            self.stress1TestID=[]; //15 q
+            self.stress1Test=[];
+            self.stress2TestID=[]; //15 q
+            self.stress2Test=[];
+            self.calmTestID=[]; //30 q
+            self.calmTest=[];
+
 
             self.findTest = function () {
-                
-                //test1
-                //0-14: pictures
-                //15-19: faces
-                //20-34: words
-                //test2
-                //35-49: pictures
-                //50-54: faces
-                //55-69: words    
-                let ids1=[]; /// 35 question for each test
-                
-                //get random numbers for pictures
-                while(ids1.length < 30){
-                    var r = Math.floor(Math.random()*95) + 1;
-                    if(ids1.indexOf(r) === -1 && ![25,2,37,44,26,92,89,87].includes(r))
-                        ids1.push(r);
-                }
-                //28-84 - nothing
-                //pictured in order to see if user is reliable
-                ids1[1]=25;
-                ids1[5]=2;
-                ids1[20]=37;
-                ids1[22]=44;
-                //add for each test 2 real pictures
-                ids1[0]=26;
-                ids1[10]=92;
-                ids1[15]=89;
-                ids1[25]=87;
 
-                //get 10 random faces
-                let faceIds=[];
-                while(faceIds.length < 10){
-                    var r = Math.floor(Math.random()*31) + 1;//for faceId
-                    if(faceIds.indexOf(r) === -1)
-                        faceIds.push(r);
-                }
-
-                //30 wordIds
-                let wordIds=[];
-                while(wordIds.length < 30){
-                    var r = Math.floor(Math.random()*31) + 1;//for faceId
-                    if(wordIds.indexOf(r) === -1)
-                        wordIds.push(r);
-                }
-
+                let picturesIDS=[25,27,2,30,44,85,55,1,50,40,81,39,20,43,32,3,71,49,91,28];
+                let facesIDS=[31,30,1,29,2,28,3,27,4,25,20,16,6,17,7,18,19,21,9,23];
+                let wordsIDS=[1,4,42,41,6,49,7,44,8,45,44,11,55,46,25,47,48,28,49,50];
                 //get pictures info
                 let counter=0;
-                for (let i = 0; i < ids1.length; i++) {
-                    let picId = ids1[i];
-                    $http.get(self.httpReq + "Questions/Pictures/" + ids1[i]).then(function (res) {
+                for (let i = 0; i < picturesIDS.length; i++) {
+                    let picId = picturesIDS[i];
+                    $http.get(self.httpReq + "Questions/Pictures/" + picturesIDS[i]).then(function (res) {
                         counter++;
-                        //first 15
-                        if(i<15)
+                        //first 5 - stress1
+                        if(i<5)
                         {
-                            self.allQuestions[i] = res.data[0].pictureUrl;
-                            self.allIds[i]=picId;    
+                            self.stress1Test[i] = res.data[0].pictureUrl;
+                            self.stress1TestID[i]=picId;    
                         }
-                        else
+                        else if(i<10) //second 5 - stress2
                         {
-                            self.allQuestions[i+20] = res.data[0].pictureUrl;
-                            self.allIds[i+20]=picId;
+                            self.stress2Test[i-5] = res.data[0].pictureUrl;
+                            self.stress2TestID[i-5]=picId;
+                        } else //last 10 - calm
+                        {
+                            self.calmTest[i-10] = res.data[0].pictureUrl;
+                            self.calmTestID[i-10]=picId;
                         }
                         // self.answers[i]=null;
-                        if(counter>=70)
+                        if(counter>=60)
                         {
-                            localStorageService.set('allIds', self.allIds);
-                            localStorageService.set('allQuestions', self.allQuestions);
+                            self.saveTestsInLocalStorage();
                         }
                     },
                         function (error) {
@@ -222,27 +197,29 @@ angular.module("pointsOfInterest")
                 }
 
                 //get face info
-                for (let i = 0; i < faceIds.length; i++) {
-                    let picId = faceIds[i];
-                    $http.get(self.httpReq + "Questions/FacesPictures/" + faceIds[i]).then(function (res) { //TODO - Change to face
+                for (let i = 0; i < facesIDS.length; i++) {
+                    let picId = facesIDS[i];
+                    $http.get(self.httpReq + "Questions/FacesPictures/" + facesIDS[i]).then(function (res) {
                         counter++;
-                        //first 5 faces
+                        //first 5 - stress1
                         if(i<5)
                         {
-                            self.allQuestions[i+15]=(res.data[0].PICURL);
-                            self.allIds[i+15]=(picId);
+                            self.stress1Test[i+5] = res.data[0].PICURL;
+                            self.stress1TestID[i+5]=picId;    
                         }
-                        else
+                        else if(i<10) //second 5 - stress2
                         {
-                            self.allQuestions[i+45]=(res.data[0].PICURL);
-                            self.allIds[i+45]=(picId);
+                            self.stress2Test[i] = res.data[0].PICURL;
+                            self.stress2TestID[i]=picId;
+                        } else //last 10 - calm
+                        {
+                            self.calmTest[i] = res.data[0].PICURL;
+                            self.calmTestID[i]=picId;
                         }
-                        
                         // self.FaceAnswers[i]=null;
-                        if(counter>=70)
+                        if(counter>=60)
                         {
-                            localStorageService.set('allIds', self.allIds);
-                            localStorageService.set('allQuestions', self.allQuestions);
+                            self.saveTestsInLocalStorage();
                         }
                     },
                         function (error) {
@@ -252,27 +229,30 @@ angular.module("pointsOfInterest")
                 }
 
                 // get word info
-                for (let i = 0; i < wordIds.length; i++) {
-                    let wordId = wordIds[i];
-                    $http.get(self.httpReq + "Questions/WordQuestion/" + wordIds[i]).then(function (res) {
+                for (let i = 0; i < wordsIDS.length; i++) {
+                    let wordId = wordsIDS[i];
+                    $http.get(self.httpReq + "Questions/WordQuestion/" + wordsIDS[i]).then(function (res) {
                         counter++;
-                        //first 15 words
-                        if(i<15)
+                        //first 5 - stress1
+                        if(i<5)
                         {
-                            self.allQuestions[i+20]=(res.data[0].Word);
-                            self.allIds[i+20]=(wordId);
+                            self.stress1Test[i+10] = res.data[0].Word;
+                            self.stress1TestID[i+10]=wordId;    
                         }
-                        else
+                        else if(i<10) //second 5 - stress2
                         {
-                            self.allQuestions[i+40]=(res.data[0].Word);
-                            self.allIds[i+40]=(wordId);
+                            self.stress2Test[i+5] = res.data[0].Word;
+                            self.stress2TestID[i+5]=wordId;
+                        } else //last 10 - calm
+                        {
+                            self.calmTest[i+10] = res.data[0].Word;
+                            self.calmTestID[i+10]=wordId;
                         }
-                        
                         // self.FaceAnswers[i]=null;
-                        if(counter>=70)
+                        if(counter>=60)
                         {
-                            localStorageService.set('allIds', self.allIds);
-                            localStorageService.set('allQuestions', self.allQuestions);
+                            self.saveTestsInLocalStorage();
+
                         }
                     },
                         function (error) {
@@ -283,28 +263,56 @@ angular.module("pointsOfInterest")
                 // /WordQuestion/:wordId
             }
 
+            self.saveTestsInLocalStorage=function()
+            {
+                localStorageService.set('stress1Test', self.stress1Test);
+                localStorageService.set('stress1TestID', self.stress1TestID);
+                localStorageService.set('stress2Test', self.stress2Test);
+                localStorageService.set('stress2TestID', self.stress2TestID);
+                localStorageService.set('calmTest', self.calmTest);
+                localStorageService.set('calmTestID', self.calmTestID);
+            }
+
             self.startTest=function()
             {
+                
                 //save start time
                 self.testStartTime=(new Date()).toISOString();
                 //check what time of test
                 let testTime=localStorageService.get('testTime');
-                // localStorageService.set('testTime', testTime+1);
-
-                //get first 15 or last 15 pictures according to test time
-                let index=0;
-                //second time
-                if(testTime==1)
+                let userId=localStorageService.get('userId');
+                self.length=15;
+                //calm
+                if((testTime===0 && userId%2===0) || (testTime===2 && userId%2===1))
                 {
-                    index=35;
+                    // index=35;
+                    self.allQuestions = localStorageService.get('calmTest');
+                    self.allIds = localStorageService.get('calmTestID');
+                    self.length=30;
                 }
-                self.allQuestions = localStorageService.get('allQuestions');
-                self.allIds = localStorageService.get('allIds');
-
-                for(let i=0;i<35;i++)
+                //stress1
+                if((testTime===1 && userId%2===0) || (testTime===0 && userId%2===1))
                 {
-                    self.ids[i]=self.allIds[i+index];
-                    self.questions[i]=self.allQuestions[i+index];
+                    // index=35;
+                    self.allQuestions = localStorageService.get('stress1Test');
+                    self.allIds = localStorageService.get('stress1TestID');
+                }
+                //stress2
+                if((testTime===2 && userId%2===0) || (testTime===1 && userId%2===1))
+                {
+                    // index=35;
+                    self.allQuestions = localStorageService.get('stress2Test');
+                    self.allIds = localStorageService.get('stress2TestID');
+                }
+                // self.allQuestions = localStorageService.get('allQuestions');
+                // self.allIds = localStorageService.get('allIds');
+                self.ids=self.allIds;
+                self.questions=self.allQuestions;
+
+                for(let i=0;i<self.length;i++)
+                {
+                    // self.ids[i]=self.allIds[i+index];
+                    // self.questions[i]=self.allQuestions[i+index];
                     self.answers[i]=null;
                     self.FaceAnswers[i]=null;
                     self.WordAnswers[i]=null;
@@ -327,15 +335,15 @@ angular.module("pointsOfInterest")
                 if(self.currQ<self.questions.length-1)
                     self.currQ++;
                 else
-                    alert("If you answered all questions, please press 'Send Test'")
+                    // alert("If you answered all questions, please press 'Send Test'")
                 if(self.currQ==self.questions.length-1)
                     self.finishTest=true;   
                 // set word time to 10 seconds
                 self.x = document.getElementById("word");
-                if(self.x!=undefined && self.currQ>19)
+                if(self.x!=undefined && ((self.currQ>19 && self.length==30) || (self.currQ>9 && self.length==15)) && !self.finishTest)
                 {
                     self.x.hidden=false;
-                    $timeout(function(){ self.x.hidden=true },100);
+                    $timeout(function(){ self.x.hidden=true },200);
                 }
                                      
             }
@@ -356,21 +364,26 @@ angular.module("pointsOfInterest")
                 let answersArr=[];
                 for(i=0;i<self.questions.length;i++){
                     picId=self.ids[i];
-                    if(i<15)
+                    let type="pic";
+                    if((self.length==15 && i<5) || (self.length==30 && i<10))
+                    {
                         ans=self.answers[i];
-                    else if(i<19)
-                        ans=self.FaceAnswers[i];
+                    }
+                    else if((self.length==15 && i<10) || (self.length==30 && i<20))
+                    {
+                         ans=self.FaceAnswers[i];
+                         type="face";
+                    }
                     else
+                    {
                         ans=self.WordAnswers[i];
+                        type="word";
+                    }
                     if(ans ==undefined)
                     {
                         ans="";
                     }
-                    let type="pic";
-                    if(i>14 && i<19)
-                        type="face";
-                    else if(i>19)
-                        type="word";
+                    
                     answersArr[i]={qId:picId, answer:ans, Qtype:type};
                 }
                 testAnswer={
@@ -387,10 +400,15 @@ angular.module("pointsOfInterest")
                         $location.path('/video');
                         $location.replace();    
                     }
-                    else
+                    else if(testTime==1)
                     {
                         // alert("Thank you for your answers!");
-                        $location.path('/thankYou');
+                        $location.path('/video');
+                        $location.replace();
+                    }
+                    else
+                    {
+                        $location.path('/ReportPANAS');
                         $location.replace();
                     }
                 },
