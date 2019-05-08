@@ -239,7 +239,16 @@
         </div>
     </div>
           
-  <br>
+  <div style="text-align:center;">                  
+  <label class="logInputHeader">WorkerId:</label>
+                            <input 
+                                   ng-model="testCtrl.workerId"
+                                   ng-required="true"
+                                   class="form-control logInput"
+                                   name="workerId"
+                                   placeholder="Enter workerId"
+                                   text-align="center">
+                        <br></br></div>
 
         <button class="logSubmit" ng-disabled="testCtrl.toDisableReport" ng-click="testCtrl.reportAndStart()">Continue</button>
     </div>

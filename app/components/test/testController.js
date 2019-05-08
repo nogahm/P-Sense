@@ -161,6 +161,7 @@ angular.module("pointsOfInterest")
             self.stress2Test=[];
             self.calmTestID=[]; //30 q
             self.calmTest=[];
+            self.wordId=0;
 
 
             self.findTest = function () {
